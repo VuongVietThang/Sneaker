@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+.name{
+  padding: 0 10px;
+  color: #384aeb !important;
+  font-weight: 600;
+}
+
 body {
   color: #777;
   font-family: "Roboto", sans-serif;
@@ -7,10 +13,16 @@ body {
   font-weight: 400;
   line-height: 1.667;
 }
+
 ul {
   list-style-type: none;
-  margin: 0;
+  
   padding: 0;
+  
+}
+
+.nav-shop{
+  margin: 0 -160px 0 0;
 }
 a:hover {
   text-decoration: none;
@@ -1077,6 +1089,7 @@ a {
   background: transparent;
   color: #222;
   border-color: #eeeeee;
+  background: #384aeb;
 }
 .button-hero {
   padding: 12px 41px;
