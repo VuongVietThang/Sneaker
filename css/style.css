@@ -1,5 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+
+
+.info{
+  padding: 10px 20px;
+  color: #000;
+  background-color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng mượt mà */
+}
+.dropdowns{
+  padding: 0;
+}
+.info:hover {
+  background-color: #384aeb; /* Màu nền khi hover */
+  color: #fff; /* Màu chữ khi hover */
+}
 .name{
   padding: 0 10px;
   color: #384aeb !important;

@@ -80,10 +80,9 @@ session_start();
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="profile.php">Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="logout.php">Logout</a>
+                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item info" href="profile.php">Profile</a>
+                    <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
                 </li>
               <?php else: ?>
