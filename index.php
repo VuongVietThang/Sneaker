@@ -1,23 +1,33 @@
+<?php
+// Kết nối đến cơ sở dữ liệu (đảm bảo bạn đã bao gồm file db.php hoặc tương tự)
+include 'config/database.php';
+require 'model/db.php';
+require 'model/user.php';
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Aroma Shop - Home</title>
-	<link rel="icon" href="img/Fevicon.png" type="image/png">
-  <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/all.min.css">
-	<link rel="stylesheet" href="./css/themify-icons.css">
-  <link rel="stylesheet" href="./css/nice-select.css">
-  <link rel="stylesheet" href="./css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="./css/owl.carousel.min.css">
+  <link rel="icon" href="img/Fevicon.png" type="image/png">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <link rel="stylesheet" href="css/nice-select.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
 
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
   <!--================ Start Header Menu Area =================-->
-	<header class="header_area">
+  <header class="header_area">
     <div class="main_menu">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
@@ -41,7 +51,7 @@
                   <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
                   <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
                 </ul>
-							</li>
+              </li>
               <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Blog</a>
@@ -49,8 +59,8 @@
                   <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                   <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
                 </ul>
-							</li>
-							<li class="nav-item submenu dropdown">
+              </li>
+              <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Pages</a>
                 <ul class="dropdown-menu">
@@ -65,17 +75,32 @@
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
               <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
-              <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
+              <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
+                  </a>
+                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item info" href="profile.php">Profile</a>
+                    <a class="dropdown-item info" href="logout.php">Logout</a>
+                  </div>
+                </li>
+              <?php else: ?>
+                <!-- Hiển thị nút Login nếu chưa đăng nhập -->
+                <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
+              <?php endif; ?>
+
+
             </ul>
           </div>
         </div>
       </nav>
     </div>
   </header>
-	<!--================ End Header Menu Area =================-->
+  <!--================ End Header Menu Area =================-->
 
   <main class="site-main">
-    
+
     <!--================ Hero banner start =================-->
     <section class="hero-banner">
       <div class="container">
@@ -126,7 +151,7 @@
     </section>
     <!--================ Hero Carousel end =================-->
 
-    <!-- ================ trending product section start ================= -->  
+    <!-- ================ trending product section start ================= -->
     <section class="section-margin calc-60px">
       <div class="container">
         <div class="section-intro pb-60px">
@@ -250,7 +275,7 @@
                 <p>Accessories</p>
                 <h4 class="card-product__title"><a href="single-product.html">Blutooth Speaker</a></h4>
                 <p class="card-product__price">$150.00</p>
-              </div> 
+              </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 col-xl-3">
@@ -273,10 +298,10 @@
         </div>
       </div>
     </section>
-    <!-- ================ trending product section end ================= -->  
+    <!-- ================ trending product section end ================= -->
 
 
-    <!-- ================ offer section start ================= --> 
+    <!-- ================ offer section start ================= -->
     <section class="offer" id="parallax-1" data-anchor-target="#parallax-1" data-300-top="background-position: 20px 30px" data-top-bottom="background-position: 0 20px">
       <div class="container">
         <div class="row">
@@ -291,9 +316,9 @@
         </div>
       </div>
     </section>
-    <!-- ================ offer section end ================= --> 
+    <!-- ================ offer section end ================= -->
 
-    <!-- ================ Best Selling item  carousel ================= --> 
+    <!-- ================ Best Selling item  carousel ================= -->
     <section class="section-margin calc-60px">
       <div class="container">
         <div class="section-intro pb-60px">
@@ -431,9 +456,9 @@
         </div>
       </div>
     </section>
-    <!-- ================ Best Selling item  carousel end ================= --> 
+    <!-- ================ Best Selling item  carousel end ================= -->
 
-    <!-- ================ Blog section start ================= -->  
+    <!-- ================ Blog section start ================= -->
     <section class="blog">
       <div class="container">
         <div class="section-intro pb-60px">
@@ -495,9 +520,9 @@
         </div>
       </div>
     </section>
-    <!-- ================ Blog section end ================= -->  
+    <!-- ================ Blog section end ================= -->
 
-    <!-- ================ Subscribe section start ================= --> 
+    <!-- ================ Subscribe section start ================= -->
     <section class="subscribe-position">
       <div class="container">
         <div class="subscribe text-center">
@@ -506,7 +531,7 @@
           <div id="mc_embed_signup">
             <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe-form form-inline mt-5 pt-1">
               <div class="form-group ml-sm-auto">
-                <input class="form-control mb-1" type="email" name="EMAIL" placeholder="Enter your email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '" >
+                <input class="form-control mb-1" type="email" name="EMAIL" placeholder="Enter your email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
                 <div class="info"></div>
               </div>
               <button class="button button-subscribe mr-auto mb-1" type="submit">Subscribe Now</button>
@@ -516,106 +541,109 @@
 
             </form>
           </div>
-          
+
         </div>
       </div>
     </section>
-    <!-- ================ Subscribe section end ================= --> 
+    <!-- ================ Subscribe section end ================= -->
 
-    
+
 
   </main>
 
 
-  <!--================ Start footer Area  =================-->	
-	<footer class="footer">
-		<div class="footer-area">
-			<div class="container">
-				<div class="row section_gap">
-					<div class="col-lg-3 col-md-6 col-sm-6">
-						<div class="single-footer-widget tp_widgets">
-							<h4 class="footer_title large_title">Our Mission</h4>
-							<p>
-								So seed seed green that winged cattle in. Gathering thing made fly you're no 
-								divided deep moved us lan Gathering thing us land years living.
-							</p>
-							<p>
-								So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep moved 
-							</p>
-						</div>
-					</div>
-					<div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
-						<div class="single-footer-widget tp_widgets">
-							<h4 class="footer_title">Quick Links</h4>
-							<ul class="list">
-								<li><a href="#">Home</a></li>
-								<li><a href="#">Shop</a></li>
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">Product</a></li>
-								<li><a href="#">Brand</a></li>
-								<li><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-6 col-sm-6">
-						<div class="single-footer-widget instafeed">
-							<h4 class="footer_title">Gallery</h4>
-							<ul class="list instafeed d-flex flex-wrap">
-								<li><img src="img/gallery/r1.jpg" alt=""></li>
-								<li><img src="img/gallery/r2.jpg" alt=""></li>
-								<li><img src="img/gallery/r3.jpg" alt=""></li>
-								<li><img src="img/gallery/r5.jpg" alt=""></li>
-								<li><img src="img/gallery/r7.jpg" alt=""></li>
-								<li><img src="img/gallery/r8.jpg" alt=""></li>
-							</ul>
-						</div>
-					</div>
-					<div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
-						<div class="single-footer-widget tp_widgets">
-							<h4 class="footer_title">Contact Us</h4>
-							<div class="ml-40">
-								<p class="sm-head">
-									<span class="fa fa-location-arrow"></span>
-									Head Office
-								</p>
-								<p>123, Main Street, Your City</p>
-	
-								<p class="sm-head">
-									<span class="fa fa-phone"></span>
-									Phone Number
-								</p>
-								<p>
-									+123 456 7890 <br>
-									+123 456 7890
-								</p>
-	
-								<p class="sm-head">
-									<span class="fa fa-envelope"></span>
-									Email
-								</p>
-								<p>
-									free@infoexample.com <br>
-									www.infoexample.com
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+  <!--================ Start footer Area  =================-->
+  <footer class="footer">
+    <div class="footer-area">
+      <div class="container">
+        <div class="row section_gap">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="single-footer-widget tp_widgets">
+              <h4 class="footer_title large_title">Our Mission</h4>
+              <p>
+                So seed seed green that winged cattle in. Gathering thing made fly you're no
+                divided deep moved us lan Gathering thing us land years living.
+              </p>
+              <p>
+                So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep moved
+              </p>
+            </div>
+          </div>
+          <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
+            <div class="single-footer-widget tp_widgets">
+              <h4 class="footer_title">Quick Links</h4>
+              <ul class="list">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Product</a></li>
+                <li><a href="#">Brand</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="single-footer-widget instafeed">
+              <h4 class="footer_title">Gallery</h4>
+              <ul class="list instafeed d-flex flex-wrap">
+                <li><img src="img/gallery/r1.jpg" alt=""></li>
+                <li><img src="img/gallery/r2.jpg" alt=""></li>
+                <li><img src="img/gallery/r3.jpg" alt=""></li>
+                <li><img src="img/gallery/r5.jpg" alt=""></li>
+                <li><img src="img/gallery/r7.jpg" alt=""></li>
+                <li><img src="img/gallery/r8.jpg" alt=""></li>
+              </ul>
+            </div>
+          </div>
+          <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
+            <div class="single-footer-widget tp_widgets">
+              <h4 class="footer_title">Contact Us</h4>
+              <div class="ml-40">
+                <p class="sm-head">
+                  <span class="fa fa-location-arrow"></span>
+                  Head Office
+                </p>
+                <p>123, Main Street, Your City</p>
 
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="row d-flex">
-					<p class="col-lg-12 footer-text text-center">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-				</div>
-			</div>
-		</div>
-	</footer>
-	<!--================ End footer Area  =================-->
+                <p class="sm-head">
+                  <span class="fa fa-phone"></span>
+                  Phone Number
+                </p>
+                <p>
+                  +123 456 7890 <br>
+                  +123 456 7890
+                </p>
+
+                <p class="sm-head">
+                  <span class="fa fa-envelope"></span>
+                  Email
+                </p>
+                <p>
+                  free@infoexample.com <br>
+                  www.infoexample.com
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="row d-flex">
+          <p class="col-lg-12 footer-text text-center">
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;<script>
+              document.write(new Date().getFullYear());
+            </script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--================ End footer Area  =================-->
 
 
 
@@ -628,4 +656,5 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="js/mail-script.js"></script>
   <script src="js/mains.js"></script>
 </body>
+
 </html>
