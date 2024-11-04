@@ -92,20 +92,20 @@
 
 
 <script>
- function loadProducts(encryptedBrandId) {
+  function loadProducts(encryptedBrandId) {
     const type = document.querySelector('input[name="type"]:checked')?.value;
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'brand.php?brand_id=' + encodeURIComponent(encryptedBrandId) + '&type=' + encodeURIComponent(type) + '&ajax=true', true);
-    
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            const products = JSON.parse(xhr.responseText);
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
 
-            products.forEach(product => {
-                productList.innerHTML += `
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        const products = JSON.parse(xhr.responseText);
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = '';
+
+        products.forEach(product => {
+          productList.innerHTML += `
                     <div class="col-md-6 col-lg-4">
                         <div class="card text-center card-product">
                             <div class="card-product__img">
@@ -123,16 +123,40 @@
                         </div>
                     </div>
                 `;
-            });
-        } else {
-            console.error('Error fetching products: ' + xhr.statusText);
-        }
+        });
+      } else {
+        console.error('Error fetching products: ' + xhr.statusText);
+      }
     };
 
     xhr.send();
-}
+  }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+   let swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: {
+         delay: 5000,
+         disableOnInteraction: false,
+      },
+      pagination: {
+         el: '.swiper-pagination',
+         clickable: true,
+         
+      },
+      
+   });
+});
+
 
 </script>
+
+
+
+
+
 
 
 <script src="../js/jquery-3.2.1.min.js"></script>
@@ -144,6 +168,7 @@
 <script src="../js/mail-script.js"></script>
 <script src="../js/mains.js"></script>
 <script src="../js/nouislider.min.js"></script>
+<script src="../js/swiper-bundle.min.js"></script>
 </body>
 
 </html>

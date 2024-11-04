@@ -1,12 +1,39 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
 
+.swiper-container {
+   width: 100%; /* Đặt chiều rộng tối đa */
+   max-width: 100%; /* Chiều rộng tối đa là 600px, bạn có thể tùy chỉnh */
+   height: 600px; /* Chiều cao cố định cho slider */
+   margin: 0 auto; /* Căn giữa */
+   overflow: hidden;
+}
+
+.swiper-slide img {
+   width: 100%; /* Đảm bảo hình ảnh vừa khít với slide */
+   height: 100%; /* Chiều cao bằng với chiều cao của slide */
+   object-fit: cover; /* Cắt và giữ tỷ lệ hình ảnh */
+}
+
+
 
 .info{
   padding: 10px 20px;
   color: #000;
   background-color: #fff;
   transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng mượt mà */
+}
+@media (max-width: 991px) {
+  .header_area .navbar .nav-user {
+      padding-bottom: 20px;
+  }
+}
+
+#navbarDropdown{
+  padding: 10px 0px;
+}
+.nav-user{
+  margin: 0;
 }
 .dropdowns{
   padding: 0;
@@ -37,7 +64,7 @@ ul {
 }
 
 .nav-shop{
-  margin: 0 -160px 0 0;
+  margin: 0;
 }
 a:hover {
   text-decoration: none;
@@ -154,7 +181,7 @@ a {
   border-radius: 0px;
 }
 .header_area .navbar .nav .nav-item {
-  margin-right: 45px;
+  margin-right: 35px;
 }
 .header_area .navbar .nav .nav-item .nav-link {
   text-transform: capitalize;
@@ -378,7 +405,7 @@ a {
 }
 .nav-shop li {
   display: inline-block;
-  margin-right: 15px;
+  margin-right: 20px;
 }
 .nav-shop li i,
 .nav-shop li span {
@@ -403,7 +430,7 @@ a {
   right: -12px;
 }
 .nav-shop li:last-child {
-  margin-left: 40px;
+  margin-left: 0px;
 }
 @media (max-width: 1619px) {
   .header_area .navbar .search {
@@ -481,9 +508,9 @@ a {
     border-bottom: 1px solid #ededed33;
     border-radius: 0px;
   }
-  .header_area .navbar .nav-shop {
+  /* .header_area .navbar .nav-shop {
     padding-bottom: 40px;
-  }
+  } */
   .header_area .navbar .search {
     margin-left: 0px;
   }
@@ -663,27 +690,8 @@ a {
     z-index: 111;
   }
 }
-.hero-banner::before {
-  content: "";
-  display: block;
-  width: 5%;
-  height: 100%;
-  background: #384aeb;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-@media (min-width: 575px) {
-  .hero-banner::before {
-    width: 20%;
-  }
-}
-@media (min-width: 991px) {
-  .hero-banner::before {
-    width: 35%;
-  }
-}
-.hero-banner__img {
+
+/* .hero-banner__img {
   position: relative;
   top: 1px;
 }
@@ -702,7 +710,7 @@ a {
   font-family: "Roboto", sans-serif;
   color: #555555;
   margin-bottom: 12px;
-}
+} */
 .hero-banner__content h1 {
   font-family: "Roboto", sans-serif;
   font-size: 25px;

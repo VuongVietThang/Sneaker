@@ -1,7 +1,7 @@
 <?php
-include 'config/database.php';
-include 'model/db.php'; // Đảm bảo bạn đã bao gồm file kết nối DB
-include 'model/user.php'; // Bao gồm file User
+include '../config/database.php';
+require '../model/db.php';
+require '../model/user.php';
 
 // Biến lưu lỗi cho từng trường
 $errors = [
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="../css/login.css">
     <style>
         body {
             background-image: url(image/login.jpg);
@@ -186,10 +186,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
 
 </body>
 
