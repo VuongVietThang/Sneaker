@@ -4,12 +4,14 @@ include '../config/database.php';
 require '../model/db.php';
 require '../model/brand.php';
 require '../model/product.php';
+require '../model/banner.php';
 
 session_start();
 
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
-
+$bannerModel = new Banner();
+$banners = $bannerModel->getAllBanner();
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -21,8 +23,9 @@ $secret_salt = "my_secret_salt";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="X-UA-Compatible" content=ie=edge">
   <title>Aroma Shop - Home</title>
+  <link rel="stylesheet" href="../css/swiper-bundle.min.css">
   <link rel="icon" href="../img/Fevicon.png" type="image/png">
   <link rel="stylesheet" href="../css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/all.min.css">
@@ -32,7 +35,10 @@ $secret_salt = "my_secret_salt";
   <link rel="stylesheet" href="../css/owl.carousel.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/linericon.css">
+ 
+
 </head>
+
 
 <body>
   <!--================ Start Header Menu Area =================-->
@@ -79,15 +85,20 @@ $secret_salt = "my_secret_salt";
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
               <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
+            </ul>
+            <ul class="nav-user">
               <?php if (isset($_SESSION['user'])): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item info" href="profile.php">Profile</a>
-                    <a class="dropdown-item info" href="logout.php">Logout</a>
+                  <div class="logout">
+                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item info" href="">Profile</a>
+                      <a class="dropdown-item info" href="logout.php">Logout</a>
+                    </div>
                   </div>
+
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
