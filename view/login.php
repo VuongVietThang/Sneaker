@@ -1,8 +1,8 @@
 <?php
 // Kết nối đến cơ sở dữ liệu (đảm bảo bạn đã bao gồm file db.php hoặc tương tự)
-include 'config/database.php';
-require 'model/db.php';
-require 'model/user.php';
+include '../config/database.php';
+require '../model/db.php';
+require '../model/user.php';
 
 session_start();
 
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<link rel="stylesheet"
 		href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<link rel="stylesheet" href="./css/login.css">
+	<link rel="stylesheet" href="../css/login.css">
 
 </head>
 <style>
@@ -120,10 +120,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</div>
 	</section>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/popper.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/popper.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/main.js"></script>
 
 </body>
 
