@@ -1,10 +1,10 @@
 <?php
 class User extends Db
 {
-    // Constructor
+    // Constructor - rename branch cart thành auth admin hihi
     public function __construct()
     {
-        // Tạo tài khoản admin mặc định -> SeederDefaultAdmin
+        // Tạo tài khoản admin mặc định -> SeederDefaultAdmin 
         parent::__construct();
          $stmt = self::$connection->prepare("SELECT username FROM admin WHERE username = ?");
          $username = 'admin';

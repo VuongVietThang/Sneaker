@@ -7,7 +7,6 @@ require '../model/product.php';
 require '../model/banner.php';
 
 session_start();
-
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
@@ -97,6 +96,11 @@ $secret_salt = "my_secret_salt";
                   </a>
                   <div class="logout">
                     <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <?php 
+                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
+                          echo '<a class="dropdown-item info" href="">Admin</a>';
+                      }
+                    ?>
                       <a class="dropdown-item info" href="">Profile</a>
                       <a class="dropdown-item info" href="logout.php">Logout</a>
                     </div>

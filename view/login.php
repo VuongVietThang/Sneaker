@@ -10,33 +10,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$password = $_POST['password'] ?? '';
 	$isAdmin = isset($_POST['admin']) ? $_POST['admin'] : '';
 	if($isAdmin){
-	// Kiểm tra trường username
-	if (empty($username)) {
-		$errors['username'] = 'Tên đăng nhập không được để trống.';
-	} else {
-		// Kiểm tra xem username có tồn tại trong DB không
-		$userModel = new User();
-		if (!$userModel->isAdminExists($username)) {
-			$errors['username'] = 'Tên đăng nhập không tồn tại hoặc không phải tài khoản admin!.';
+		// Kiểm tra trường username
+		if (empty($username)) {
+			$errors['username'] = 'Tên đăng nhập không được để trống.';
+		} else {
+			// Kiểm tra xem username có tồn tại trong DB không
+			$userModel = new User();
+			if (!$userModel->isAdminExists($username)) {
+				$errors['username'] = 'Tên đăng nhập không tồn tại hoặc không phải tài khoản admin!.';
+			}
+		}
+		// Kiểm tra trường password
+		if (empty($password)) {
+			$errors['password'] = 'Mật khẩu không được để trống.';
+			
+		} else {
+			// Kiểm tra mật khẩu có đúng không
+			$user = $userModel->adminLogin($username, $password);
+			if (is_string($user)) {
+				$errors['password'] = $user; // Lỗi trả về từ hàm login
+			}
+		}
+		if (empty($errors)) {
+			$_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
+			header('Location: ../admin/index.php'); // Chuyển hướng đến trang dashboard
+			exit();
 		}
 	}
-	// Kiểm tra trường password
-	if (empty($password)) {
-		$errors['password'] = 'Mật khẩu không được để trống.';
-		
-	} else {
-		// Kiểm tra mật khẩu có đúng không
-		$user = $userModel->adminLogin($username, $password);
-		if (is_string($user)) {
-			$errors['password'] = $user; // Lỗi trả về từ hàm login
-		}
-	}
-	if (empty($errors)) {
-		$_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
-		header('Location: ../admin/index.php'); // Chuyển hướng đến trang dashboard
-		exit();
-	}
-}
 	$errors = [];
 
 	// Kiểm tra trường username
