@@ -25,17 +25,21 @@ class Product extends Db
     }
     
 
-    public function getProductsByBrand($brand_id)
-    {
-        $sql = self::$connection->prepare("
-            SELECT p.product_id, p.name, p.price, pi.image_url
+    public static function getNewProducts($limit)
+{
+    $sql = self::$connection->prepare("SELECT p.product_id, p.name, p.type, p.price, pi.image_url, b.brand_id, b.name AS brand_name
             FROM product p
-            LEFT JOIN product_image pi ON p.product_id = pi.product_id
-            WHERE p.brand_id = ?
-        ");
-        $sql->bind_param("i", $brand_id); // Gán tham số brand_id
-        $sql->execute();
-        return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
+            LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
+            LEFT JOIN brand b ON p.brand_id = b.brand_id
+            ORDER BY p.created_at DESC
+            LIMIT ?");
+    
+    // Liên kết biến limit vào câu truy vấn
+    $sql->bind_param("i", $limit); // "i" là kiểu dữ liệu Integer
+    $sql->execute();
+    
+    return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
 
 }

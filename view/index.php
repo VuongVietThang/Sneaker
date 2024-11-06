@@ -10,12 +10,12 @@ include 'header.php';
     
 
    
-      <div class="swiper-container" onmouseover="pauseSlide()" onmouseout="startAutoSlide()">
+      <div class="swiper-container">
         <div class="swiper-wrapper">
           <?php
           if (!empty($banners)):
           foreach ($banners as $banner): ?>
-          <div class="swiper-slide"><img src="../img/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
+          <div class="swiper-slide"><img src="../images/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
           <?php endforeach; endif; ?>
           
         </div>
@@ -33,6 +33,38 @@ include 'header.php';
   <!--================ Hero Carousel start =================-->
   <section class="section-margin calc-60px">
     <div class="container">
+<<<<<<< HEAD
+        <div class="section-intro pb-60px">
+            <h2>New <span class="section-intro__style">Product</span></h2>
+        </div>
+        <div class="owl-carousel owl-theme" id="bestSellerCarousel">
+            <?php if (!empty($newestProducts)):
+                foreach ($newestProducts as $product):
+                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
+                    $encoded_type = base64_encode($product['type'] . $secret_salt);
+            ?>
+                <div class="card text-center card-product">
+                    <div class="card-product__img">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                        <ul class="card-product__imgOverlay">
+                            <li>
+                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
+                                    <i class="ti-search"></i>
+                                </button>
+                            </li>
+                            <li><button><i class="ti-shopping-cart"></i></button></li>
+                            <li><button><i class="ti-heart"></i></button></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
+                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                        <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
+                    </div>
+                </div>
+            <?php endforeach; endif; ?>
+        </div>
+=======
       <div class="section-intro pb-60px">
        
         <h2>New <span class="section-intro__style">Product</span></h2>
@@ -56,8 +88,10 @@ include 'header.php';
 
         
       </div>
+>>>>>>> main
     </div>
-  </section>
+</section>
+
   <!--================ Hero Carousel end =================-->
 
   <!-- ================ trending product section start ================= -->
@@ -71,7 +105,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product1.png" alt="">
+              <img class="card-img" src="../images/product/product1.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -88,7 +122,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product2.png" alt="">
+              <img class="card-img" src="../images/product/product2.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -105,7 +139,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product3.png" alt="">
+              <img class="card-img" src="../images/product/product3.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -122,7 +156,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product4.png" alt="">
+              <img class="card-img" src="../images/product/product4.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -139,7 +173,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product5.png" alt="">
+              <img class="card-img" src="../images/product/product5.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -156,7 +190,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product6.png" alt="">
+              <img class="card-img" src="../images/product/product6.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -173,7 +207,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product7.png" alt="">
+              <img class="card-img" src="../images/product/product7.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -190,7 +224,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../img/product/product8.png" alt="">
+              <img class="card-img" src="../images/product/product8.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
                 <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -237,7 +271,7 @@ include 'header.php';
       <div class="owl-carousel owl-theme" id="bestSellerCarousel">
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product1.png" alt="">
+            <img class="img-fluid" src="../images/product/product1.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -253,7 +287,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product2.png" alt="">
+            <img class="img-fluid" src="../images/product/product2.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -269,7 +303,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product3.png" alt="">
+            <img class="img-fluid" src="../images/product/product3.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -285,7 +319,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product4.png" alt="">
+            <img class="img-fluid" src="../images/product/product4.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -301,7 +335,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product1.png" alt="">
+            <img class="img-fluid" src="../images/product/product1.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -317,7 +351,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product2.png" alt="">
+            <img class="img-fluid" src="../images/product/product2.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -333,7 +367,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product3.png" alt="">
+            <img class="img-fluid" src="../images/product/product3.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -349,7 +383,7 @@ include 'header.php';
 
         <div class="card text-center card-product">
           <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product4.png" alt="">
+            <img class="img-fluid" src="../images/product/product4.png" alt="">
             <ul class="card-product__imgOverlay">
               <li><button><i class="ti-search"></i></button></li>
               <li><button><i class="ti-shopping-cart"></i></button></li>
@@ -379,7 +413,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="card card-blog">
             <div class="card-blog__img">
-              <img class="card-img rounded-0" src="../img/blog/blog1.png" alt="">
+              <img class="card-img rounded-0" src="../images/blog/blog1.png" alt="">
             </div>
             <div class="card-body">
               <ul class="card-blog__info">
@@ -396,7 +430,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="card card-blog">
             <div class="card-blog__img">
-              <img class="card-img rounded-0" src="../img/blog/blog2.png" alt="">
+              <img class="card-img rounded-0" src="../images/blog/blog2.png" alt="">
             </div>
             <div class="card-body">
               <ul class="card-blog__info">
@@ -413,7 +447,7 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="card card-blog">
             <div class="card-blog__img">
-              <img class="card-img rounded-0" src="../img/blog/blog3.png" alt="">
+              <img class="card-img rounded-0" src="../images/blog/blog3.png" alt="">
             </div>
             <div class="card-body">
               <ul class="card-blog__info">
