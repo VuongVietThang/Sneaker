@@ -90,68 +90,62 @@
 </footer>
 <!--================ End footer Area  =================-->
 
-
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="../js/jquery-3.6.0.min.js"></script>
-<script src="../js/bootstrap.bundle.min.js"></script>
-<script src="../js/skrollr.min.js"></script>
-<script src="../js/owl.carousel.min.js"></script>
-<script src="../js/jquery.nice-select.min.js"></script>
-<script src="../js/jquery.ajaxchimp.min.js"></script>
-<script src="../js/mail-script.js"></script>
-<script src="../js/mains.js"></script>
-<script src="../js/nouislider.min.js"></script>
-<script src="../js/swiper-bundle.min.js"></script>
-
-
-
 <script>
-  $(document).ready(function() {
+ $(document).ready(function() {
     $('input[name="brand"]').on('change', function() {
-      const brandId = $(this).val(); // Lấy giá trị brand_id của radio được chọn
-
-      $.ajax({
-        url: '../api/fetch_products.php', // Tệp PHP xử lý yêu cầu
-        method: 'POST',
-        data: {
-          brand_id: brandId
-        }, // Gửi brand_id tới server
-        success: function(response) {
-          $('#productList').html(response); // Đổ dữ liệu sản phẩm vào div có id là 'productList'
-        },
-        error: function() {
-          alert('Lỗi khi tải sản phẩm!');
-        }
-      });
+        const brandId = $(this).val(); // Lấy giá trị brand_id của radio được chọn
+        
+        $.ajax({
+            url: '../api/fetch_products.php', // Tệp PHP xử lý yêu cầu
+            method: 'POST',
+            data: { brand_id: brandId }, // Gửi brand_id tới server
+            success: function(response) {
+                $('#productList').html(response); // Đổ dữ liệu sản phẩm vào div có id là 'productList'
+            },
+            error: function() {
+                alert('Lỗi khi tải sản phẩm!');
+            }
+        });
     });
-  });
+});
+
 </script>
-
-
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    let swiper = new Swiper('.swiper-container', {
-      loop: true,
-      autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
+    // Khởi tạo Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 5000,  // Thời gian giữa các slide
+            disableOnInteraction: false,  // Không tắt autoplay khi người dùng tương tác
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,  // Cho phép click vào pagination
+        },
     });
 
-    // Hàm tạm dừng slide
-    window.pauseSlide = function() {
-      swiper.autoplay.stop();
-    };
+    // Dừng autoplay khi hover vào
+    function pauseSlide() {
+        swiper.autoplay.stop();  // Dừng autoplay
+    }
 
-    // Hàm tiếp tục slide
-    window.startAutoSlide = function() {
-      swiper.autoplay.start();
-    };
-  });
+    // Tiếp tục autoplay khi hover ra ngoài
+    function startAutoSlide() {
+        swiper.autoplay.start();  // Tiếp tục autoplay
+    }
+
+    // Thêm sự kiện 'mouseover' và 'mouseout' vào swiper container
+    const swiperContainer = document.querySelector('.swiper-container');
+    if (swiperContainer) {
+        swiperContainer.addEventListener('mouseover', pauseSlide);  // Dừng autoplay khi hover vào
+        swiperContainer.addEventListener('mouseout', startAutoSlide);  // Tiếp tục autoplay khi hover ra ngoài
+    }
+});
+
 </script>
 
 <script>
@@ -160,7 +154,7 @@
       // Hiển thị 4 sản phẩm
       loop: true,
       margin: 20,
-      nav: true, // Hiển thị nút điều hướng
+      nav: false, // Hiển thị nút điều hướng
       dots: false, // Không hiển thị dot
       autoplay: true,
       autoplayHoverPause: true,
@@ -180,6 +174,19 @@
 </script>
 
 
+
+
+
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/skrollr.min.js"></script>
+<script src="../js/owl.carousel.min.js"></script>
+<script src="../js/jquery.nice-select.min.js"></script>
+<script src="../js/jquery.ajaxchimp.min.js"></script>
+<script src="../js/mail-script.js"></script>
+<script src="../js/mains.js"></script>
+<script src="../js/nouislider.min.js"></script>
+<script src="../js/swiper-bundle.min.js"></script>
 </body>
 
 </html>
