@@ -39,6 +39,8 @@ $secret_salt = "my_secret_salt";
   <link rel="stylesheet" href="../css/linericon.css">
   <link rel="stylesheet" href="../css/nouislider.min.css">
 
+
+
 </head>
 
 

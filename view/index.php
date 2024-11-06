@@ -33,7 +33,6 @@ include 'header.php';
   <!--================ Hero Carousel start =================-->
   <section class="section-margin calc-60px">
     <div class="container">
-<<<<<<< HEAD
         <div class="section-intro pb-60px">
             <h2>New <span class="section-intro__style">Product</span></h2>
         </div>
@@ -64,31 +63,6 @@ include 'header.php';
                 </div>
             <?php endforeach; endif; ?>
         </div>
-=======
-      <div class="section-intro pb-60px">
-       
-        <h2>New <span class="section-intro__style">Product</span></h2>
-      </div>
-      <div class="owl-carousel owl-theme" id="bestSellerCarousel">
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../img/product/product1.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Accessories</p>
-            <h4 class="card-product__title"><a href="single-product.html">Quartz Belt Watch</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        
-      </div>
->>>>>>> main
     </div>
 </section>
 
