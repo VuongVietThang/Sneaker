@@ -920,6 +920,52 @@ a {
     right: -105px;
   }
 }
+#newestProductCarousel .owl-prev,
+#newestProductCarousel .owl-next {
+  width: 40px;
+  height: 40px;
+  background: #f1f6f7;
+}
+#newestProductCarousel .owl-prev i,
+#newestProductCarousel .owl-prev span,
+#newestProductCarousel .owl-next i,
+#newestProductCarousel .owl-next span {
+  font-size: 15px;
+  color: #384aeb;
+  line-height: 40px;
+}
+#newestProductCarousel .owl-prev:hover,
+#newestProductCarousel .owl-next:hover {
+  background: #384aeb;
+}
+#newestProductCarousel .owl-prev:hover i,
+#newestProductCarousel .owl-prev:hover span,
+#newestProductCarousel .owl-next:hover i,
+#newestProductCarousel .owl-next:hover span {
+  color: #fff;
+}
+#newestProductCarousel .owl-prev {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-30%);
+  left: -20px;
+}
+@media (min-width: 1340px) {
+  #newestProductCarousel .owl-prev {
+    left: -105px;
+  }
+}
+#newestProductCarousel .owl-next {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-30%);
+  right: -20px;
+}
+@media (min-width: 1340px) {
+  #newestProductCarousel .owl-next {
+    right: -105px;
+  }
+}
 .card-blog {
   border: 0;
 }
