@@ -509,9 +509,9 @@ a {
     border-bottom: 1px solid #ededed33;
     border-radius: 0px;
   }
-  /* .header_area .navbar .nav-shop {
-    padding-bottom: 40px;
-  } */
+  .header_area .navbar .nav-shop {
+    padding-bottom: 20px;
+  }
   .header_area .navbar .search {
     margin-left: 0px;
   }
