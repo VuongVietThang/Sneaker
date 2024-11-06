@@ -90,7 +90,13 @@
 </footer>
 <!--================ End footer Area  =================-->
 
-
+<script>
+  window.addEventListener('touchmove', function(e) {
+    e.preventDefault(); // Ngừng hành vi mặc định của cuộn
+  }, {
+    passive: false
+  }); // Đánh dấu sự kiện là non-passive
+</script>
 <script>
   function loadProducts(encryptedBrandId) {
     const type = document.querySelector('input[name="type"]:checked')?.value;
@@ -134,23 +140,29 @@
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-   let swiper = new Swiper('.swiper-container', {
+  document.addEventListener("DOMContentLoaded", function() {
+    let swiper = new Swiper('.swiper-container', {
       loop: true,
       autoplay: {
-         delay: 5000,
-         disableOnInteraction: false,
+        delay: 5000,
+        disableOnInteraction: false,
       },
       pagination: {
-         el: '.swiper-pagination',
-         clickable: true,
-         
+        el: '.swiper-pagination',
+        clickable: true,
       },
-      
-   });
-});
+    });
 
+    // Hàm tạm dừng slide
+    window.pauseSlide = function() {
+      swiper.autoplay.stop();
+    };
 
+    // Hàm tiếp tục slide
+    window.startAutoSlide = function() {
+      swiper.autoplay.start();
+    };
+  });
 </script>
 
 
