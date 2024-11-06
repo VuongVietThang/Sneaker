@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
 
+
 .swiper-container {
    width: 100%; /* Đặt chiều rộng tối đa */
    max-width: 100%; /* Chiều rộng tối đa là 600px, bạn có thể tùy chỉnh */
@@ -514,10 +515,10 @@ a {
   .header_area .navbar .search {
     margin-left: 0px;
   }
-  .header_area .navbar-collapse {
+  /* .header_area .navbar-collapse {
     max-height: 340px;
     overflow-y: scroll;
-  }
+  } */
   .header_area .navbar .nav .nav-item.submenu ul .nav-item .nav-link {
     padding: 0px 15px;
   }
@@ -657,9 +658,9 @@ a {
   }
 }
 @media (max-width: 480px) {
-  .header_area .navbar-collapse {
+  /* .header_area .navbar-collapse {
     max-height: 250px;
-  }
+  } */
   .home_banner_area .banner_inner .banner_content {
     margin-top: 0px;
   }
