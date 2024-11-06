@@ -217,5 +217,19 @@ class Cart extends Db
             return [];  // Trả về mảng rỗng nếu không có sản phẩm nào
         }
     }
-    
+    public function countItemsInCart($userId) {
+        $sql = "SELECT SUM(ci.quantity) AS total_items
+                FROM cart_item ci
+                JOIN cart c ON ci.cart_id = c.cart_id
+                WHERE c.user_id = ?";
+                
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("i", $userId); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        // Lấy tổng số lượng sản phẩm trong giỏ hàng
+        $row = $result->fetch_assoc();
+        return $row['total_items'] ? $row['total_items'] : 0; 
+    }
 }

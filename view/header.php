@@ -15,6 +15,9 @@ $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $productModel = new Product();
 $sellProducts = $productModel->getBestSellingProducts(10);
+$user_id = $_SESSION['user']['user_id'];
+$cartModel = new Cart();
+$totalCart = $cartModel->countItemsInCart($user_id);
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -88,11 +91,18 @@ $secret_salt = "my_secret_salt";
             </ul>
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item">
-                <a href="cart.php">
-                <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> 
-                </a>
-              </li>
+              <?php 
+                if (isset($_SESSION['user'])) { 
+                    echo '
+                    <li class="nav-item">
+                        <a href="cart.php">
+                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
+                        </a>
+                    </li>';
+                } 
+              ?>
+
+
             </ul>
             <ul class="nav-user">
               <?php if (isset($_SESSION['user'])): ?>
