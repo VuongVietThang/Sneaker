@@ -33,7 +33,7 @@ include 'header.php';
   <!--================ Hero Carousel start =================-->
   <section class="section-margin calc-60px">
     <div class="container">
-<<<<<<< HEAD
+
         <div class="section-intro pb-60px">
             <h2>New <span class="section-intro__style">Product</span></h2>
         </div>
@@ -64,7 +64,7 @@ include 'header.php';
                 </div>
             <?php endforeach; endif; ?>
         </div>
-=======
+
       <div class="section-intro pb-60px">
        
         <h2>New <span class="section-intro__style">Product</span></h2>
@@ -88,7 +88,7 @@ include 'header.php';
 
         
       </div>
->>>>>>> main
+
     </div>
 </section>
 
