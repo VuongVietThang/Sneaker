@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['user']['admin_id'] !== true) {
+if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {
     include('403.php'); 
     exit();
 }

@@ -1,6 +1,4 @@
 <?php
-
-
 define('DB_HOST', 'localhost'); // Địa chỉ máy chủ cơ sở dữ liệu
 define('DB_USER', 'root'); // Tên người dùng cơ sở dữ liệu
 define('DB_PASSWORD', ''); // Mật khẩu cơ sở dữ liệu
