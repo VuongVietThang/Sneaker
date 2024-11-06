@@ -51,43 +51,12 @@ include 'header.php';
                                     <i class="ti-search"></i>
                                 </button>
                             </li>
-                            <li><button><i class="ti-shopping-cart"></i></button></li>
-                            <li><button><i class="ti-heart"></i></button></li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
-                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
-                        <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
-                    </div>
-                </div>
-            <?php endforeach; endif; ?>
-        </div>
-    </div>
-</section>
-
-
-<section class="section-margin calc-60px">
-    <div class="container">
-        <div class="section-intro pb-60px">
-            <h2>Best Selling <span class="section-intro__style">Product</span></h2>
-        </div>
-        <div class="owl-carousel owl-theme" id="bestSellerCarousel">
-            <?php if (!empty($sellProducts)):
-                foreach ($sellProducts as $product):
-                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
-                    $encoded_type = base64_encode($product['type'] . $secret_salt);
-            ?>
-                <div class="card text-center card-product">
-                    <div class="card-product__img">
-                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
-                        <ul class="card-product__imgOverlay">
                             <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
-                                    <i class="ti-search"></i>
-                                </button>
+                              <form action="../controller/addToCartController.php" method="post">
+                                <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                <button><i class="ti-shopping-cart"></i></button>
+                              </form>
                             </li>
-                            <li><button><i class="ti-shopping-cart"></i></button></li>
                             <li><button><i class="ti-heart"></i></button></li>
                         </ul>
                     </div>

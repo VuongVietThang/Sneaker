@@ -1,3 +1,12 @@
+<?php 
+session_start();
+if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {
+    include('403.php'); 
+    exit();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +40,15 @@
 
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-
+          <li class="nav-item">
+          <?php 
+            if (isset($_SESSION['user'])) { 
+                echo '<a class="nav-link" href="../view/logout.php"> 
+                          <button class="btn btn-danger">Logout</button>
+                      </a>'; 
+            } 
+            ?>
+          </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
           data-toggle="offcanvas">
