@@ -11,7 +11,7 @@ session_start();
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
-$banners = $bannerModel->getAllBanner();
+// $banners = $bannerModel->getAllBanner();
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
