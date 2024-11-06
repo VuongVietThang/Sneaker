@@ -154,7 +154,32 @@
       // Hiển thị 4 sản phẩm
       loop: true,
       margin: 20,
-      nav: false, // Hiển thị nút điều hướng
+      nav: true, // Hiển thị nút điều hướng
+      dots: false, // Không hiển thị dot
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('#newestProductCarousel').owlCarousel({
+      // Hiển thị 4 sản phẩm
+      loop: true,
+      margin: 20,
+      nav: true, // Hiển thị nút điều hướng
       dots: false, // Không hiển thị dot
       autoplay: true,
       autoplayHoverPause: true,

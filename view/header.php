@@ -14,6 +14,8 @@ $bannerModel = new Banner();
 $banners = $bannerModel->getAllBanner();
 $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
+$productModel = new Product();
+$sellProducts = $productModel->getBestSellingProducts(10);
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
