@@ -90,7 +90,17 @@
 </footer>
 <!--================ End footer Area  =================-->
 
+<<<<<<< HEAD
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+=======
+<script>
+  window.addEventListener('touchmove', function(e) {
+    e.preventDefault(); // Ngừng hành vi mặc định của cuộn
+  }, {
+    passive: false
+  }); // Đánh dấu sự kiện là non-passive
+</script>
+>>>>>>> main
 <script>
  $(document).ready(function() {
     $('input[name="brand"]').on('change', function() {
@@ -107,6 +117,7 @@
                 alert('Lỗi khi tải sản phẩm!');
             }
         });
+<<<<<<< HEAD
     });
 });
 
@@ -144,7 +155,41 @@
         swiperContainer.addEventListener('mouseout', startAutoSlide);  // Tiếp tục autoplay khi hover ra ngoài
     }
 });
+=======
+      } else {
+        console.error('Error fetching products: ' + xhr.statusText);
+      }
+    };
 
+    xhr.send();
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+
+    // Hàm tạm dừng slide
+    window.pauseSlide = function() {
+      swiper.autoplay.stop();
+    };
+>>>>>>> main
+
+    // Hàm tiếp tục slide
+    window.startAutoSlide = function() {
+      swiper.autoplay.start();
+    };
+  });
 </script>
 
 <script>
