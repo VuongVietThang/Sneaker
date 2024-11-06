@@ -91,7 +91,16 @@
 <!--================ End footer Area  =================-->
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/skrollr.min.js"></script>
+<script src="../js/owl.carousel.min.js"></script>
+<script src="../js/jquery.nice-select.min.js"></script>
+<script src="../js/jquery.ajaxchimp.min.js"></script>
+<script src="../js/mail-script.js"></script>
+<script src="../js/mains.js"></script>
+<script src="../js/nouislider.min.js"></script>
+<script src="../js/swiper-bundle.min.js"></script>
 
 
 
@@ -171,19 +180,6 @@
 </script>
 
 
-
-
-
-<script src="../js/jquery-3.2.1.min.js"></script>
-<script src="../js/bootstrap.bundle.min.js"></script>
-<script src="../js/skrollr.min.js"></script>
-<script src="../js/owl.carousel.min.js"></script>
-<script src="../js/jquery.nice-select.min.js"></script>
-<script src="../js/jquery.ajaxchimp.min.js"></script>
-<script src="../js/mail-script.js"></script>
-<script src="../js/mains.js"></script>
-<script src="../js/nouislider.min.js"></script>
-<script src="../js/swiper-bundle.min.js"></script>
 </body>
 
 </html>
