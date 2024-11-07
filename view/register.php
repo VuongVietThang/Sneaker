@@ -1,7 +1,7 @@
 <?php
 include '../config/database.php';
-require '../model/db.php';
-require '../model/user.php';
+include '../model/db.php'; // Đảm bảo bạn đã bao gồm file kết nối DB
+include '../model/user.php'; // Bao gồm file User
 
 // Biến lưu lỗi cho từng trường
 $errors = [
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Kiểm tra định dạng email
         if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $email)) {
             $errors['email'] = 'Email phải có định dạng đúng (ví dụ: user@gmail.com).';
-        } 
+        }
     }
 
     // Kiểm tra điện thoại
@@ -65,17 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/\d/', $password)) {
         $errors['password'] = 'Mật khẩu phải có ít nhất 8 ký tự, một chữ hoa, một chữ thường và một số.';
     }
-    
+
 
     // Nếu không có lỗi, tiến hành đăng ký
     if (!array_filter($errors)) { // Kiểm tra xem có lỗi nào không
-        
+
         if ($userModel->register($name, $email, $phone, $address, $username, $password)) {
             header('Location: login.php');
             // Chuyển hướng hoặc thực hiện hành động khác
         } else {
             echo "<script> alert('Đã có lỗi xảy ra, vui lòng thử lại') </script>";
-            
         }
     }
 }
@@ -91,9 +90,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/login.css">
- 
+    <style>
+        body {
+            background-image: url(image/login.jpg);
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -121,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <form id="registerForm" method="POST" action="register.php">
                                 <div class="form-group mb-3">
                                     <label class="label" for="name">Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Name" >
+                                    <input type="text" class="form-control" name="name" placeholder="Name">
                                     <?php if ($errors['name']): ?>
                                         <small class="text-danger"><?php echo $errors['name']; ?></small>
                                     <?php endif; ?>
@@ -129,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="email">Email</label>
-                                    <input type="email"  class="form-control" name="email" placeholder="Email" >
+                                    <input type="email" class="form-control" name="email" placeholder="Email">
                                     <?php if ($errors['email']): ?>
                                         <small class="text-danger"><?php echo $errors['email']; ?></small>
                                     <?php endif; ?>
@@ -137,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="phone">Phone</label>
-                                    <input type="tel" inputmode="numeric" pattern="\d*" class="form-control" id="phone" name="phone" placeholder="Phone" >
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone">
                                     <?php if ($errors['phone']): ?>
                                         <small class="text-danger"><?php echo $errors['phone']; ?></small>
                                     <?php endif; ?>
@@ -145,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="address">Address</label>
-                                    <input type="text" class="form-control" name="address" placeholder="Address" >
+                                    <input type="text" class="form-control" name="address" placeholder="Address">
                                     <?php if ($errors['address']): ?>
                                         <small class="text-danger"><?php echo $errors['address']; ?></small>
                                     <?php endif; ?>
@@ -153,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="username">Username</label>
-                                    <input type="text" class="form-control" name="username" placeholder="Username" >
+                                    <input type="text" class="form-control" name="username" placeholder="Username">
                                     <?php if ($errors['username']): ?>
                                         <small class="text-danger"><?php echo $errors['username']; ?></small>
                                     <?php endif; ?>
@@ -161,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="password">Password</label>
-                                    <input type="password" class="form-control" name="password" placeholder="Password" >
+                                    <input type="password" class="form-control" name="password" placeholder="Password">
                                     <?php if ($errors['password']): ?>
                                         <small class="text-danger"><?php echo $errors['password']; ?></small>
                                     <?php endif; ?>
@@ -185,12 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/main.js"></script>
 
-    <script>
-        document.getElementById("phone").addEventListener("input", function (event) {
-    this.value = this.value.replace(/\D/g, ''); // Loại bỏ các ký tự không phải số
-});
-
-    </script>
 </body>
 
 </html>
