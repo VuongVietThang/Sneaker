@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . './db.php';
+include_once __DIR__ . '../db.php';
 class Cart extends Db 
 {
     // Thêm sản phẩm vào giỏ hàng
