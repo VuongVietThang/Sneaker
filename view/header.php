@@ -5,9 +5,8 @@ require '../model/db.php';
 require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
-
+require '../model/cart.php';
 session_start();
-
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
@@ -16,6 +15,9 @@ $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $productModel = new Product();
 $sellProducts = $productModel->getBestSellingProducts(10);
+$user_id = $_SESSION['user']['user_id'];
+$cartModel = new Cart();
+$totalCart = $cartModel->countItemsInCart($user_id);
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -40,9 +42,7 @@ $secret_salt = "my_secret_salt";
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/linericon.css">
   <link rel="stylesheet" href="../css/nouislider.min.css">
-
-
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 
@@ -91,7 +91,18 @@ $secret_salt = "my_secret_salt";
             </ul>
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
+              <?php 
+                if (isset($_SESSION['user'])) { 
+                    echo '
+                    <li class="nav-item">
+                        <a href="cart.php">
+                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
+                        </a>
+                    </li>';
+                } 
+              ?>
+
+
             </ul>
             <ul class="nav-user">
               <?php if (isset($_SESSION['user'])): ?>
@@ -101,6 +112,11 @@ $secret_salt = "my_secret_salt";
                   </a>
                   <div class="logout">
                     <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <?php 
+                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
+                          echo '<a class="dropdown-item info" href="">Admin</a>';
+                      }
+                    ?>
                       <a class="dropdown-item info" href="">Profile</a>
                       <a class="dropdown-item info" href="logout.php">Logout</a>
                     </div>

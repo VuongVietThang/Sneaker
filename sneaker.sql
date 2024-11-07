@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3306
--- Thời gian đã tạo: Th10 06, 2024 lúc 03:20 PM
+-- Thời gian đã tạo: Th10 06, 2024 lúc 04:25 PM
 -- Phiên bản máy phục vụ: 8.3.0
 -- Phiên bản PHP: 8.2.18
 
@@ -143,7 +143,14 @@ CREATE TABLE IF NOT EXISTS `color` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`color_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `color`
+--
+
+INSERT INTO `color` (`color_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'red', '2024-11-06 23:05:31', '2024-11-06 23:05:31');
 
 -- --------------------------------------------------------
 
@@ -163,7 +170,17 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `total_amount`, `status`, `shipping_address`, `created_at`, `updated_at`) VALUES
+(1, 7, '2024-11-06 23:04:38', 123000000, 'completed', 'abc', '2024-11-06 23:04:38', '2024-11-06 23:04:38'),
+(2, 7, '2024-11-06 23:11:16', 123000000, 'completed', 'abc', '2024-11-06 23:11:16', '2024-11-06 23:11:16'),
+(3, 7, '2024-11-06 23:11:53', 123000000, 'completed', 'abc', '2024-11-06 23:11:53', '2024-11-06 23:11:53'),
+(4, 7, '2024-11-06 23:11:53', 123000000, 'completed', 'abc', '2024-11-06 23:11:53', '2024-11-06 23:11:53');
 
 -- --------------------------------------------------------
 
@@ -187,7 +204,17 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   KEY `product_id` (`product_id`),
   KEY `size_id` (`size_id`),
   KEY `color_id` (`color_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_item`
+--
+
+INSERT INTO `order_item` (`order_item_id`, `order_id`, `product_id`, `size_id`, `color_id`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 1, 123000000, '2024-11-06 23:05:16', '2024-11-06 23:05:16'),
+(2, 2, 2, 1, 1, 1, 123000000, '2024-11-06 23:13:03', '2024-11-06 23:13:03'),
+(3, 3, 3, 1, 1, 1, 123000000, '2024-11-06 23:13:03', '2024-11-06 23:13:03'),
+(4, 4, 4, 1, 1, 1, 123000000, '2024-11-06 23:13:27', '2024-11-06 23:13:27');
 
 -- --------------------------------------------------------
 
@@ -227,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`product_id`),
   KEY `brand_id` (`brand_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
@@ -236,7 +263,8 @@ CREATE TABLE IF NOT EXISTS `product` (
 INSERT INTO `product` (`product_id`, `name`, `brand_id`, `description`, `price`, `type`, `created_at`, `updated_at`) VALUES
 (2, 'giày adidas', 1, 'abc', 123000000, 'Ultraboost', '2024-10-21 10:08:26', '2024-11-06 20:16:30'),
 (1, 'giày nike', 2, 'abc', 345000000, 'Air Force 1', '2024-10-21 10:07:12', '2024-11-06 20:17:22'),
-(3, 'giày vans', 3, 'abc', 567000000, 'Old Skool', '2024-10-21 10:09:06', '2024-11-06 20:17:56');
+(3, 'giày vans', 3, 'abc', 567000000, 'Old Skool', '2024-10-21 10:09:06', '2024-11-06 20:17:56'),
+(4, 'giày FILA', 4, 'abc', 789000000, 'abc', '2024-11-06 23:14:49', '2024-11-06 23:14:49');
 
 -- --------------------------------------------------------
 
@@ -254,7 +282,14 @@ CREATE TABLE IF NOT EXISTS `product_color` (
   PRIMARY KEY (`product_color_id`),
   KEY `product_id` (`product_id`),
   KEY `color_id` (`color_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_color`
+--
+
+INSERT INTO `product_color` (`product_color_id`, `product_id`, `color_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2024-11-06 23:06:18', '2024-11-06 23:06:18');
 
 -- --------------------------------------------------------
 
@@ -272,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `product_image` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`image_id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product_image`
@@ -281,7 +316,8 @@ CREATE TABLE IF NOT EXISTS `product_image` (
 INSERT INTO `product_image` (`image_id`, `product_id`, `image_url`, `is_main`, `created_at`, `updated_at`) VALUES
 (1, 2, 'product1.png', 1, '2024-10-22 02:58:08', '2024-11-04 13:47:25'),
 (3, 3, 'product2.png', 1, '2024-10-22 08:12:53', '2024-11-04 13:47:38'),
-(2, 1, 'product3.png', 1, '2024-11-04 13:48:36', '2024-11-04 13:48:36');
+(2, 1, 'product3.png', 1, '2024-11-04 13:48:36', '2024-11-04 13:48:36'),
+(4, 4, 'product4.png', 1, '2024-11-06 23:15:47', '2024-11-06 23:15:47');
 
 -- --------------------------------------------------------
 
@@ -299,7 +335,14 @@ CREATE TABLE IF NOT EXISTS `product_size` (
   PRIMARY KEY (`product_size_id`),
   KEY `product_id` (`product_id`),
   KEY `size_id` (`size_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_size`
+--
+
+INSERT INTO `product_size` (`product_size_id`, `product_id`, `size_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2024-11-06 23:06:03', '2024-11-06 23:06:03');
 
 -- --------------------------------------------------------
 
@@ -335,7 +378,14 @@ CREATE TABLE IF NOT EXISTS `size` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`size_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `size`
+--
+
+INSERT INTO `size` (`size_id`, `value`, `created_at`, `updated_at`) VALUES
+(1, '44', '2024-11-06 23:05:49', '2024-11-06 23:05:49');
 
 -- --------------------------------------------------------
 
