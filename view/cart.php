@@ -1,173 +1,176 @@
 <?php
 include 'header.php';
+require_once __DIR__ . '/../model/color.php';
+require_once __DIR__ . '/../model/size.php';
 
-$user_id = $_SESSION['user']['user_id']; // Lấy user_id từ session
-$cartModel = new Cart();
-$productsInCart = $cartModel->getAllProductsInCart($user_id);
-$myOrder = $cartModel->getOrdersByUserId($user_id);
+$colorModel = new Color();
+$sizeModel = new Size();
 
-// Lấy tổng số lượng sản phẩm trong giỏ
-$totalItems = count($productsInCart);
-
+$allSizes = $sizeModel->getAllSizes();
+$allColors = $colorModel->getAllColors();
 ?>
 
-<section class="h-100 h-custom" style="background-color: #eee;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
-        <div class="card">
-          <div class="card-body p-4">
+<!DOCTYPE html>
+<html lang="en">
 
-            <div class="row">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart</title>
+    <link rel="stylesheet" href="../css/cart.css">
+    <style>
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-              <div class="col-lg-7">
-                <h5 class="mb-3">
-                  <a href="javascript:history.back()" class="text-body">
-                    <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
-                  </a>
-                </h5>
+        .cart-table th,
+        .cart-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
 
-                <hr>
+        .quantity-input {
+            width: 50px;
+        }
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div>
-                    <p class="mb-1">Shopping cart</p>
-                    <p class="mb-0">You have <?php echo $totalItems; ?> items in your cart</p>
-                  </div>
-                </div>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
 
-                <?php foreach ($productsInCart as $product): ?>
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img src="../images/product/<?php echo $product['image_url']; ?>"
-                                 class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
-                          </div>
-                          <div class="ms-3">
-                            <h5><?php echo $product['product_name']; ?></h5>
-                            <p class="small mb-0">Size: <?php echo $product['size_id']; ?>, Color: <?php echo $product['color_id']; ?></p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px;">
-                            <h5 class="fw-normal mb-0"><?php echo $product['quantity']; ?></h5>
-                          </div>
-                          <div style="width: 80px;">
-                            <h5 class="mb-0">$<?php echo number_format($product['price'], 2); ?></h5>
-                          </div>
-                          <a href="removeFromCart.php?cart_item_id=<?php echo $product['cart_item_id']; ?>" style="color: #cecece;">
-                            <i class="fas fa-trash-alt"></i>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <?php endforeach; ?>
+        .btn-primary {
+            background-color: #28a745;
+        }
 
-              </div>
+        select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
 
-              <div class="col-lg-5">
-                <div class="card bg-primary text-white rounded-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                      <h5 class="mb-0">Card details</h5>
-                    </div>
-
-                    <p class="small mb-2">Card type</p>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-mastercard fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-visa fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-amex fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
-
-                    <form  method="POST"  action="../controller/orderController.php" class="mt-4" >
-                      <div data-mdb-input-init class="form-outline form-white mb-4">
-                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                          placeholder="Enter your name" />
-                        <label class="form-label" for="typeName">Name</label>
-                      </div>
-
-                      <div data-mdb-input-init class="form-outline form-white mb-4">
-                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                          placeholder="enter your address" name="shippingAddress" minlength="10" maxlength="100" />
-                        <label class="form-label" for="typeText">Address</label>
-                      </div>
-
-                    <hr class="my-4">
-
-                    <div class="d-flex justify-content-between mb-4">
-                      <p class="mb-2">Total(Cart)</p>
-                      <p class="mb-2">$4818.00</p>
-                    </div>
-
-                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                      </div>
-                    </button>
-                    </form>
-
-                  </div>
-                </div>
-
-              </div>
-
+<body>
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])): ?>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Size</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $total = 0;
+                    foreach ($_SESSION['cart'] as $product_id => $item):
+                        $subtotal = $item['price'] * $item['quantity'];
+                        $total += $subtotal;
+                    ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                            <td>
+                                <select class="size-select" data-product-id="<?php echo $product_id; ?>">
+                                    <?php foreach ($allSizes as $size): ?>
+                                        <option value="<?php echo $size['size_id']; ?>"
+                                            <?php echo (isset($item['size_id']) && $item['size_id'] == $size['size_id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($size['value']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="color-select" data-product-id="<?php echo $product_id; ?>">
+                                    <?php foreach ($allColors as $color): ?>
+                                        <option value="<?php echo $color['color_id']; ?>"
+                                            <?php echo (isset($item['color_id']) && $item['color_id'] == $color['color_id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($color['name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td><?php echo number_format($item['price'], 2); ?> VND</td>
+                            <td>
+                                <input type="number" class="quantity-input" value="<?php echo $item['quantity']; ?>"
+                                    min="1" data-product-id="<?php echo $product_id; ?>">
+                            </td>
+                            <td><?php echo number_format($subtotal, 2); ?> VND</td>
+                            <td>
+                                <button class="remove-item" data-product-id="<?php echo $product_id; ?>">Remove</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">Total:</td>
+                        <td colspan="2"><?php echo number_format($total, 2); ?> VND</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="cart-actions">
+                <a href="index.php" class="btn">Continue Shopping</a>
+                <a href="checkout.php" class="btn btn-primary">Proceed to Checkout</a>
             </div>
-
-            <hr class="my-4">
-            <h5>My Orders</h5>
-
-            <?php if (empty($myOrder)): ?>
-                <p>You have no orders yet.</p>
-            <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Order Date</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th>Shipping Address</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($myOrder as $order): ?>
-                                <tr>
-                                    <td><?php echo $order['order_id']; ?></td>
-                                    <td><?php echo $order['order_date']; ?></td>
-                                    <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
-                                    <td><?php echo $order['status']; ?></td>
-                                    <td><?php echo $order['shipping_address']; ?></td>
-                                    <td>
-                                        <a href="detailOrder.php?order_id=<?php echo $order['order_id'] ?>" >
-                                            <i class="fa-regular fa-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
-
-          </div>
-        </div>
-      </div>
+        <?php else: ?>
+            <p>Your cart is empty. <a href="index.php">Continue shopping</a></p>
+        <?php endif; ?>
     </div>
-  </div>
-</section>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.quantity-input, .size-select, .color-select').change(function() {
+                var productId = $(this).data('product-id');
+                var quantity = $('.quantity-input[data-product-id="' + productId + '"]').val();
+                var sizeId = $('.size-select[data-product-id="' + productId + '"]').val();
+                var colorId = $('.color-select[data-product-id="' + productId + '"]').val();
+                updateCart(productId, sizeId, colorId, quantity);
+            });
 
+            $('.remove-item').click(function() {
+                var productId = $(this).data('product-id');
+                updateCart(productId, null, null, 0);
+            });
 
+            function updateCart(productId, sizeId, colorId, quantity) {
+                $.ajax({
+                    url: 'update_cart.php',
+                    method: 'POST',
+                    data: {
+                        product_id: productId,
+                        size_id: sizeId,
+                        color_id: colorId,
+                        quantity: quantity
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Failed to update cart. Please try again.');
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
 
+</html>
 
-<?php
-include 'footer.php';
-?>
+<?php include 'footer.php'; ?>

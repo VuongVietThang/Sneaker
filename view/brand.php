@@ -16,27 +16,28 @@ function encryptBrandId($brand_id, $secret_salt)
 $brandModel = new Brand();
 $brandsWithCount = $brandModel->getAllBrandsWithCount();
 $productModel = new Product();
+
 // Lấy brand_id và type từ URL nếu có
 $encryptedBrandId = isset($_GET['brand_id']) ? $_GET['brand_id'] : null;
-$encryptedType = isset($_GET['type']) ? $_GET['type'] : '';
 
-// Kiểm tra nếu có dữ liệu hợp lệ và giải mã
-if ($encryptedBrandId !== null && $encryptedType !== '') {
-    // Giải mã dữ liệu từ URL
+// Lưu ý là đây là id đã được mã hóa
+$type = isset($_GET['type']) ? $_GET['type'] : null;
+
+// Giải mã brand_id
+if ($encryptedBrandId) {
+
     $brand_id = decryptBrandId($encryptedBrandId, $secret_salt); // Giải mã brand_id
-    $type = decryptBrandId($encryptedType, $secret_salt); // Giải mã type
+
 } else {
-    // Nếu không có dữ liệu hợp lệ, gán giá trị mặc định
-    $brand_id = null;
-    $type = '';
+    $brand_id = null; // Nếu không có brand_id, gán null
 }
 
-// Kiểm tra nếu có brand_id và type hợp lệ
-if ($brand_id !== null && $type !== '') {
-    // Truy vấn danh sách sản phẩm theo brand_id và type
+// Kiểm tra nếu có brand_id, thực hiện truy vấn
+if ($brand_id) {
+    // Lấy danh sách sản phẩm dựa theo brand_id và type
     $products = $productModel->getProductsByBrandAndType($brand_id, $type);
 } else {
-    // Nếu không có thông tin, gán danh sách sản phẩm rỗng
+    // Nếu không có brand_id, khởi tạo danh sách sản phẩm trống
     $products = [];
 }
 
@@ -44,7 +45,21 @@ if ($brand_id !== null && $type !== '') {
 ?>
 
 <!-- ================ start banner area ================= -->
-
+<section class="blog-banner-area" id="category">
+    <div class="container h-100">
+        <div class="blog-banner">
+            <div class="text-center">
+                <h1>Shop Category</h1>
+                <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Shop Category</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- ================ end banner area ================= -->
 
 
@@ -59,16 +74,15 @@ if ($brand_id !== null && $type !== '') {
                         <li class="common-filter">
                             <form action="#" id="filterForm">
                                 <ul class="filter-list">
-                                    <?php foreach ($brandsWithCount as $brand): 
-                                        
-                                        ?>
-                                        
-                                        <li>
-                                        <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($brand['brand_id']); ?>" <?php echo ($brand_id == $brand['brand_id']) ? 'checked' : ''; ?>>
+                                    <?php foreach ($brandsWithCount as $brand):
+                                        $encryptedBrandId = encryptBrandId($brand['brand_id'], $secret_salt);
+                                    ?>
 
-                                            <label for="<?php echo htmlspecialchars($brand['brand_name']); ?>">
+                                        <li>
+                                            <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($encryptedBrandId); ?>" onchange="loadProducts(this.value)">
+                                            <label for="<?php echo htmlspecialchars($brand['brand_id']); ?>">
                                                 <?php echo htmlspecialchars($brand['brand_name']); ?>
-                                                <span>  (<?php echo htmlspecialchars($brand['product_count']); ?>)</span>
+                                                <span> (<?php echo htmlspecialchars($brand['product_count']); ?>)</span>
                                             </label>
                                         </li>
                                     <?php endforeach; ?>
@@ -77,49 +91,7 @@ if ($brand_id !== null && $type !== '') {
                         </li>
                     </ul>
                 </div>
-                <div class="sidebar-filter">
-                    <div class="top-filter-head">Product Filters</div>
-                    <div class="common-filter">
-                        <div class="head">Brands</div>
-                        <form action="#">
-                            <ul>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label for="apple">Apple<span>(29)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="asus" name="brand"><label for="asus">Asus<span>(29)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="gionee" name="brand"><label for="gionee">Gionee<span>(19)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="micromax" name="brand"><label for="micromax">Micromax<span>(19)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="samsung" name="brand"><label for="samsung">Samsung<span>(19)</span></label></li>
-                            </ul>
-                        </form>
-                    </div>
-                    <div class="common-filter">
-                        <div class="head">Color</div>
-                        <form action="#">
-                            <ul>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
-                                        Leather<span>(29)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
-                                        with red<span>(19)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
-                            </ul>
-                        </form>
-                    </div>
-                    <div class="common-filter">
-                        <div class="head">Price</div>
-                        <div class="price-range-area">
-                            <div id="price-range"></div>
-                            <div class="value-wrapper d-flex">
-                                <div class="price">Price:</div>
-                                <span>$</span>
-                                <div id="lower-value"></div>
-                                <div class="to">to</div>
-                                <span>$</span>
-                                <div id="upper-value"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7">
                 <!-- Start Filter Bar -->
@@ -150,16 +122,25 @@ if ($brand_id !== null && $type !== '') {
                 <!-- End Filter Bar -->
                 <!-- Start Best Seller -->
                 <section class="lattest-product-area pb-40 category-list">
-                    <div class="row" id="productList">
+                    <div class="row" id="product-list">
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
                                 <div class="col-md-6 col-lg-4">
                                     <div class="card text-center card-product">
                                         <div class="card-product__img">
-                                            <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                                            <img class="card-img" src="../img/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
                                             <ul class="card-product__imgOverlay">
-                                               
-                                                <li><button><i class="ti-shopping-cart"></i></button></li>
+                                                <li><button><i class="ti-search"></i></button></li>
+                                                <li>
+                                                    <button onclick="addToCart(<?php echo htmlspecialchars(json_encode([
+                                                                                    'brand_id' => $brand_id,
+                                                                                    'product_id' => $product['product_id'],
+                                                                                    'product_name' => $product['name'],
+                                                                                    'price' => $product['price']
+                                                                                ])); ?>)">
+                                                        <i class="ti-shopping-cart"></i>
+                                                    </button>
+                                                </li>
                                                 <li><button><i class="ti-heart"></i></button></li>
                                             </ul>
                                         </div>
@@ -175,6 +156,31 @@ if ($brand_id !== null && $type !== '') {
 
                     </div>
                 </section>
+                <script>
+                    function addToCart(productData) {
+                        // Send an AJAX request to add the product to the cart
+                        fetch('add_to_cart.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(productData)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert('Product added to cart successfully!');
+                                    // You can update the cart icon or perform any other UI updates here
+                                } else {
+                                    alert('Failed to add product to cart. Please try again.');
+                                }
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                alert('An error occurred. Please try again.');
+                            });
+                    }
+                </script>
                 <!-- End Best Seller -->
             </div>
         </div>
@@ -193,47 +199,21 @@ if ($brand_id !== null && $type !== '') {
             <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
                 <div class="single-search-product-wrapper">
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-1.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-2.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-                <div class="single-search-product-wrapper">
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-4.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-5.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-6.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-3.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
@@ -245,21 +225,21 @@ if ($brand_id !== null && $type !== '') {
             <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
                 <div class="single-search-product-wrapper">
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-7.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-4.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-8.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-5.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-9.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-6.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
@@ -271,21 +251,47 @@ if ($brand_id !== null && $type !== '') {
             <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
                 <div class="single-search-product-wrapper">
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-7.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-8.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
                         </div>
                     </div>
                     <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
+                        <a href="#"><img src="img/product/product-sm-9.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="img/product/product-sm-1.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="img/product/product-sm-2.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="img/product/product-sm-3.png" alt=""></a>
                         <div class="desc">
                             <a href="#" class="title">Gray Coffee Cup</a>
                             <div class="price">$170.00</div>
