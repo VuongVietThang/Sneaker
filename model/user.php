@@ -45,14 +45,23 @@ class User extends Db
 
         $user = $result->fetch_assoc();
 
-        
+
         // Kiểm tra mật khẩu
         if (password_verify($password, $user['password'])) {
-             // Mật khẩu mã hóa trong DB
+            // Mật khẩu mã hóa trong DB
 
             return $user; // Trả về thông tin người dùng nếu thành công
         }
 
         return "Mật khẩu không đúng"; // Mật khẩu không đúng
+    }
+
+    public function getUserById($user_id)
+    {
+        $sql = self::$connection->prepare("SELECT * FROM user WHERE user_id = ?");
+        $sql->bind_param("i", $user_id);
+        $sql->execute();
+        $result = $sql->get_result();
+        return $result->fetch_assoc();
     }
 }
