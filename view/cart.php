@@ -1,6 +1,6 @@
 <?php
 include 'header.php';
-
+if (isset($_SESSION['user']['user_id'])) {
 $user_id = $_SESSION['user']['user_id']; // Lấy user_id từ session
 $cartModel = new Cart();
 $productsInCart = $cartModel->getAllProductsInCart($user_id);
@@ -8,6 +8,9 @@ $myOrder = $cartModel->getOrdersByUserId($user_id);
 
 // Lấy tổng số lượng sản phẩm trong giỏ
 $totalItems = count($productsInCart);
+} else {
+  $totalItems = 0;
+}
 
 ?>
 
@@ -36,7 +39,7 @@ $totalItems = count($productsInCart);
                   </div>
                 </div>
 
-                <?php foreach ($productsInCart as $product): ?>
+                <?php if(isset($productsInCart)): foreach ($productsInCart as $product): ?>
                   <div class="card mb-3">
                     <div class="card-body">
                       <div class="d-flex justify-content-between">
@@ -64,7 +67,7 @@ $totalItems = count($productsInCart);
                       </div>
                     </div>
                   </div>
-                <?php endforeach; ?>
+                <?php endforeach; endif; ?>
 
               </div>
 
