@@ -90,11 +90,10 @@
 </footer>
 <!--================ End footer Area  =================-->
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script src="../js/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    // Xử lý sự kiện khi thay đổi radio button
+ $(document).ready(function() {
     $('input[name="brand"]').on('change', function() {
         const brandId = $(this).val(); // Lấy giá trị brand_id của radio được chọn
         
@@ -110,7 +109,12 @@
             }
         });
     });
+});
 
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
     // Khởi tạo Swiper
     const swiper = new Swiper('.swiper-container', {
         loop: true,
@@ -125,60 +129,77 @@
     });
 
     // Dừng autoplay khi hover vào
-    const swiperContainer = document.querySelector('.swiper-container');
-    if (swiperContainer) {
-        swiperContainer.addEventListener('mouseover', function() {
-            swiper.autoplay.stop();  // Dừng autoplay
-        });
-
-        // Tiếp tục autoplay khi hover ra ngoài
-        swiperContainer.addEventListener('mouseout', function() {
-            swiper.autoplay.start();  // Tiếp tục autoplay
-        });
+    function pauseSlide() {
+        swiper.autoplay.stop();  // Dừng autoplay
     }
 
-    // Khởi tạo Owl Carousel cho best seller
-    $('#bestSellerCarousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true, // Hiển thị nút điều hướng
-        dots: false, // Không hiển thị dot
-        autoplay: true,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1000: {
-                items: 4
-            }
-        }
-    });
+    // Tiếp tục autoplay khi hover ra ngoài
+    function startAutoSlide() {
+        swiper.autoplay.start();  // Tiếp tục autoplay
+    }
 
-    $('#newestProductCarousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true, // Hiển thị nút điều hướng
-        dots: false, // Không hiển thị dot
-        autoplay: true,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1000: {
-                items: 4
-            }
+    // Thêm sự kiện 'mouseover' và 'mouseout' vào swiper container
+    const swiperContainer = document.querySelector('.swiper-container');
+    if (swiperContainer) {
+        swiperContainer.addEventListener('mouseover', pauseSlide);  // Dừng autoplay khi hover vào
+        swiperContainer.addEventListener('mouseout', startAutoSlide);  // Tiếp tục autoplay khi hover ra ngoài
+    }
+});
+
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('#bestSellerCarousel').owlCarousel({
+      // Hiển thị 4 sản phẩm
+      loop: true,
+      margin: 20,
+      nav: true, // Hiển thị nút điều hướng
+      dots: false, // Không hiển thị dot
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
         }
+      }
     });
   });
 </script>
+
+<script>
+  $(document).ready(function() {
+    $('#newestProductCarousel').owlCarousel({
+      // Hiển thị 4 sản phẩm
+      loop: true,
+      margin: 20,
+      nav: true, // Hiển thị nút điều hướng
+      dots: false, // Không hiển thị dot
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  });
+</script>
+
+
+
 
 
 <script src="../js/jquery-3.2.1.min.js"></script>
