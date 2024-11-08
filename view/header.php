@@ -17,9 +17,14 @@ $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $productModel = new Product();
 $sellProducts = $productModel->getBestSellingProducts(10);
-$user_id = $_SESSION['user']['user_id'];
-$cartModel = new Cart();
-$totalCart = $cartModel->countItemsInCart($user_id);
+if (isset($_SESSION['user']['user_id'])) {
+  $user_id = $_SESSION['user']['user_id'];
+  $cartModel = new Cart();
+  $totalCart = $cartModel->countItemsInCart($user_id);
+} else {
+  // Gán giá trị mặc định nếu người dùng chưa đăng nhập
+  $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
+}
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
