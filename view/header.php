@@ -6,11 +6,13 @@ require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
+
+
 session_start();
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
-$banners = $bannerModel->getAllBanner();
+$banners = $bannerModel->getAllBannerAction();
 $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $productModel = new Product();

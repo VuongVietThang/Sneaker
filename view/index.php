@@ -15,7 +15,7 @@ include 'header.php';
           <?php
           if (!empty($banners)):
           foreach ($banners as $banner): ?>
-          <div class="swiper-slide"><img src="../images/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
+          <div class="swiper-slide"><img src="../images/banner/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
           <?php endforeach; endif; ?>
           
         </div>
@@ -34,7 +34,6 @@ include 'header.php';
   <section class="section-margin calc-60px">
     <div class="container">
         <div class="section-intro pb-60px">
-        <p>Popular Item in the market</p>
             <h2>New <span class="section-intro__style">Product</span></h2>
         </div>
         <div class="owl-carousel owl-theme" id="newestProductCarousel">
@@ -45,19 +44,14 @@ include 'header.php';
             ?>
                 <div class="card text-center card-product">
                     <div class="card-product__img">
-                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
                             <li>
                                 <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
                                     <i class="ti-search"></i>
                                 </button>
                             </li>
-                            <li>
-                              <form action="../controller/addToCartController.php" method="post">
-                                <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                                <button><i class="ti-shopping-cart"></i></button>
-                              </form>
-                            </li>
+                            <li><button><i class="ti-shopping-cart"></i></button></li>
                             <li><button><i class="ti-heart"></i></button></li>
                         </ul>
                     </div>
@@ -71,6 +65,9 @@ include 'header.php';
         </div>
     </div>
 </section>
+
+
+
   <!--================ Hero Carousel end =================-->
 
   <!-- ================ trending product section start ================= -->
@@ -243,141 +240,38 @@ include 'header.php';
   <!-- ================ Best Selling item  carousel ================= -->
   <section class="section-margin calc-60px">
     <div class="container">
-      <div class="section-intro pb-60px">
-        <p>Popular Item in the market</p>
-        <h2>Best <span class="section-intro__style">Sellers</span></h2>
-      </div>
-      <div class="owl-carousel owl-theme" id="bestSellerCarousel">
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product1.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Accessories</p>
-            <h4 class="card-product__title"><a href="single-product.html">Quartz Belt Watch</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
+        <div class="section-intro pb-60px">
+            <h2>Best <span class="section-intro__style">Sellers</span></h2>
         </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product2.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Beauty</p>
-            <h4 class="card-product__title"><a href="single-product.html">Women Freshwash</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
+        <div class="owl-carousel owl-theme" id="bestSellerCarousel">
+            <?php if (!empty($sellProducts)):
+                foreach ($sellProducts as $product):
+                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
+                    $encoded_type = base64_encode($product['type'] . $secret_salt);
+            ?>
+                <div class="card text-center card-product">
+                    <div class="card-product__img">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                        <ul class="card-product__imgOverlay">
+                            <li>
+                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
+                                    <i class="ti-search"></i>
+                                </button>
+                            </li>
+                            <li><button><i class="ti-shopping-cart"></i></button></li>
+                            <li><button><i class="ti-heart"></i></button></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
+                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                        <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
+                    </div>
+                </div>
+            <?php endforeach; endif; ?>
         </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product3.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Decor</p>
-            <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product4.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Decor</p>
-            <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product1.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Accessories</p>
-            <h4 class="card-product__title"><a href="single-product.html">Quartz Belt Watch</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product2.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Beauty</p>
-            <h4 class="card-product__title"><a href="single-product.html">Women Freshwash</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product3.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Decor</p>
-            <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-
-        <div class="card text-center card-product">
-          <div class="card-product__img">
-            <img class="img-fluid" src="../images/product/product4.png" alt="">
-            <ul class="card-product__imgOverlay">
-              <li><button><i class="ti-search"></i></button></li>
-              <li><button><i class="ti-shopping-cart"></i></button></li>
-              <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <p>Decor</p>
-            <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-            <p class="card-product__price">$150.00</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
   <!-- ================ Best Selling item  carousel end ================= -->
 
   <!-- ================ Blog section start ================= -->

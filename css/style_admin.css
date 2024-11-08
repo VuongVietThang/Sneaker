@@ -19208,7 +19208,7 @@ input:focus {
   border-color: transparent;
   outline: none;
 }
-
+/* 
 @font-face {
   font-family: 'Nunito';
   src: url("../../fonts/Nunito/Nunito-Light.eot");
@@ -19239,7 +19239,7 @@ input:focus {
   src: url("../../fonts/Nunito/Nunito-Regular.eot?#iefix") format("embedded-opentype"), url("../../fonts/Nunito/Nunito-Regular.woff2") format("woff2"), url("../../fonts/Nunito/Nunito-Regular.woff") format("woff"), url("../../fonts/Nunito/Nunito-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 .bg-twitter {
   background: #4747A1;
