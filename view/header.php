@@ -92,9 +92,9 @@ $secret_salt = "my_secret_salt";
             <ul class="nav-shop">
               <li class="nav-item">
                 <div id="search-container">
-                  <form id="search-form" action="search_api.php" method="GET">
+                  <!-- <form id="search-form" action="search_api.php" method="GET">
                     <input type="text" id="search-input" name="query" placeholder="Search products..." autocomplete="off">
-                  </form>
+                  </form> -->
                   <ul id="search-results" class="search-results-list" style="display: none;"></ul>
                 </div>
               </li>
