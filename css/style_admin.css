@@ -1,130 +1,4 @@
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
 
-.table th, .table td {
-  padding: 12px 15px;
-  text-align: center;
-  border: 1px solid #dee2e6;
-  vertical-align: middle;
-}
-
-.table th {
-  background-color: #007bff;
-  color: #fff;
-  font-weight: bold;
-}
-
-.table img {
-  max-width: 80px;
-  border-radius: 5px;
-}
-
-/* Phân trang */
-.pagination {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.pagination a {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.pagination a:hover {
-  background-color: #0056b3;
-}
-
-.pagination .active {
-  background-color: #0056b3;
-}
-
-.pagination .disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
-}
-
-/* Cải thiện form tìm kiếm */
-#search {
-  width: 100%;
-  padding: 8px 12px;
-  margin-bottom: 20px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-}
-
-#search:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-/* Nút thêm sản phẩm */
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-  padding: 10px 15px;
-  color: #fff;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-primary i {
-  margin-right: 5px;
-}
-
-/* Thêm khoảng cách cho container */
-.container {
-  margin-top: 30px;
-  background: #fff;
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-/* Cải thiện phần thao tác trong bảng */
-.action-icons a {
-  margin-right: 10px;
-}
-
-.action-icons a i {
-  font-size: 18px;
-  color: #007bff;
-  transition: color 0.3s;
-}
-
-.action-icons a i:hover {
-  color: #0056b3;
-}
-
-/* Cải thiện phần hiển thị thông báo không có sản phẩm */
-.table td[colspan="9"] {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-}
-/* Đảm bảo mô tả tự động xuống dòng */
-.table td.description {
-  white-space: normal;            /* Cho phép xuống dòng */
-  word-break: break-word;         /* Đảm bảo xuống dòng cho từ dài */
-  max-width: 200px;               /* Giới hạn chiều rộng tối đa */
-  overflow-wrap: anywhere;        /* Xuống dòng khi cần */
-  text-align: left;               /* Canh trái để mô tả dễ đọc hơn */
-  font-size: 14px;                /* Giảm kích thước chữ cho phù hợp */
-  padding: 10px 15px;             /* Tăng khoảng cách padding cho dễ đọc */
-  line-height: 1.5;               /* Tăng khoảng cách giữa các dòng cho dễ nhìn */
-  border-radius: 4px;             /* Bo góc nhẹ để tạo cảm giác mượt mà */
-}
 @-moz-keyframes flash {
   0% {
     opacity: 1;
@@ -19334,7 +19208,7 @@ input:focus {
   border-color: transparent;
   outline: none;
 }
-
+/* 
 @font-face {
   font-family: 'Nunito';
   src: url("../../fonts/Nunito/Nunito-Light.eot");
@@ -19365,7 +19239,7 @@ input:focus {
   src: url("../../fonts/Nunito/Nunito-Regular.eot?#iefix") format("embedded-opentype"), url("../../fonts/Nunito/Nunito-Regular.woff2") format("woff2"), url("../../fonts/Nunito/Nunito-Regular.woff") format("woff"), url("../../fonts/Nunito/Nunito-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 .bg-twitter {
   background: #4747A1;

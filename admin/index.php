@@ -64,4 +64,6 @@ include 'header.php';
     </div>
   </div>
   <!-- plugins:js -->
+
   <?php include 'footer.php'; ?>
+  <script src="../js/chart_admin.js"></script>

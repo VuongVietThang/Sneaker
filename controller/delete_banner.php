@@ -5,10 +5,12 @@ function decryptBrandId($decryptedId, $secret_salt)
     $decoded = base64_decode($decryptedId);
     return str_replace($secret_salt, '', $decoded);
 }
-
+$secret_salt = "my_secret_salt";
 
 if (isset($_GET['banner_id'])) {
-    $banner_id = $_GET['banner_id'];
+    $banner_id = decryptBrandId($_GET['banner_id'],$secret_salt);
+
+
 
     // Kiểm tra banner_id là số hợp lệ
     if (!is_numeric($banner_id)) {
@@ -27,7 +29,7 @@ if (isset($_GET['banner_id'])) {
         exit();
     } else {
         // Nếu không xóa thành công, chuyển hướng đến trang lỗi
-        echo 'Error: Unable to delete banner';
+        header("Location: ../admin/404.php");
         exit();
     }
 } else {

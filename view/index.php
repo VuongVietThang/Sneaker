@@ -15,7 +15,7 @@ include 'header.php';
           <?php
           if (!empty($banners)):
           foreach ($banners as $banner): ?>
-          <div class="swiper-slide"><img src="../images/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
+          <div class="swiper-slide"><img src="../images/banner/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
           <?php endforeach; endif; ?>
           
         </div>
@@ -44,7 +44,7 @@ include 'header.php';
             ?>
                 <div class="card text-center card-product">
                     <div class="card-product__img">
-                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
                             <li>
                                 <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">

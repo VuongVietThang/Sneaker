@@ -1,5 +1,6 @@
 <?php 
-
+include '../config/database.php';
+require '../model/db.php';
 require '../model/banner.php';
 
 session_start();

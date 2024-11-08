@@ -95,12 +95,19 @@
 <script>
  $(document).ready(function() {
     $('input[name="brand"]').on('change', function() {
-        const brandId = $(this).val(); // Lấy giá trị brand_id của radio được chọn
-        
+        const encryptedBrandId = $(this).val(); // Lấy brand_id đã mã hóa từ radio button
+
+        // Tạo hoặc cập nhật URL với brand_id mới
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('brand_id', encryptedBrandId);
+        currentUrl.searchParams.delete('type'); // Xóa 'type' khỏi URL nếu có
+        window.history.replaceState(null, '', currentUrl); // Cập nhật URL mà không tải lại trang
+
+        // AJAX để cập nhật sản phẩm theo brand_id đã mã hóa
         $.ajax({
-            url: '../api/fetch_products.php', // Tệp PHP xử lý yêu cầu
+            url: '../api/fetch_products.php',
             method: 'POST',
-            data: { brand_id: brandId }, // Gửi brand_id tới server
+            data: { brand_id: encryptedBrandId },
             success: function(response) {
                 $('#productList').html(response); // Đổ dữ liệu sản phẩm vào div có id là 'productList'
             },
