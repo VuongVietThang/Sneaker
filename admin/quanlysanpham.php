@@ -11,62 +11,61 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/style_admin.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../img/favicon.png" />
+  <link rel="shortcut icon" href="../images/favicon.png" />
 </head>
 <style>
-  body {
-    background-color: #f8f9fa;
-    font-family: 'Arial', sans-serif;
-  }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
 
-  .container {
-    margin-top: 50px;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
+        .container {
+            margin-top: 50px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-  }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
 
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
-  .table th {
-    background-color: #007bff;
-    color: #fff;
-  }
+        .table th {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-  .table img {
-    max-width: 80px;
-    border-radius: 5px;
-  }
+        .table img {
+            max-width: 80px;
+            border-radius: 5px;
+        }
 
-  .action-icons a {
-    margin-right: 10px;
-  }
+        .action-icons a {
+            margin-right: 10px;
+        }
 
-  .action-icons a i {
-    font-size: 18px;
-    color: #007bff;
-    transition: color 0.3s;
-  }
+        .action-icons a i {
+            font-size: 18px;
+            color: #007bff;
+            transition: color 0.3s;
+        }
 
-  .action-icons a i:hover {
-    color: #0056b3;
-  }
-</style>
-
+        .action-icons a i:hover {
+            color: #0056b3;
+        }
+    </style>    
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href=""><img src="../img/logo.svg" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href=""><img src="../img/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5" href=""><img src="../images/logo.svg" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href=""><img src="../images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -93,23 +92,23 @@
               <i class="fas fa-th-large menu-icon"></i> <!-- Biểu tượng Dashboard -->
               <span class="menu-title">Dashboard</span>
             </a>
-          </li>
+          </li>       
           <li class="nav-item">
             <a class="nav-link" href="quanlysanpham.php">
               <i class="fas fa-box menu-icon"></i> <!-- Biểu tượng Quản lý sản phẩm -->
               <span class="menu-title">Quản lý sản phẩm</span>
             </a>
-          </li>
+          </li>   
           <li class="nav-item">
             <a class="nav-link" href="quanlydonhang.php">
               <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
               <span class="menu-title">Quản lý đơn hàng</span>
             </a>
-          </li>
+          </li>           
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel">     
         <div class="content-wrapper">
           <div class="container">
             <h2 class="text-center mb-4">Quản lý sản phẩm</h2>
@@ -137,7 +136,7 @@
                   <th>Thao tác</th>
                 </tr>
               </thead>
-
+            
             </table>
           </div>
         </div>
