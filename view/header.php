@@ -1,257 +1,142 @@
 <?php
-require_once '../model/banner.php';
-$secret_salt = "my_secret_salt";
-function decryptBrandId($decryptedId, $secret_salt)
-{
-    $decoded = base64_decode($decryptedId);
-    return str_replace($secret_salt, '', $decoded);
-}
-
-if (isset($_GET['banner_id'])) {
-    $bannerIdDecrypted = decryptBrandId($_GET['banner_id'], $secret_salt);
-
-    if (is_numeric($bannerIdDecrypted)) {
-        $bannerModel = new Banner();
-        $banners = $bannerModel->getBannerById($bannerIdDecrypted);
-
-
-        if (!$banners) {
-            header("Location: ../admin/404.php");
-            exit();
-        }
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-            $order = $_POST['order'];
-            $action = $_POST['action'];
-
-            // Kiểm tra và xử lý ảnh mới nếu có tải lên
-            $image_url = $banners['image_url']; // Giá trị mặc định là ảnh hiện tại
-            if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-                $targetDir = "../images/banner/";
-                $imageFileType = strtolower(pathinfo($_FILES["image_url"]["name"], PATHINFO_EXTENSION));
-                $newFileName = uniqid() . '.' . $imageFileType; // Tạo tên file mới
-                $targetFile = $targetDir . $newFileName;
-
-                // Kiểm tra kiểu file
-                if (in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
-                    // Di chuyển file tải lên vào thư mục mục tiêu
-                    if (move_uploaded_file($_FILES["image_url"]["tmp_name"], $targetFile)) {
-                        $image_url = $newFileName; // Cập nhật tên ảnh mới
-                    } else {
-                        echo "Lỗi: Không thể tải ảnh lên.";
-                    }
-                } else {
-                    echo "Lỗi: Chỉ chấp nhận các định dạng JPG, JPEG, PNG, GIF.";
-                }
-            }
-
-            // Cập nhật thông tin banner
-            $updateSuccess = $bannerModel->editBanner($bannerIdDecrypted, $image_url, $order, $action);
-
-            if ($updateSuccess) {
-                header("Location: ../admin/quanlybanner.php");
-                exit();
-            } else {
-                echo "Lỗi: Không thể cập nhật banner.";
-            }
-        }
-    } else {
-        header("Location: ../admin/404.php");
-        exit();
-    }
+// Kết nối đến cơ sở dữ liệu (đảm bảo bạn đã bao gồm file db.php hoặc tương tự)
+include '../config/database.php';
+require '../model/db.php';
+require '../model/brand.php';
+require '../model/product.php';
+require '../model/banner.php';
+require '../model/cart.php';
+session_start();
+$brandModel = new Brand();
+$brands = $brandModel->getAllBrand();
+$bannerModel = new Banner();
+$banners = $bannerModel->getAllBanner();
+$productModel = new Product();
+$newestProducts = $productModel->getNewProducts(10);
+$productModel = new Product();
+$sellProducts = $productModel->getBestSellingProducts(10);
+if (isset($_SESSION['user']['user_id'])) {
+  $user_id = $_SESSION['user']['user_id'];
+  $cartModel = new Cart();
+  $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
-    header("Location: ../admin/404.php");
-    exit();
+  // Gán giá trị mặc định nếu người dùng chưa đăng nhập
+  $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
+
+// Chuỗi bảo mật cho việc mã hóa
+$secret_salt = "my_secret_salt";
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDIT BANNER</title>
-    <link rel="shortcut icon" href="images/favicon.png" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f1f3f5;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .container:hover {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-
-        h2 {
-            margin-bottom: 30px;
-            text-align: center;
-            color: #007bff;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .form-group label {
-            font-weight: 500;
-            color: #343a40;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        select {
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            padding: 12px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-        input[type="file"] {
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-weight: bold;
-            letter-spacing: 1px;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2);
-        }
-
-        select option:checked {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        small {
-            display: block;
-            margin-top: 5px;
-            color: #6c757d;
-        }
-
-        .custom-file-input:lang(en)~.custom-file-label::after {
-            content: "Browse";
-        }
-
-        .custom-file-label {
-            border-radius: 8px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Aroma Shop - Home</title>
+  <link rel="stylesheet" href="../css/swiper-bundle.min.css">
+  <link rel="icon" href="../images/Fevicon.png" type="image/png">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link rel="stylesheet" href="../css/themify-icons.css">
+  <link rel="stylesheet" href="../css/nice-select.css">
+  <link rel="stylesheet" href="../css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="../css/owl.carousel.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/linericon.css">
+  <link rel="stylesheet" href="../css/nouislider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
+
 <body>
-    <div class="container">
-        <h2>EDIT BANNER</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
+  <!--================ Start Header Menu Area =================-->
+  <header class="header_area">
+    <div class="main_menu">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand logo_h" href="index.php"><img src="../images/logo.png" alt=""></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+            <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+              <li class="nav-item active"><a class="nav-link" href="index.php">HOME</a></li>
+              <?php
+              
+              if (isset($brands) && is_array($brands) && !empty($brands)):
+                foreach ($brands as $item):
+                  
+                    
+                    // Mã hóa brand_id với secret_salt
+                    $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
+                    $encoded_type = base64_encode($item['type'] . $secret_salt);
+              ?>
+                    <li class="nav-item submenu dropdown">
+                      <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false"><?php echo htmlspecialchars($item['name']); ?></a>
+                      <ul class="dropdown-menu">
+                      
+                      <?php if (!empty($item['type'])): ?>
+                        <li class="nav-item">
+                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>">
+                            <?php echo htmlspecialchars($item['type']); ?>
+                          </a>
+                        </li>
+                      <?php endif; ?>
+                      </ul>
+                    </li>
+                <?php endforeach;
+              endif; ?>
+            </ul>
+            <ul class="nav-shop">
+              <li class="nav-item"><button><i class="ti-search"></i></button></li>
+              <?php 
+                if (isset($_SESSION['user'])) { 
+                    echo '
+                    <li class="nav-item">
+                        <a href="cart.php">
+                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
+                        </a>
+                    </li>';
+                } 
+              ?>
 
-            <div class="form-group">
-                <label for="image_url">Chọn ảnh Banner:</label>
-                <input type="file" id="image_url" name="image_url" class="form-control-file" accept="image/*" onchange="previewImage(event)">
 
-                <!-- Phần xem trước ảnh, hiển thị ảnh hiện tại hoặc ảnh vừa chọn -->
-                <img id="preview" style="max-width: 150px; margin-top: 10px"
-                    src="../images/banner/<?php echo htmlspecialchars($banners['image_url']) ?>" alt="Banner Image">
-            </div>
+            </ul>
+            <ul class="nav-user">
+              <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
+                  </a>
+                  <div class="logout">
+                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <?php 
+                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
+                          echo '<a class="dropdown-item info" href="">Admin</a>';
+                      }
+                    ?>
+                      <a class="dropdown-item info" href="">Profile</a>
+                      <a class="dropdown-item info" href="logout.php">Logout</a>
+                    </div>
+                  </div>
 
-            <div class="form-group">
-                <label for="order">Thứ tự</label>
-                <input type="number" id="order" value="<?php echo htmlspecialchars($banners['order']) ?>" name="order" class="form-control" required min="1" oninput="validateOrderInput(this)">
-            </div>
-            <div class="form-group" style="padding-bottom: 20px;">
-                <label for="action">Show/Hiden</label>
-                <?php
-               
-
-                $action = isset($banners['action']) ? $banners['action'] : 'Show';
-                
-
-                // Kiểm tra lại trong form
-                ?>
-                <select id="action" name="action" class="form-control" required>
-                    <option value="Show" <?php echo ($action === 'Show') ? 'selected' : ''; ?>>Show</option>
-                    <option value="Hiden" <?php echo ($action === 'Hiden') ? 'selected' : ''; ?>>Hiden</option>
-                </select>
-
-
-
-
-            </div>
-            <button class="btn btn-primary mb-3" style="margin-bottom: 15px" type="submit" name="submit">EDIT BANNER</button>
-            <button class="btn btn-secondary" type="button" onclick="window.location.href='../admin/quanlybanner.php';">CLOSE</button>
-        </form>
+                </li>
+              <?php else: ?>
+                <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
+              <?php endif; ?>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Hàm kiểm tra và xử lý giá trị nhập vào
-        function validateOrderInput(input) {
-            let value = input.value;
-
-            // Loại bỏ tất cả các ký tự không phải số
-            value = value.replace(/[^0-9]/g, ''); // Chỉ cho phép số
-
-            // Loại bỏ dấu chấm (.) nếu có
-            value = value.replace(/[.]/g, ''); // Loại bỏ dấu chấm
-
-            // Kiểm tra và loại bỏ số đầu là "0" (ví dụ: "0001", "00020")
-            if (value.startsWith('0') && value.length > 1) {
-                input.value = value.replace(/^0+/, ''); // Loại bỏ tất cả "0" đầu
-            }
-
-            // Nếu giá trị nhập vào nhỏ hơn 1, không cho nhập, giữ nguyên giá trị trước đó
-            if (parseInt(value) < 1) {
-                input.value = ''; // Đặt lại giá trị trống nếu nhỏ hơn 1
-            } else {
-                input.value = value; // Cập nhật giá trị vào input
-            }
-        }
-    </script>
-
-    <script>
-        function previewImage(event) {
-            var output = document.getElementById('preview');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function() {
-                URL.revokeObjectURL(output.src); // Giải phóng bộ nhớ
-            }
-        }
-    </script>
-
+  </header>
 </body>
 
 </html>

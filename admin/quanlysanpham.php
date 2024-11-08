@@ -1,4 +1,5 @@
 <?php
+include 'header.php'; 
 require_once '../model/product_db.php';
 
 $product_db = new Product_db();
@@ -17,177 +18,7 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Quản lý sản phẩm</title>
-  <!-- Thêm Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- inject:css -->
-  <link rel="stylesheet" href="../css/style_admin.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="images/favicon.png" />
-</head>
-<style>
-      /* Cải thiện giao diện bảng sản phẩm */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th, .table td {
-    padding: 12px 15px;
-    text-align: center;
-    border: 1px solid #dee2e6;
-    vertical-align: middle;
-}
-
-.table th {
-    background-color: #007bff;
-    color: #fff;
-    font-weight: bold;
-}
-
-.table img {
-    max-width: 80px;
-    border-radius: 5px;
-}
-
-/* Phân trang */
-.pagination {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.pagination a {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.pagination a:hover {
-    background-color: #0056b3;
-}
-
-.pagination .active {
-    background-color: #0056b3;
-}
-
-.pagination .disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-/* Cải thiện form tìm kiếm */
-#search {
-    width: 100%;
-    padding: 8px 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-}
-
-#search:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-/* Nút thêm sản phẩm */
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    padding: 10px 15px;
-    color: #fff;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-primary i {
-    margin-right: 5px;
-}
-
-/* Thêm khoảng cách cho container */
-.container {
-    margin-top: 30px;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-/* Cải thiện phần thao tác trong bảng */
-.action-icons a {
-    margin-right: 10px;
-}
-
-.action-icons a i {
-    font-size: 18px;
-    color: #007bff;
-    transition: color 0.3s;
-}
-
-.action-icons a i:hover {
-    color: #0056b3;
-}
-
-/* Cải thiện phần hiển thị thông báo không có sản phẩm */
-.table td[colspan="9"] {
-    text-align: center;
-    font-style: italic;
-    color: #888;
-}
-/* Đảm bảo mô tả tự động xuống dòng */
-.table td.description {
-    white-space: normal;            /* Cho phép xuống dòng */
-    word-break: break-word;         /* Đảm bảo xuống dòng cho từ dài */
-    max-width: 200px;               /* Giới hạn chiều rộng tối đa */
-    overflow-wrap: anywhere;        /* Xuống dòng khi cần */
-    text-align: left;               /* Canh trái để mô tả dễ đọc hơn */
-    font-size: 14px;                /* Giảm kích thước chữ cho phù hợp */
-    padding: 10px 15px;             /* Tăng khoảng cách padding cho dễ đọc */
-    line-height: 1.5;               /* Tăng khoảng cách giữa các dòng cho dễ nhìn */
-    border-radius: 4px;             /* Bo góc nhẹ để tạo cảm giác mượt mà */
-}
-
-
-    </style>    
-<body>
-  <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href=""><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href=""><img src="images/logo-mini.svg" alt="logo" /></a>
-      </div>
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-          <i class="fas fa-bars"></i> <!-- Sử dụng biểu tượng menu từ Font Awesome -->
-        </button>
-        <ul class="navbar-nav mr-lg-2">
-
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-          data-toggle="offcanvas">
-          <i class="fas fa-bars"></i> <!-- Sử dụng biểu tượng menu từ Font Awesome -->
-        </button>
-      </div>
-    </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -209,7 +40,13 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
               <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
               <span class="menu-title">Quản lý đơn hàng</span>
             </a>
-          </li>           
+          </li>  
+          <li class="nav-item">
+                <a class="nav-link" href="quanlybanner.php">
+                    <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <span class="menu-title">Quản lý banner</span>
+                </a>
+            </li>         
         </ul>
       </nav>
       <!-- partial -->
@@ -304,10 +141,4 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
     </div>
   </div>
   <!-- plugins:js -->
-  <script src="js_admin/vendor.bundle.base.js"></script>
-  <!-- inject:js -->
-  <script src="js_admin/sidebar-menu.js"></script>
-
-</body>
-
-</html>
+  <<?php include 'footer.php'; ?>
