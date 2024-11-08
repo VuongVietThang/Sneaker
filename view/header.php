@@ -79,7 +79,7 @@ $secret_salt = "my_secret_salt";
                       
                       <?php if (!empty($item['type'])): ?>
                         <li class="nav-item">
-                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>">
+                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo htmlspecialchars($item['type']); ?>">
                             <?php echo htmlspecialchars($item['type']); ?>
                           </a>
                         </li>
@@ -90,38 +90,24 @@ $secret_salt = "my_secret_salt";
               endif; ?>
             </ul>
             <ul class="nav-shop">
-              <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <?php 
-                if (isset($_SESSION['user'])) { 
-                    echo '
-                    <li class="nav-item">
-                        <a href="cart.php">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
-                        </a>
-                    </li>';
-                } 
-              ?>
-
-
-            </ul>
-            <ul class="nav-user">
+              <li class="nav-item">
+                <div id="search-container">
+                  <!-- <form id="search-form" action="search_api.php" method="GET">
+                    <input type="text" id="search-input" name="query" placeholder="Search products..." autocomplete="off">
+                  </form> -->
+                  <ul id="search-results" class="search-results-list" style="display: none;"></ul>
+                </div>
+              </li>
+              <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
               <?php if (isset($_SESSION['user'])): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="logout">
-                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                    <?php 
-                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
-                          echo '<a class="dropdown-item info" href="">Admin</a>';
-                      }
-                    ?>
-                      <a class="dropdown-item info" href="">Profile</a>
-                      <a class="dropdown-item info" href="logout.php">Logout</a>
-                    </div>
+                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item info" href="profile.php">Profile</a>
+                    <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
-
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
@@ -132,6 +118,7 @@ $secret_salt = "my_secret_salt";
       </nav>
     </div>
   </header>
+  <script src="../js/header.js"></script>
 </body>
 
 </html>
