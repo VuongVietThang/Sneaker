@@ -10,7 +10,19 @@ session_start();
 
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
+<<<<<<< HEAD
 
+=======
+$bannerModel = new Banner();
+$banners = $bannerModel->getAllBanner();
+$productModel = new Product();
+$newestProducts = $productModel->getNewProducts(10);
+$productModel = new Product();
+$sellProducts = $productModel->getBestSellingProducts(10);
+$user_id = $_SESSION['user']['user_id'];
+$cartModel = new Cart();
+$totalCart = $cartModel->countItemsInCart($user_id);
+>>>>>>> parent of 5406778 (update)
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
