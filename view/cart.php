@@ -9,7 +9,8 @@ $myOrder = $cartModel->getOrdersByUserId($user_id);
 // Lấy tổng số lượng sản phẩm trong giỏ
 $totalItems = count($productsInCart);
 } else {
-  $totalItems = 0;
+  include('404.php');
+  exit();
 }
 
 ?>
