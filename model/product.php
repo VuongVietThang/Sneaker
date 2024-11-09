@@ -101,13 +101,11 @@ class Product extends Db
                 orders o ON oi.order_id = o.order_id
             JOIN 
                 brand b ON p.brand_id = b.brand_id
-            WHERE 
-                o.status = 'completed'
             GROUP BY 
                 p.product_id
             ORDER BY 
                 total_quantity DESC
-            LIMIT 5;
+            LIMIT 8;
         ";
         $stmt = self::$connection->prepare($sql);
         $stmt->execute();

@@ -4,6 +4,7 @@ if (isset($_SESSION['user']['user_id'])) {
 $user_id = $_SESSION['user']['user_id']; // Lấy user_id từ session
 $userModel = new User();
 $profile = $userModel->getProfileUser($user_id);
+$favorites = $userModel->getMyFavorites($user_id);
 } else {include('404.php');exit();}
 ?>
 <div class="container mt-5">
@@ -90,26 +91,27 @@ $profile = $userModel->getProfileUser($user_id);
 						<div class="col-sm-12">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="d-flex align-items-center mb-3">Project Status</h5>
-									<p>Web Design</p>
-									<div class="progress mb-3" style="height: 5px">
-										<div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-									</div>
-									<p>Website Markup</p>
-									<div class="progress mb-3" style="height: 5px">
-										<div class="progress-bar bg-danger" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-									</div>
-									<p>One Page</p>
-									<div class="progress mb-3" style="height: 5px">
-										<div class="progress-bar bg-success" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-									</div>
-									<p>Mobile Template</p>
-									<div class="progress mb-3" style="height: 5px">
-										<div class="progress-bar bg-warning" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-									</div>
-									<p>Backend API</p>
-									<div class="progress" style="height: 5px">
-										<div class="progress-bar bg-info" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+									<h5 class="d-flex align-items-center mb-4">My Favorites</h5>
+									<div class="favorites-scroll" style="max-height: 300px; overflow-y: auto;">
+										<?php if (!empty($favorites)): ?>
+											<?php foreach ($favorites as $favorite): ?>
+												<div class="favorite-item mb-3 d-flex align-items-start border p-3 rounded">
+													<img src="../images/product/<?php echo $favorite['image_url']; ?>" alt="<?php echo $favorite['name']; ?>" class="img-thumbnail me-3" style="width: 80px; height: 80px;">
+													<div class="flex-grow-1">
+														<h6 class="mb-1"><?php echo $favorite['name']; ?></h6>
+														<p class="mb-1 text-muted">Price: <strong><?php echo number_format($favorite['price'], 2); ?> USD</strong></p>
+														<p class="mb-1 text-muted">Product ID: <?php echo $favorite['product_id']; ?></p>
+														<div class="d-flex justify-content-end align-items-center">
+															<a href="product_details.php?id=<?php echo $favorite['product_id']; ?>" class="text-decoration-none text-primary" title="View Details">
+																<i class="fas fa-eye fa-lg"></i> <!-- Eye icon -->
+															</a>
+														</div>
+													</div>
+												</div>
+											<?php endforeach; ?>
+										<?php else: ?>
+											<p class="text-center">You have no favorites.</p>
+										<?php endif; ?>
 									</div>
 								</div>
 							</div>

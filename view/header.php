@@ -6,10 +6,10 @@ require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
-
-
+require '../model/user.php';
 session_start();
 $brandModel = new Brand();
+$userModel = new User();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
 $banners = $bannerModel->getAllBannerAction();
@@ -113,6 +113,7 @@ $secret_salt = "my_secret_salt";
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
                   <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
                     <a class="dropdown-item info" href="profile.php">Profile</a>
                     <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
