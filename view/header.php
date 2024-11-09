@@ -105,8 +105,8 @@ $secret_salt = "my_secret_salt";
                   <ul id="search-results" class="search-results-list" style="display: none;"></ul>
                 </div>
               </li>
-              <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
               <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
