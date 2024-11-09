@@ -81,10 +81,15 @@ include 'header.php';
         <div class="col-md-6 col-lg-4 col-xl-3">
           <div class="card text-center card-product">
             <div class="card-product__img">
-              <img class="card-img" src="../images/product/product1.png" alt="">
+            <img class="card-img" src="../images/product/product2.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
+                <li>
+                  <form action="../controller/addToCartController.php" method="post">
+                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                      <button><i class="ti-shopping-cart"></i></button>
+                  </form>
+                </li>
                 <li><button><i class="ti-heart"></i></button></li>
               </ul>
             </div>
@@ -118,7 +123,12 @@ include 'header.php';
               <img class="card-img" src="../images/product/product3.png" alt="">
               <ul class="card-product__imgOverlay">
                 <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
+                <li>
+                    <form action="../controller/addToCartController.php" method="post">
+                          <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                          <button><i class="ti-shopping-cart"></i></button>
+                    </form>
+                </li>
                 <li><button><i class="ti-heart"></i></button></li>
               </ul>
             </div>
