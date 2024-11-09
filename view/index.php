@@ -1,5 +1,8 @@
 <?php
 include 'header.php';
+$productModel = new Product();
+$getProductPopular = $productModel->getProductPopular();
+
 ?>
 
 
@@ -51,7 +54,12 @@ include 'header.php';
                                     <i class="ti-search"></i>
                                 </button>
                             </li>
-                            <li><button><i class="ti-shopping-cart"></i></button></li>
+                            <li>
+                              <form action="../controller/addToCartController.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                    <button><i class="ti-shopping-cart"></i></button>
+                              </form>
+                            </li>
                             <li><button><i class="ti-heart"></i></button></li>
                         </ul>
                     </div>
@@ -72,160 +80,42 @@ include 'header.php';
 
   <!-- ================ trending product section start ================= -->
   <section class="section-margin calc-60px">
-    <div class="container">
-      <div class="section-intro pb-60px">
+  <div class="container">
+    <div class="section-intro pb-60px">
         <p>Popular Item in the market</p>
         <h2>Trending <span class="section-intro__style">Product</span></h2>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-            <img class="card-img" src="../images/product/product2.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li>
-                  <form action="../controller/addToCartController.php" method="post">
-                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                      <button><i class="ti-shopping-cart"></i></button>
-                  </form>
-                </li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Accessories</p>
-              <h4 class="card-product__title"><a href="single-product.html">Quartz Belt Watch</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product2.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Beauty</p>
-              <h4 class="card-product__title"><a href="single-product.html">Women Freshwash</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product3.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li>
-                    <form action="../controller/addToCartController.php" method="post">
-                          <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                          <button><i class="ti-shopping-cart"></i></button>
-                    </form>
-                </li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Decor</p>
-              <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product4.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Decor</p>
-              <h4 class="card-product__title"><a href="single-product.html">Room Flash Light</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product5.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Accessories</p>
-              <h4 class="card-product__title"><a href="single-product.html">Man Office Bag</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product6.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Kids Toy</p>
-              <h4 class="card-product__title"><a href="single-product.html">Charging Car</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product7.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Accessories</p>
-              <h4 class="card-product__title"><a href="single-product.html">Blutooth Speaker</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 col-xl-3">
-          <div class="card text-center card-product">
-            <div class="card-product__img">
-              <img class="card-img" src="../images/product/product8.png" alt="">
-              <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <p>Kids Toy</p>
-              <h4 class="card-product__title"><a href="#">Charging Car</a></h4>
-              <p class="card-product__price">$150.00</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+    <?php if(!empty($getProductPopular)): ?>
+        <div class="row">
+            <?php foreach($getProductPopular as $product): ?>
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card text-center card-product">
+                        <div class="card-product__img">
+                            <img class="card-img" src="../images/product/<?php echo $product['image_url'] ?>" alt="">
+                            <ul class="card-product__imgOverlay">
+                                <li><button><i class="ti-search"></i></button></li>
+                                <li>
+                                    <form action="../controller/addToCartController.php" method="post">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" id="">
+                                        <button type="submit"><i class="ti-shopping-cart"></i></button>
+                                    </form>
+                                </li>
+                                <li><button><i class="ti-heart"></i></button></li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <p>Accessories</p>
+                            <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name']); ?></a></h4>
+                            <p class="card-product__price"><?php echo number_format($product['price'], 3); ?>VND</p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div> <!-- Close the row here -->
+    <?php else: ?>
+        <p>No popular products found.</p>
+    <?php endif; ?>
+</div>
   </section>
   <!-- ================ trending product section end ================= -->
 

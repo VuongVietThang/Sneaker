@@ -23,8 +23,9 @@ if (isset($_SESSION['user']['user_id'])) {
   $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
   // Gán giá trị mặc định nếu người dùng chưa đăng nhập
-  $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
+  $totalCart = 1;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
+
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -106,7 +107,7 @@ $secret_salt = "my_secret_salt";
                 </div>
               </li>
               <?php if (isset($_SESSION['user'])): ?>
-                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
