@@ -68,7 +68,6 @@ $secret_salt = "my_secret_salt";
             <span class="icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-<<<<<<< HEAD
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
               <li class="nav-item active"><a class="nav-link" href="index.php">HOME</a></li>
               <?php
@@ -79,7 +78,7 @@ $secret_salt = "my_secret_salt";
                     
                     // Mã hóa brand_id với secret_salt
                     $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
-                    $encoded_type = base64_encode($item['type'] . $secret_salt);
+                    
               ?>
                     <li class="nav-item submenu dropdown">
                       <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -107,77 +106,16 @@ $secret_salt = "my_secret_salt";
                   <ul id="search-results" class="search-results-list" style="display: none;"></ul>
                 </div>
               </li>
-=======
-          <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-    <!-- Mục HOME mặc định có class active -->
-    <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/index.php' ? 'active' : ''); ?>">
-        <a class="nav-link" href="index.php">HOME</a>
-    </li>
-    
-    <?php
-    if (isset($brands)):
-        foreach ($brands as $item):
-            // Mã hóa brand_id với secret_salt
-            $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
-            
-            // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
-            $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';
-    ?>
-            <li class="nav-item submenu dropdown <?php echo $isActive; ?>">
-                <a href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>" class="nav-link dropdown-toggle">
-                    <?php echo htmlspecialchars($item['name']); ?>
-                </a>
-            </li>
-    <?php endforeach;
-    endif; ?>
-</ul>
-
-
-            <ul class="nav-shop">
-              <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <?php
-              if (isset($_SESSION['user'])) {
-                echo '
-                    <li class="nav-item">
-                        <a href="cart.php">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
-                        </a>
-                    </li>';
-              }
-              ?>
-
-
-            </ul>
-            <ul class="nav-user">
->>>>>>> them,xoa,sua-user
               <?php if (isset($_SESSION['user'])): ?>
                 <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-<<<<<<< HEAD
                   <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
                     <a class="dropdown-item info" href="profile.php">Profile</a>
                     <a class="dropdown-item info" href="logout.php">Logout</a>
-=======
-                  <div class="logout">
-                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                      <?php
-                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
-                        echo '<a class="dropdown-item info" href="">Admin</a>';
-                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
-                      } else {
-                        if (isset($_SESSION['user']))
-                          echo '<a class="dropdown-item info" href="">Profile</a>';
-                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
-                      }
-
-                      ?>
-
-                    </div>
->>>>>>> them,xoa,sua-user
                   </div>
                 </li>
               <?php else: ?>
