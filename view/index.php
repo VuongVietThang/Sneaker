@@ -247,14 +247,14 @@ include 'header.php';
             <?php if (!empty($sellProducts)):
                 foreach ($sellProducts as $product):
                   $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
-                    $encoded_type = base64_encode($product['type'] . $secret_salt);
+                  
             ?>
                 <div class="card text-center card-product">
                     <div class="card-product__img">
-                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
                             <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
+                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>'">
                                     <i class="ti-search"></i>
                                 </button>
                             </li>

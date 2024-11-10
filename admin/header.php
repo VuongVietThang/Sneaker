@@ -2,11 +2,12 @@
 include '../config/database.php';
 require '../model/db.php';
 require '../model/banner.php';
+require '../model/user.php';
 
 session_start();
 if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {
-    include('404.php'); 
-    exit();
+  header("Location: ../admin/404.php");
+  exit();
 }
 ?>
 

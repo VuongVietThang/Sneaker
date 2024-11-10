@@ -18,23 +18,23 @@ $brandsWithCount = $brandModel->getAllBrandsWithCount();
 $productModel = new Product();
 // Lấy brand_id và type từ URL nếu có
 $encryptedBrandId = isset($_GET['brand_id']) ? $_GET['brand_id'] : null;
-$encryptedType = isset($_GET['type']) ? $_GET['type'] : '';
+
 
 // Kiểm tra nếu có dữ liệu hợp lệ và giải mã
-if ($encryptedBrandId !== null && $encryptedType !== '') {
+if ($encryptedBrandId !== null) {
     // Giải mã dữ liệu từ URL
     $brand_id = decryptBrandId($encryptedBrandId, $secret_salt); // Giải mã brand_id
-    $type = decryptBrandId($encryptedType, $secret_salt); // Giải mã type
+   
 } else {
     // Nếu không có dữ liệu hợp lệ, gán giá trị mặc định
     $brand_id = null;
-    $type = '';
+    
 }
 
 // Kiểm tra nếu có brand_id và type hợp lệ
-if ($brand_id !== null && $type !== '') {
+if ($brand_id !== null) {
     // Truy vấn danh sách sản phẩm theo brand_id và type
-    $products = $productModel->getProductsByBrandAndType($brand_id, $type);
+    $products = $productModel->getProductsByBrand($brand_id);
 } else {
     // Nếu không có thông tin, gán danh sách sản phẩm rỗng
     $products = [];
