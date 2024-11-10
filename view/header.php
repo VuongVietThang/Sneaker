@@ -6,18 +6,26 @@ require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
+require '../model/user.php';
 session_start();
 $brandModel = new Brand();
+$userModel = new User();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
-$banners = $bannerModel->getAllBanner();
+$banners = $bannerModel->getAllBannerAction();
 $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $productModel = new Product();
 $sellProducts = $productModel->getBestSellingProducts(10);
-$user_id = $_SESSION['user']['user_id'];
-$cartModel = new Cart();
-$totalCart = $cartModel->countItemsInCart($user_id);
+if (isset($_SESSION['user']['user_id'])) {
+  $user_id = $_SESSION['user']['user_id'];
+  $cartModel = new Cart();
+  $totalCart = $cartModel->countItemsInCart($user_id);
+} else {
+  // Gán giá trị mặc định nếu người dùng chưa đăng nhập
+  $totalCart = 1;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
+}
+
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -98,13 +106,14 @@ $secret_salt = "my_secret_salt";
                   <ul id="search-results" class="search-results-list" style="display: none;"></ul>
                 </div>
               </li>
-              <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
               <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
                   <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
                     <a class="dropdown-item info" href="profile.php">Profile</a>
                     <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>

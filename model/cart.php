@@ -2,6 +2,96 @@
 include_once __DIR__ . '../db.php';
 class Cart extends Db 
 {
+    public function clearMyCart($userId) {
+        // Step 1: Find the cart ID for the user
+        $sql = "SELECT cart_id FROM cart WHERE user_id = ?";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows === 0) {
+            // No cart found for this user
+            return false; // or handle as needed
+        }
+    
+        $row = $result->fetch_assoc();
+        $cartId = $row['cart_id'];
+    
+        // Step 2: Check if there are any items in the cart
+        $sql = "SELECT COUNT(*) as item_count FROM cart_item WHERE cart_id = ?";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("i", $cartId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+    
+        if ($row['item_count'] === 0) {
+            // No items in cart to clear
+            return false;
+        }
+    
+        // Step 3: Clear all items from the cart
+        $sql = "DELETE FROM cart_item WHERE cart_id = ?";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("i", $cartId);
+        $stmt->execute();
+    
+        return true; // Successfully cleared the cart
+    }
+    // xóa sản phẩm trong giỏ hàng(kiểm tra phải là user đó và sản phẩm phải tồn tại trong db nếu >2 thì -1)
+    public function removeProductInCart($userId, $productId, $sizeId=1, $colorId=1) {
+        // Step 1: Find the cart ID for the user
+        $sql = "SELECT cart_id FROM cart WHERE user_id = ?";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows == 0) {
+            // No cart found for this user
+            var_dump("No cart found for this user");
+            die();
+            return false; // or handle as needed
+        }
+    
+        $row = $result->fetch_assoc();
+        $cartId = $row['cart_id'];
+    
+        // Step 2: Check if the product is in the cart
+        $sql = "SELECT quantity FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows == 0) {
+            // Product not found in cart
+            var_dump("Product not found in cart");
+            die();
+            return false; // or handle as needed
+        }
+    
+        $row = $result->fetch_assoc();
+        $currentQuantity = $row['quantity'];
+    
+        // Step 3: Determine action based on current quantity
+        if ($currentQuantity > 1) {
+            // Decrease quantity by 1
+            $sql = "UPDATE cart_item SET quantity = quantity - 1 WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
+            $stmt = self::$connection->prepare($sql);
+            $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
+            $stmt->execute();
+        } else {
+            // Remove item from cart
+            $sql = "DELETE FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
+            $stmt = self::$connection->prepare($sql);
+            $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
+            $stmt->execute();
+        }
+    
+        return true; // Successfully removed or updated
+    }
     // Thêm sản phẩm vào giỏ hàng
     public function addToCart($userId, $productId, $sizeId, $colorId, $quantity=1) {
         $sql = "SELECT cart_id FROM cart WHERE user_id = ?";

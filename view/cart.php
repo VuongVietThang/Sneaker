@@ -1,13 +1,16 @@
 <?php
 include 'header.php';
-
+if (isset($_SESSION['user']['user_id'])) {
 $user_id = $_SESSION['user']['user_id']; // Lấy user_id từ session
 $cartModel = new Cart();
 $productsInCart = $cartModel->getAllProductsInCart($user_id);
 $myOrder = $cartModel->getOrdersByUserId($user_id);
-
+$totalCart = $cartModel->countItemsInCart($user_id);
 // Lấy tổng số lượng sản phẩm trong giỏ
-$totalItems = count($productsInCart);
+} else {
+  include('404.php');
+  exit();
+}
 
 ?>
 
@@ -25,18 +28,25 @@ $totalItems = count($productsInCart);
                   <a href="javascript:history.back()" class="text-body">
                     <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
                   </a>
+                    <form action="../controller/clearCart.php" method="POST" style="display: inline; margin-left: 330px;">
+                      <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Bạn có chắc muốn dọn sạch giỏ hàng?');">
+                        <i class="fas fa-trash-alt me-2"></i>Clear Cart
+                      </button>
+                    </form>
+
                 </h5>
+
 
                 <hr>
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                   <div>
                     <p class="mb-1">Shopping cart</p>
-                    <p class="mb-0">You have <?php echo $totalItems; ?> items in your cart</p>
+                    <p class="mb-0">You have <?php echo $totalCart; ?> items in your cart</p>
                   </div>
                 </div>
 
-                <?php foreach ($productsInCart as $product): ?>
+                <?php if(isset($productsInCart)): foreach ($productsInCart as $product): ?>
                   <div class="card mb-3">
                     <div class="card-body">
                       <div class="d-flex justify-content-between">
@@ -57,14 +67,17 @@ $totalItems = count($productsInCart);
                           <div style="width: 80px;">
                             <h5 class="mb-0">$<?php echo number_format($product['price'], 2); ?></h5>
                           </div>
-                          <a href="removeFromCart.php?cart_item_id=<?php echo $product['cart_item_id']; ?>" style="color: #cecece;">
-                            <i class="fas fa-trash-alt"></i>
-                          </a>
+                              <form action="../controller/removeFromCart.php" method="POST" style="display: inline;">
+                                  <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                                  <button type="submit" style="background: none; border: none; color: #cecece; cursor: pointer;">
+                                      <i class="fas fa-trash-alt"></i>
+                                  </button>
+                              </form>
                         </div>
                       </div>
                     </div>
                   </div>
-                <?php endforeach; ?>
+                <?php endforeach; endif; ?>
 
               </div>
 
@@ -103,13 +116,14 @@ $totalItems = count($productsInCart);
                       <p class="mb-2">Total(Cart)</p>
                       <p class="mb-2">$4818.00</p>
                     </div>
-
-                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                      </div>
-                    </button>
+                    <?php if($totalCart >= 1) { ?>                 
+                          <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
+                          <div class="d-flex justify-content-between">
+                            <span>$4818.00</span>
+                            <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                          </div>
+                        </button>
+                    <?php }?>
                     </form>
 
                   </div>

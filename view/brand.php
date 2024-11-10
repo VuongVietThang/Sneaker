@@ -60,11 +60,11 @@ if ($brand_id !== null && $type !== '') {
                             <form action="#" id="filterForm">
                                 <ul class="filter-list">
                                     <?php foreach ($brandsWithCount as $brand): 
-                                        
+                                        $encryptedBrandId = encryptBrandId($brand['brand_id'], $secret_salt);
                                         ?>
                                         
                                         <li>
-                                        <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($brand['brand_id']); ?>" <?php echo ($brand_id == $brand['brand_id']) ? 'checked' : ''; ?>>
+                                        <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($encryptedBrandId); ?>" <?php echo ($brand_id == $brand['brand_id']) ? 'checked' : ''; ?>>
 
                                             <label for="<?php echo htmlspecialchars($brand['brand_name']); ?>">
                                                 <?php echo htmlspecialchars($brand['brand_name']); ?>
