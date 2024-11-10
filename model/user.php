@@ -1,9 +1,7 @@
 <?php
-<<<<<<< HEAD
-include_once __DIR__ . '../db.php';
-=======
+
 require_once 'db.php';
->>>>>>> them,xoa,sua-user
+
 class User extends Db
 {
     // Constructor - rename branch cart thành auth admin hihi
@@ -128,7 +126,7 @@ class User extends Db
         $result = $sql->get_result();
         return $result->num_rows > 0; // Trả về true nếu tồn tại, false nếu không
     }
-<<<<<<< HEAD
+
     public function getProfileUser($userId) {
         $sql = self::$connection->prepare("SELECT user_id, name, email, phone, address, username FROM user WHERE user_id = ?");
         if (!$sql) {
@@ -191,7 +189,7 @@ class User extends Db
             return [];
         }
     }
-=======
+
 
     public function getAllUser()
     {
@@ -282,5 +280,5 @@ class User extends Db
             return false;
         }
     }
->>>>>>> them,xoa,sua-user
+
 }
