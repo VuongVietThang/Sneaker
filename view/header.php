@@ -69,32 +69,26 @@ $secret_salt = "my_secret_salt";
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item active"><a class="nav-link" href="index.php">HOME</a></li>
+              <!-- Mục HOME mặc định có class active -->
+              <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/index.php' ? 'active' : ''); ?>">
+                <a class="nav-link" href="index.php">HOME</a>
+              </li>
+
               <?php
-              
-              if (isset($brands) && is_array($brands) && !empty($brands)):
+              if (isset($brands)):
                 foreach ($brands as $item):
-                  
-                    
-                    // Mã hóa brand_id với secret_salt
-                    $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
-                    
+                  // Mã hóa brand_id với secret_salt
+                  $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
+
+                  // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
+                  $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';
               ?>
-                    <li class="nav-item submenu dropdown">
-                      <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false"><?php echo htmlspecialchars($item['name']); ?></a>
-                      <ul class="dropdown-menu">
-                      
-                      <?php if (!empty($item['type'])): ?>
-                        <li class="nav-item">
-                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo htmlspecialchars($item['type']); ?>">
-                            <?php echo htmlspecialchars($item['type']); ?>
-                          </a>
-                        </li>
-                      <?php endif; ?>
-                      </ul>
-                    </li>
-                <?php endforeach;
+                  <li class="nav-item submenu dropdown <?php echo $isActive; ?>">
+                    <a href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>" class="nav-link dropdown-toggle">
+                      <?php echo htmlspecialchars($item['name']); ?>
+                    </a>
+                  </li>
+              <?php endforeach;
               endif; ?>
             </ul>
             <ul class="nav-shop">
@@ -113,7 +107,7 @@ $secret_salt = "my_secret_salt";
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
                   <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
+                    <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
                     <a class="dropdown-item info" href="profile.php">Profile</a>
                     <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
