@@ -169,8 +169,8 @@ if (isset($_POST['submit'])) {
                     <option value="Hiden">Hiden</option>
                 </select>
             </div>
-            <button class="btn btn-success mb-3" style="margin-bottom: 15px" type="submit" name="submit">Add Banner</button>
-            <button class="btn btn-secondary" type="button" onclick="window.location.href='../admin/quanlybanner.php';">Close</button>
+            <button class="btn btn-success mb-3" style="margin-bottom: 15px" type="submit" name="submit">ADD BANNER</button>
+            <button class="btn btn-secondary" type="button" onclick="window.location.href='../admin/quanlybanner.php';">CLOSE</button>
         </form>
     </div>
 

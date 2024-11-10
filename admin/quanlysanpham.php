@@ -40,7 +40,7 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
 }
 
 .table th, .table td {
-    padding: 12px 15px;
+    /* padding: 12px 15px; */
     text-align: center;
     border: 1px solid #dee2e6;
     vertical-align: middle;
@@ -212,17 +212,23 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
           </li>  
            <li class="nav-item">
                 <a class="nav-link" href="quanlybanner.php">
-                    <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <i class="fas fa-image menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
                     <span class="menu-title">Quản lý banner</span>
                 </a>
-            </li>         
+            </li>   
+            <li class="nav-item">
+                <a class="nav-link" href="quanlyuser.php">
+                    <i class="fas fa-user menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <span class="menu-title">Quản lý user</span>
+                </a>
+            </li>      
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">     
         <div class="content-wrapper">
           <div class="container">
-            <h2 class="text-center mb-4">Quản lý sản phẩm</h2>
+            
             <a href="../controller/add_product.php" class="btn btn-primary mb-3">
               <i class="fas fa-plus"></i> Thêm sản phẩm
             </a>

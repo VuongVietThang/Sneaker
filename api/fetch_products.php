@@ -16,7 +16,8 @@ $connection = Db::$connection; // Lấy kết nối
 if (isset($_POST['brand_id'])) {
 $secret_salt = "my_secret_salt";
     $brandId = decryptBrandId($_POST['brand_id'],$secret_salt);
-
+    $db = new Db();
+    $connection = Db::$connection;
     // Chuẩn bị truy vấn lấy sản phẩm theo brand_id
     $stmt = $connection->prepare("SELECT p.*, pi.image_url
                                   FROM product p

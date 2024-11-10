@@ -1,8 +1,8 @@
 <?php
 require_once '../model/banner.php';
 $secret_salt = "my_secret_salt";
-function decryptBrandId($decryptedId, $secret_salt)
-{
+
+function decryptBrandId($decryptedId, $secret_salt) {
     $decoded = base64_decode($decryptedId);
     return str_replace($secret_salt, '', $decoded);
 }
@@ -12,31 +12,31 @@ if (isset($_GET['banner_id'])) {
 
     if (is_numeric($bannerIdDecrypted)) {
         $bannerModel = new Banner();
-        $banners = $bannerModel->getBannerById($bannerIdDecrypted);
 
-
-        if (!$banners) {
+        // Kiểm tra xem banner có tồn tại hay không
+        if (!$bannerModel->bannerExists($bannerIdDecrypted)) {
             header("Location: ../admin/404.php");
             exit();
         }
 
+        $banners = $bannerModel->getBannerById($bannerIdDecrypted);
+
+        // Xử lý cập nhật nếu nhận được yêu cầu POST
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             $order = $_POST['order'];
             $action = $_POST['action'];
+            $image_url = $banners['image_url']; // Mặc định là ảnh hiện tại
 
             // Kiểm tra và xử lý ảnh mới nếu có tải lên
-            $image_url = $banners['image_url']; // Giá trị mặc định là ảnh hiện tại
             if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
                 $targetDir = "../images/banner/";
                 $imageFileType = strtolower(pathinfo($_FILES["image_url"]["name"], PATHINFO_EXTENSION));
-                $newFileName = uniqid() . '.' . $imageFileType; // Tạo tên file mới
+                $newFileName = uniqid() . '.' . $imageFileType;
                 $targetFile = $targetDir . $newFileName;
 
-                // Kiểm tra kiểu file
                 if (in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
-                    // Di chuyển file tải lên vào thư mục mục tiêu
                     if (move_uploaded_file($_FILES["image_url"]["tmp_name"], $targetFile)) {
-                        $image_url = $newFileName; // Cập nhật tên ảnh mới
+                        $image_url = $newFileName;
                     } else {
                         echo "Lỗi: Không thể tải ảnh lên.";
                     }
@@ -64,6 +64,7 @@ if (isset($_GET['banner_id'])) {
     exit();
 }
 ?>
+
 
 
 

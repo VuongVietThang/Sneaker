@@ -7,7 +7,7 @@ if (isset($_GET['product_id'])) {
 
     // Kiểm tra nếu sản phẩm tồn tại
     if (!$product_db->checkProductExists($product_id)) {
-        header("Location: ../admin/quanlysanpham.php?error=product_not_found");
+        header("Location: ../admin/404.php");
         exit();
     }
 
@@ -27,7 +27,7 @@ if (isset($_GET['product_id'])) {
     exit();
 } else {
     // Nếu không có product_id, có thể redirect hoặc hiển thị thông báo lỗi
-    header("Location: ../admin/quanlysanpham.php?error=invalid_id");
+    header("Location: ../admin/404.php");
     exit();
 }
 ?>

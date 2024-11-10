@@ -92,7 +92,36 @@
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script src="../js/jquery-3.6.0.min.js"></script>
+
 <script>
+    // Lấy tất cả các mục menu
+    const navItems = document.querySelectorAll('.nav-item');
+
+    // Lặp qua từng mục và gán sự kiện click
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Xóa class 'active' từ tất cả các mục
+            navItems.forEach(nav => nav.classList.remove('active'));
+
+            // Thêm class 'active' vào mục được click
+            this.classList.add('active');
+        });
+    });
+
+    // Kiểm tra trang hiện tại và tự động thêm class 'active' vào mục tương ứng
+    const currentPath = window.location.pathname;
+    navItems.forEach(item => {
+        const link = item.querySelector('a');
+        // Kiểm tra xem URL hiện tại có trùng với href của mục không
+        if (link && currentPath.includes(link.getAttribute('href'))) {
+            item.classList.add('active'); // Thêm class active vào mục trùng khớp
+        }
+    });
+</script>
+
+
+<script>
+  
  $(document).ready(function() {
     $('input[name="brand"]').on('change', function() {
         const encryptedBrandId = $(this).val(); // Lấy brand_id đã mã hóa từ radio button
@@ -100,7 +129,7 @@
         // Tạo hoặc cập nhật URL với brand_id mới
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('brand_id', encryptedBrandId);
-        currentUrl.searchParams.delete('type'); // Xóa 'type' khỏi URL nếu có
+        // Xóa 'type' khỏi URL nếu có
         window.history.replaceState(null, '', currentUrl); // Cập nhật URL mà không tải lại trang
 
         // AJAX để cập nhật sản phẩm theo brand_id đã mã hóa
