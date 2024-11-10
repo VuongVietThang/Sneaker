@@ -1,5 +1,7 @@
 <?php
+
 require_once 'db.php';
+
 class User extends Db
 {
     // Constructor - rename branch cart thành auth admin hihi
@@ -125,6 +127,70 @@ class User extends Db
         return $result->num_rows > 0; // Trả về true nếu tồn tại, false nếu không
     }
 
+    public function getProfileUser($userId) {
+        $sql = self::$connection->prepare("SELECT user_id, name, email, phone, address, username FROM user WHERE user_id = ?");
+        if (!$sql) {
+            die('Error preparing SQL: ' . self::$connection->error); 
+        }
+        $sql->bind_param("i", $userId);
+        $sql->execute();
+        $result = $sql->get_result();
+        if ($result->num_rows === 0) {
+            return null; 
+        }
+        return $result->fetch_assoc();
+    }
+    public function addToFavorites($userId, $productId) {
+        $checkSql = self::$connection->prepare("SELECT * FROM favorite WHERE user_id = ? AND product_id = ?");
+        if (!$checkSql) {
+            die('Error preparing SQL for checking favorite: ' . self::$connection->error);
+        }
+        $checkSql->bind_param("ii", $userId, $productId);
+        $checkSql->execute();
+        $result = $checkSql->get_result();
+        if ($result->num_rows > 0) {
+            return false; // Product already exists in favorites
+        }
+        $sql = self::$connection->prepare("INSERT INTO favorite (user_id, product_id, created_at) VALUES (?, ?, NOW())");
+        if (!$sql) {
+            die('Error preparing SQL for inserting favorites: ' . self::$connection->error);
+        }
+        $sql->bind_param("ii", $userId, $productId);
+        
+        if ($sql->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function getMyFavorites($userId, $page = 1, $itemsPerPage = 5) {
+        $offset = ($page - 1) * $itemsPerPage;
+        $sql = self::$connection->prepare("
+            SELECT f.id, f.product_id, f.created_at, p.name, p.price, pi.image_url 
+            FROM favorite f 
+            JOIN product p ON f.product_id = p.product_id 
+            LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
+            WHERE f.user_id = ? 
+            LIMIT ?, ?
+        ");
+        
+        if (!$sql) {
+            die('Error preparing SQL for retrieving favorites: ' . self::$connection->error);
+        }
+    
+        $sql->bind_param("iii", $userId, $offset, $itemsPerPage);
+        $sql->execute();
+        $result = $sql->get_result();
+    
+        // Check if there are any favorites
+        if ($result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+
     public function getAllUser()
     {
         $sql = self::$connection->prepare("SELECT * FROM user");
@@ -214,4 +280,5 @@ class User extends Db
             return false;
         }
     }
+
 }

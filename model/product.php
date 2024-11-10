@@ -72,4 +72,35 @@ class Product extends Db
 
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+    // Get the most popular products (to be implemented)
+    public function getProductPopular() {
+        $sql = "
+            SELECT 
+                p.product_id,
+                p.name,
+                p.price,
+                SUM(oi.quantity) AS total_quantity,
+                pi.image_url,
+                b.brand_id,
+                b.name AS brand_name
+            FROM 
+                product p
+            JOIN 
+                order_item oi ON p.product_id = oi.product_id
+            JOIN 
+                product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
+            JOIN 
+                orders o ON oi.order_id = o.order_id
+            JOIN 
+                brand b ON p.brand_id = b.brand_id
+            GROUP BY 
+                p.product_id
+            ORDER BY 
+                total_quantity DESC
+            LIMIT 8;
+        ";
+        $stmt = self::$connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }

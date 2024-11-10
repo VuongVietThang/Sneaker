@@ -6,10 +6,10 @@ require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
-
-
+require '../model/user.php';
 session_start();
 $brandModel = new Brand();
+$userModel = new User();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
 $banners = $bannerModel->getAllBannerByAction();
@@ -23,8 +23,9 @@ if (isset($_SESSION['user']['user_id'])) {
   $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
   // Gán giá trị mặc định nếu người dùng chưa đăng nhập
-  $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
+  $totalCart = 1;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
+
 
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
@@ -67,69 +68,55 @@ $secret_salt = "my_secret_salt";
             <span class="icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-          <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-    <!-- Mục HOME mặc định có class active -->
-    <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/index.php' ? 'active' : ''); ?>">
-        <a class="nav-link" href="index.php">HOME</a>
-    </li>
-    
-    <?php
-    if (isset($brands)):
-        foreach ($brands as $item):
-            // Mã hóa brand_id với secret_salt
-            $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
-            
-            // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
-            $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';
-    ?>
-            <li class="nav-item submenu dropdown <?php echo $isActive; ?>">
-                <a href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>" class="nav-link dropdown-toggle">
-                    <?php echo htmlspecialchars($item['name']); ?>
-                </a>
-            </li>
-    <?php endforeach;
-    endif; ?>
-</ul>
-
-
-            <ul class="nav-shop">
-              <li class="nav-item"><button><i class="ti-search"></i></button></li>
+            <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+              <li class="nav-item active"><a class="nav-link" href="index.php">HOME</a></li>
               <?php
-              if (isset($_SESSION['user'])) {
-                echo '
-                    <li class="nav-item">
-                        <a href="cart.php">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
-                        </a>
-                    </li>';
-              }
+              
+              if (isset($brands) && is_array($brands) && !empty($brands)):
+                foreach ($brands as $item):
+                  
+                    
+                    // Mã hóa brand_id với secret_salt
+                    $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
+                    
               ?>
-
-
+                    <li class="nav-item submenu dropdown">
+                      <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false"><?php echo htmlspecialchars($item['name']); ?></a>
+                      <ul class="dropdown-menu">
+                      
+                      <?php if (!empty($item['type'])): ?>
+                        <li class="nav-item">
+                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo htmlspecialchars($item['type']); ?>">
+                            <?php echo htmlspecialchars($item['type']); ?>
+                          </a>
+                        </li>
+                      <?php endif; ?>
+                      </ul>
+                    </li>
+                <?php endforeach;
+              endif; ?>
             </ul>
-            <ul class="nav-user">
+            <ul class="nav-shop">
+              <li class="nav-item">
+                <div id="search-container">
+                  <!-- <form id="search-form" action="search_api.php" method="GET">
+                    <input type="text" id="search-input" name="query" placeholder="Search products..." autocomplete="off">
+                  </form> -->
+                  <ul id="search-results" class="search-results-list" style="display: none;"></ul>
+                </div>
+              </li>
               <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="logout">
-                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                      <?php
-                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
-                        echo '<a class="dropdown-item info" href="">Admin</a>';
-                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
-                      } else {
-                        if (isset($_SESSION['user']))
-                          echo '<a class="dropdown-item info" href="">Profile</a>';
-                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
-                      }
-
-                      ?>
-
-                    </div>
+                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
+                    <a class="dropdown-item info" href="profile.php">Profile</a>
+                    <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
-
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
@@ -140,6 +127,7 @@ $secret_salt = "my_secret_salt";
       </nav>
     </div>
   </header>
+  <script src="../js/header.js"></script>
 </body>
 
 </html>
