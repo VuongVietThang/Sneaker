@@ -5,4 +5,3 @@ define('DB_PASSWORD', ''); // Mật khẩu cơ sở dữ liệu
 define('DB_NAME', 'sneaker'); // Tên cơ sở dữ liệu
 define('PORT', 3306); // Cổng kết nối (thường là 3306 cho MySQL)
 define('DB_CHARSET', 'utf8'); // Bộ mã ký tự
-?>

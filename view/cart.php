@@ -36,14 +36,22 @@ $totalItems = count($productsInCart);
                   </div>
                 </div>
 
-                <?php foreach ($productsInCart as $product): ?>
+
+                <?php
+                $totalPrice = 0; // Khởi tạo biến tổng giá
+
+                // Bắt đầu vòng lặp
+                foreach ($productsInCart as $product):
+                  // Cộng dồn giá tiền của từng sản phẩm vào tổng
+                  $totalPrice += $product['price'] * $product['quantity'];
+                ?>
                   <div class="card mb-3">
                     <div class="card-body">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-row align-items-center">
                           <div>
                             <img src="../images/product/<?php echo $product['image_url']; ?>"
-                                 class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                              class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
                           </div>
                           <div class="ms-3">
                             <h5><?php echo $product['product_name']; ?></h5>
@@ -57,7 +65,7 @@ $totalItems = count($productsInCart);
                           <div style="width: 80px;">
                             <h5 class="mb-0">$<?php echo number_format($product['price'], 2); ?></h5>
                           </div>
-                          <a href="removeFromCart.php?cart_item_id=<?php echo $product['cart_item_id']; ?>" style="color: #cecece;">
+                          <a href="../controller/removeFromCart.php?cart_item_id=<?php echo $product['cart_item_id']; ?>" style="color: #cecece;" title="Remove">
                             <i class="fas fa-trash-alt"></i>
                           </a>
                         </div>
@@ -84,7 +92,7 @@ $totalItems = count($productsInCart);
                         class="fab fa-cc-amex fa-2x me-2"></i></a>
                     <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
 
-                    <form  method="POST"  action="../controller/orderController.php" class="mt-4" >
+                    <form method="POST" action="../controller/orderController.php" class="mt-4">
                       <div data-mdb-input-init class="form-outline form-white mb-4">
                         <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
                           placeholder="Enter your name" />
@@ -97,19 +105,14 @@ $totalItems = count($productsInCart);
                         <label class="form-label" for="typeText">Address</label>
                       </div>
 
-                    <hr class="my-4">
+                      <hr class="my-4">
 
-                    <div class="d-flex justify-content-between mb-4">
-                      <p class="mb-2">Total(Cart)</p>
-                      <p class="mb-2">$4818.00</p>
-                    </div>
-
-                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                      </div>
-                    </button>
+                      <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
+                        <div class="d-flex justify-content-between">
+                          <span>$<?php echo number_format($totalPrice, 2); ?></span>
+                          <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                        </div>
+                      </button>
                     </form>
 
                   </div>
@@ -123,38 +126,38 @@ $totalItems = count($productsInCart);
             <h5>My Orders</h5>
 
             <?php if (empty($myOrder)): ?>
-                <p>You have no orders yet.</p>
+              <p>You have no orders yet.</p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Order Date</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th>Shipping Address</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($myOrder as $order): ?>
-                                <tr>
-                                    <td><?php echo $order['order_id']; ?></td>
-                                    <td><?php echo $order['order_date']; ?></td>
-                                    <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
-                                    <td><?php echo $order['status']; ?></td>
-                                    <td><?php echo $order['shipping_address']; ?></td>
-                                    <td>
-                                        <a href="detailOrder.php?order_id=<?php echo $order['order_id'] ?>" >
-                                            <i class="fa-regular fa-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Order Date</th>
+                      <th>Total Amount</th>
+                      <th>Status</th>
+                      <th>Shipping Address</th>
+                      <th>#</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($myOrder as $order): ?>
+                      <tr>
+                        <td><?php echo $order['order_id']; ?></td>
+                        <td><?php echo $order['order_date']; ?></td>
+                        <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                        <td><?php echo $order['status']; ?></td>
+                        <td><?php echo $order['shipping_address']; ?></td>
+                        <td>
+                          <a href="detailOrder.php?order_id=<?php echo $order['order_id'] ?>">
+                            <i class="fa-regular fa-eye"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
             <?php endif; ?>
 
           </div>
