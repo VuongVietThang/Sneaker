@@ -1,7 +1,25 @@
 <?php
 class Product extends Db
 {
-    public function getSizeId($product_id) {
+    public static function getAllProducts()
+    {
+        $sql = self::$connection->prepare("SELECT name FROM product");
+
+        $sql->execute();
+
+        // Fetch the result as an associative array
+        $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        // Return only the product names in an array
+        $productNames = array_map(function ($product) {
+            return $product['name'];
+        }, $result);
+
+        return $productNames;
+    }
+
+    public function getSizeId($product_id)
+    {
         $sql = "SELECT size_id FROM product_size WHERE product_id = ?";
         $stmt = self::$connection->prepare($sql);
         $stmt->bind_param("i", $product_id);
@@ -17,9 +35,7 @@ class Product extends Db
             return null;
         }
     }
-    public function getColorId($pro_id){
-        
-    }
+    public function getColorId($pro_id) {}
     // Lấy sản phẩm theo brand_id và type
     public function getProductsByBrandAndType($brand_id, $type = null)
     {

@@ -1,9 +1,8 @@
 <?php
-// Khởi động session để truy cập vào giỏ hàng hoặc thông tin người dùng nếu cần
 session_start();
 
-// Kết nối với tệp chứa class Cart và tạo đối tượng Cart
-include_once '../model/cart.php';
+// Include tệp chứa lớp Cart và tạo đối tượng Cart
+include_once '../model/Cart.php';
 $cartModel = new Cart();
 
 // Kiểm tra xem `cart_item_id` có được gửi qua URL không
@@ -25,6 +24,5 @@ if (isset($_GET['cart_item_id'])) {
 }
 
 // Quay lại trang giỏ hàng sau khi xóa
-header("Location: cart.php");
+header("Location: ../view/cart.php"); // Đảm bảo đường dẫn đúng tới view giỏ hàng
 exit;
-

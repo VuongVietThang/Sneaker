@@ -59,16 +59,18 @@ if ($brand_id !== null && $type !== '') {
                         <li class="common-filter">
                             <form action="#" id="filterForm">
                                 <ul class="filter-list">
-                                    <?php foreach ($brandsWithCount as $brand): 
-                                        $encryptedBrandId = encryptBrandId($brand['brand_id'], $secret_salt);
-                                        ?>
-                                        
+
+                                    <?php foreach ($brandsWithCount as $brand):
+
+                                    ?>
+
                                         <li>
-                                        <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($encryptedBrandId); ?>" <?php echo ($brand_id == $brand['brand_id']) ? 'checked' : ''; ?>>
+                                            <input class="pixel-radio" type="radio" name="brand" value="<?php echo htmlspecialchars($brand['brand_id']); ?>" <?php echo ($brand_id == $brand['brand_id']) ? 'checked' : ''; ?>>
+
 
                                             <label for="<?php echo htmlspecialchars($brand['brand_name']); ?>">
                                                 <?php echo htmlspecialchars($brand['brand_name']); ?>
-                                                <span>  (<?php echo htmlspecialchars($brand['product_count']); ?>)</span>
+                                                <span> (<?php echo htmlspecialchars($brand['product_count']); ?>)</span>
                                             </label>
                                         </li>
                                     <?php endforeach; ?>
@@ -156,9 +158,9 @@ if ($brand_id !== null && $type !== '') {
                                 <div class="col-md-6 col-lg-4">
                                     <div class="card text-center card-product">
                                         <div class="card-product__img">
-                                            <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                                            <img class="card-img" src="../images/abc/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
                                             <ul class="card-product__imgOverlay">
-                                               
+
                                                 <li><button><i class="ti-shopping-cart"></i></button></li>
                                                 <li><button><i class="ti-heart"></i></button></li>
                                             </ul>
