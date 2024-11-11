@@ -1,3 +1,12 @@
+<?php 
+session_start();
+if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {
+    include('403.php'); 
+    exit();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +20,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/style_admin.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../img/favicon.png" />
+  <link rel="shortcut icon" href="../images/favicon.png" />
 </head>
 
 <body>
@@ -19,9 +28,9 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href=""><img src="../img/logo.svg" class="mr-2"
+        <a class="navbar-brand brand-logo mr-5" href=""><img src="../images/logo.svg" class="mr-2"
             alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href=""><img src="../img/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href=""><img src="../images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -31,7 +40,15 @@
 
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-
+          <li class="nav-item">
+          <?php 
+            if (isset($_SESSION['user'])) { 
+                echo '<a class="nav-link" href="../view/logout.php"> 
+                          <button class="btn btn-danger">Logout</button>
+                      </a>'; 
+            } 
+            ?>
+          </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
           data-toggle="offcanvas">
