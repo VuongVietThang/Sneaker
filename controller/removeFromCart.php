@@ -27,3 +27,4 @@ if (isset($_GET['cart_item_id'])) {
 // Quay lại trang giỏ hàng sau khi xóa
 header("Location: cart.php");
 exit;
+

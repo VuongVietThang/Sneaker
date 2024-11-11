@@ -1,3 +1,4 @@
+
 <?php
 require_once '../model/cart.php'; // Include the Cart model to access the orders
 
@@ -60,10 +61,13 @@ $orders = $CartModel->getAllOrders(); // Fetch all orders
               <?php endif; ?>
             </tbody>
           </table>
+
         </div>
       </div>
     </div>
   </div>
+
 </body>
 
 </html>
+

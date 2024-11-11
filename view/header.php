@@ -6,6 +6,7 @@ require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
+require '../model/user.php';
 session_start();
 
 // Fetch product names from the Product model
@@ -14,9 +15,10 @@ $productNames = $productModel->getAllProducts();  // Ensure this line is called 
 
 // Fetch other required data
 $brandModel = new Brand();
+$userModel = new User();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
-$banners = $bannerModel->getAllBanner();
+$banners = $bannerModel->getAllBannerAction();
 $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
 $sellProducts = $productModel->getBestSellingProducts(10);
@@ -25,8 +27,10 @@ if (isset($_SESSION['user']['user_id'])) {
   $cartModel = new Cart();
   $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
+
   $totalCart = 0;
 }
+
 
 $secret_salt = "my_secret_salt";
 ?>
@@ -127,7 +131,7 @@ $secret_salt = "my_secret_salt";
 
                       <?php if (!empty($item['type'])): ?>
                         <li class="nav-item">
-                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>">
+                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo htmlspecialchars($item['type']); ?>">
                             <?php echo htmlspecialchars($item['type']); ?>
                           </a>
                         </li>
@@ -139,6 +143,7 @@ $secret_salt = "my_secret_salt";
             </ul>
             <ul class="nav-shop">
               <li class="nav-item">
+
                 <!-- Search Button with Icon -->
                 <button id="searchButton"><i class="ti-search"></i></button>
 
@@ -165,11 +170,14 @@ $secret_salt = "my_secret_salt";
 
             </ul>
             <ul class="nav-user">
+
               <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
+
                   <div class="logout">
                     <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
                       <?php
@@ -180,8 +188,8 @@ $secret_salt = "my_secret_salt";
                       <a class="dropdown-item info" href="">Profile</a>
                       <a class="dropdown-item info" href="logout.php">Logout</a>
                     </div>
-                  </div>
 
+                  </div>
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
@@ -192,6 +200,7 @@ $secret_salt = "my_secret_salt";
       </nav>
     </div>
   </header>
+
 
   <script>
     // Get the search button and search box (combo box)
@@ -210,6 +219,7 @@ $secret_salt = "my_secret_salt";
       }
     });
   </script>
+
 
 </body>
 
