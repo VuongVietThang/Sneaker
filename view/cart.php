@@ -84,7 +84,7 @@ $totalCart = $cartModel->countItemsInCart($user_id);
                       </div>
                     </div>
                   </div>
-                <?php endforeach; endif; ?>
+                <?php endforeach; ?>
 
               </div>
 
@@ -120,12 +120,14 @@ $totalCart = $cartModel->countItemsInCart($user_id);
 
                       <hr class="my-4">
 
-                      <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
-                        <div class="d-flex justify-content-between">
-                          <span>$<?php echo number_format($totalPrice, 2); ?></span>
-                          <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                        </div>
-                      </button>
+                      <?php if($totalCart >= 1) { ?>                 
+                          <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
+                          <div class="d-flex justify-content-between">
+                            <span>$4818.00</span>
+                            <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                          </div>
+                        </button>
+                    <?php }?>
 
                     </form>
 

@@ -166,14 +166,10 @@ $secret_salt = "my_secret_salt";
                     </li>';
               }
               ?>
-
-
             </ul>
             <ul class="nav-user">
 
               <?php if (isset($_SESSION['user'])): ?>
-                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
-                <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
@@ -185,7 +181,7 @@ $secret_salt = "my_secret_salt";
                         echo '<a class="dropdown-item info" href="">Admin</a>';
                       }
                       ?>
-                      <a class="dropdown-item info" href="">Profile</a>
+                      <a class="dropdown-item info" href="profile.php">Profile</a>
                       <a class="dropdown-item info" href="logout.php">Logout</a>
                     </div>
 

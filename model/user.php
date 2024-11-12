@@ -32,7 +32,7 @@ class User extends Db
              }
          }
     }
-    // Kiểm tra xem tên người dùng đã tồn tại chưa
+    // Kiểm tra xem tên người dùng đã tồn tại chưa  
     public function isUsernameExists($username)
     {
         $sql = self::$connection->prepare("SELECT username FROM user WHERE username = ?");
