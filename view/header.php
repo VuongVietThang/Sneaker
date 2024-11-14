@@ -1,33 +1,33 @@
 <?php
-// Include necessary files and start the session
+// Kết nối đến cơ sở dữ liệu (đảm bảo bạn đã bao gồm file db.php hoặc tương tự)
 include '../config/database.php';
 require '../model/db.php';
 require '../model/brand.php';
 require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
+require '../model/user.php';
 session_start();
-
-// Fetch product names from the Product model
-$productModel = new Product();
-$productNames = $productModel->getAllProducts();  // Ensure this line is called to fetch product names
-
-// Fetch other required data
 $brandModel = new Brand();
+$userModel = new User();
 $brands = $brandModel->getAllBrand();
 $bannerModel = new Banner();
-$banners = $bannerModel->getAllBanner();
+$banners = $bannerModel->getAllBannerByAction();
 $productModel = new Product();
 $newestProducts = $productModel->getNewProducts(10);
+$productModel = new Product();
 $sellProducts = $productModel->getBestSellingProducts(10);
 if (isset($_SESSION['user']['user_id'])) {
   $user_id = $_SESSION['user']['user_id'];
   $cartModel = new Cart();
   $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
-  $totalCart = 0;
+  // Gán giá trị mặc định nếu người dùng chưa đăng nhập
+  $totalCart = 1;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
 
+
+// Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
 ?>
 
@@ -52,47 +52,7 @@ $secret_salt = "my_secret_salt";
   <link rel="stylesheet" href="../css/nouislider.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<style>
-  /* Style the search button */
-  #searchButton {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
 
-  /* Style the combo box (dropdown) */
-  .search-box {
-    display: none;
-    /* Hidden by default */
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 999;
-  }
-
-  .search-box ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .search-box ul li {
-    padding: 10px;
-    cursor: pointer;
-  }
-
-  .search-box ul li:hover {
-    background-color: #f1f1f1;
-  }
-
-  .nav-item {
-    position: relative;
-  }
-</style>
 
 <body>
   <!--================ Start Header Menu Area =================-->
@@ -109,79 +69,48 @@ $secret_salt = "my_secret_salt";
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item active"><a class="nav-link" href="index.php">HOME</a></li>
+              <!-- Mục HOME mặc định có class active -->
+              <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/index.php' ? 'active' : ''); ?>">
+                <a class="nav-link" href="index.php">HOME</a>
+              </li>
+
               <?php
-
-              if (isset($brands) && is_array($brands) && !empty($brands)):
+              if (isset($brands)):
                 foreach ($brands as $item):
-
-
                   // Mã hóa brand_id với secret_salt
                   $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
-                  $encoded_type = base64_encode($item['type'] . $secret_salt);
-              ?>
-                  <li class="nav-item submenu dropdown">
-                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                      aria-expanded="false"><?php echo htmlspecialchars($item['name']); ?></a>
-                    <ul class="dropdown-menu">
 
-                      <?php if (!empty($item['type'])): ?>
-                        <li class="nav-item">
-                          <a class="nav-link" href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>">
-                            <?php echo htmlspecialchars($item['type']); ?>
-                          </a>
-                        </li>
-                      <?php endif; ?>
-                    </ul>
+                  // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
+                  $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';
+              ?>
+                  <li class="nav-item submenu dropdown <?php echo $isActive; ?>">
+                    <a href="brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>" class="nav-link dropdown-toggle">
+                      <?php echo htmlspecialchars($item['name']); ?>
+                    </a>
                   </li>
               <?php endforeach;
               endif; ?>
             </ul>
             <ul class="nav-shop">
               <li class="nav-item">
-                <!-- Search Button with Icon -->
-                <button id="searchButton"><i class="ti-search"></i></button>
-
-                <!-- Combo Box (Dropdown) -->
-                <div id="searchBox" class="search-box">
-                  <ul>
-                    <?php foreach ($productNames as $productName): ?>
-                      <li><?php echo htmlspecialchars($productName); ?></li>
-                    <?php endforeach; ?>
-                  </ul>
+                <div id="search-container">
+                  <!-- <form id="search-form" action="search_api.php" method="GET">
+                    <input type="text" id="search-input" name="query" placeholder="Search products..." autocomplete="off">
+                  </form> -->
+                  <ul id="search-results" class="search-results-list" style="display: none;"></ul>
                 </div>
               </li>
-              <?php
-              if (isset($_SESSION['user'])) {
-                echo '
-                    <li class="nav-item">
-                        <a href="cart.php">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">' . $totalCart . '</span></button> 
-                        </a>
-                    </li>';
-              }
-              ?>
-
-
-            </ul>
-            <ul class="nav-user">
               <?php if (isset($_SESSION['user'])): ?>
+                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="logout">
-                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                      <?php
-                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
-                        echo '<a class="dropdown-item info" href="">Admin</a>';
-                      }
-                      ?>
-                      <a class="dropdown-item info" href="">Profile</a>
-                      <a class="dropdown-item info" href="logout.php">Logout</a>
-                    </div>
+                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
+                    <a class="dropdown-item info" href="profile.php">Profile</a>
+                    <a class="dropdown-item info" href="logout.php">Logout</a>
                   </div>
-
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
@@ -192,25 +121,7 @@ $secret_salt = "my_secret_salt";
       </nav>
     </div>
   </header>
-
-  <script>
-    // Get the search button and search box (combo box)
-    const searchButton = document.getElementById('searchButton');
-    const searchBox = document.getElementById('searchBox');
-
-    // Toggle the combo box visibility when the search button is clicked
-    searchButton.addEventListener('click', function() {
-      searchBox.style.display = (searchBox.style.display === 'block') ? 'none' : 'block';
-    });
-
-    // Close the combo box if clicked outside
-    document.addEventListener('click', function(event) {
-      if (!searchButton.contains(event.target) && !searchBox.contains(event.target)) {
-        searchBox.style.display = 'none';
-      }
-    });
-  </script>
-
+  <script src="../js/header.js"></script>
 </body>
 
 </html>
