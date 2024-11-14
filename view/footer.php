@@ -31,12 +31,12 @@
           <div class="single-footer-widget instafeed">
             <h4 class="footer_title">Gallery</h4>
             <ul class="list instafeed d-flex flex-wrap">
-              <li><img src="../img/gallery/r1.jpg" alt=""></li>
-              <li><img src="../img/gallery/r2.jpg" alt=""></li>
-              <li><img src="../img/gallery/r3.jpg" alt=""></li>
-              <li><img src="../img/gallery/r5.jpg" alt=""></li>
-              <li><img src="../img/gallery/r7.jpg" alt=""></li>
-              <li><img src="../img/gallery/r8.jpg" alt=""></li>
+              <li><img src="../images/gallery/r1.jpg" alt=""></li>
+              <li><img src="../images/gallery/r2.jpg" alt=""></li>
+              <li><img src="../images/gallery/r3.jpg" alt=""></li>
+              <li><img src="../images/gallery/r5.jpg" alt=""></li>
+              <li><img src="../images/gallery/r7.jpg" alt=""></li>
+              <li><img src="../images/gallery/r8.jpg" alt=""></li>
             </ul>
           </div>
         </div>
@@ -90,70 +90,120 @@
 </footer>
 <!--================ End footer Area  =================-->
 
-
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script src="../js/jquery-3.6.0.min.js"></script>
 <script>
-  function loadProducts(encryptedBrandId) {
-    const type = document.querySelector('input[name="type"]:checked')?.value;
+ $(document).ready(function() {
+    $('input[name="brand"]').on('change', function() {
+        const encryptedBrandId = $(this).val(); // Lấy brand_id đã mã hóa từ radio button
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'brand.php?brand_id=' + encodeURIComponent(encryptedBrandId) + '&type=' + encodeURIComponent(type) + '&ajax=true', true);
+        // Tạo hoặc cập nhật URL với brand_id mới
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('brand_id', encryptedBrandId);
+        currentUrl.searchParams.delete('type'); // Xóa 'type' khỏi URL nếu có
+        window.history.replaceState(null, '', currentUrl); // Cập nhật URL mà không tải lại trang
 
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        const products = JSON.parse(xhr.responseText);
-        const productList = document.getElementById('product-list');
-        productList.innerHTML = '';
-
-        products.forEach(product => {
-          productList.innerHTML += `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card text-center card-product">
-                            <div class="card-product__img">
-                                <img class="card-img" src="../img/${product.image_url}" alt="">
-                                <ul class="card-product__imgOverlay">
-                                    <li><button><i class="ti-search"></i></button></li>
-                                    <li><button><i class="ti-shopping-cart"></i></button></li>
-                                    <li><button><i class="ti-heart"></i></button></li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-product__title"><a href="#">${product.name}</a></h4>
-                                <p class="card-product__price">${Number(product.price).toLocaleString()} VND</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+        // AJAX để cập nhật sản phẩm theo brand_id đã mã hóa
+        $.ajax({
+            url: '../api/fetch_products.php',
+            method: 'POST',
+            data: { brand_id: encryptedBrandId },
+            success: function(response) {
+                $('#productList').html(response); // Đổ dữ liệu sản phẩm vào div có id là 'productList'
+            },
+            error: function() {
+                alert('Lỗi khi tải sản phẩm!');
+            }
         });
-      } else {
-        console.error('Error fetching products: ' + xhr.statusText);
-      }
-    };
-
-    xhr.send();
-  }
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-   let swiper = new Swiper('.swiper-container', {
-      loop: true,
-      autoplay: {
-         delay: 5000,
-         disableOnInteraction: false,
-      },
-      pagination: {
-         el: '.swiper-pagination',
-         clickable: true,
-         
-      },
-      
-   });
+    });
 });
 
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Khởi tạo Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 5000,  // Thời gian giữa các slide
+            disableOnInteraction: false,  // Không tắt autoplay khi người dùng tương tác
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,  // Cho phép click vào pagination
+        },
+    });
+
+    // Dừng autoplay khi hover vào
+    function pauseSlide() {
+        swiper.autoplay.stop();  // Dừng autoplay
+    }
+
+    // Tiếp tục autoplay khi hover ra ngoài
+    function startAutoSlide() {
+        swiper.autoplay.start();  // Tiếp tục autoplay
+    }
+
+    // Thêm sự kiện 'mouseover' và 'mouseout' vào swiper container
+    const swiperContainer = document.querySelector('.swiper-container');
+    if (swiperContainer) {
+        swiperContainer.addEventListener('mouseover', pauseSlide);  // Dừng autoplay khi hover vào
+        swiperContainer.addEventListener('mouseout', startAutoSlide);  // Tiếp tục autoplay khi hover ra ngoài
+    }
+});
 
 </script>
 
+<script>
+  $(document).ready(function() {
+    $('#bestSellerCarousel').owlCarousel({
+      // Hiển thị 4 sản phẩm
+      loop: true,
+      margin: 20,
+      nav: true, // Hiển thị nút điều hướng
+      dots: false, // Không hiển thị dot
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  });
+</script>
 
+<script>
+  $(document).ready(function() {
+    $('#newestProductCarousel').owlCarousel({
+      // Hiển thị 4 sản phẩm
+      loop: true,
+      margin: 20,
+      nav: true, // Hiển thị nút điều hướng
+      dots: false, // Không hiển thị dot
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  });
+</script>
 
 
 

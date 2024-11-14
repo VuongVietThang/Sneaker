@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
 
+
 .swiper-container {
    width: 100%; /* Đặt chiều rộng tối đa */
    max-width: 100%; /* Chiều rộng tối đa là 600px, bạn có thể tùy chỉnh */
@@ -508,16 +509,16 @@ a {
     border-bottom: 1px solid #ededed33;
     border-radius: 0px;
   }
-  /* .header_area .navbar .nav-shop {
-    padding-bottom: 40px;
-  } */
+  .header_area .navbar .nav-shop {
+    padding-bottom: 20px;
+  }
   .header_area .navbar .search {
     margin-left: 0px;
   }
-  .header_area .navbar-collapse {
+  /* .header_area .navbar-collapse {
     max-height: 340px;
     overflow-y: scroll;
-  }
+  } */
   .header_area .navbar .nav .nav-item.submenu ul .nav-item .nav-link {
     padding: 0px 15px;
   }
@@ -657,9 +658,9 @@ a {
   }
 }
 @media (max-width: 480px) {
-  .header_area .navbar-collapse {
+  /* .header_area .navbar-collapse {
     max-height: 250px;
-  }
+  } */
   .home_banner_area .banner_inner .banner_content {
     margin-top: 0px;
   }
@@ -840,7 +841,7 @@ a {
   color: #384aeb;
 }
 .offer {
-  background: url("../img/home/parallax-bg.png") right center no-repeat;
+  background: url("../images/home/parallax-bg.png") right center no-repeat;
   background-size: cover;
 }
 @media (min-width: 1200px) {
@@ -916,6 +917,52 @@ a {
 }
 @media (min-width: 1340px) {
   #bestSellerCarousel .owl-next {
+    right: -105px;
+  }
+}
+#newestProductCarousel .owl-prev,
+#newestProductCarousel .owl-next {
+  width: 40px;
+  height: 40px;
+  background: #f1f6f7;
+}
+#newestProductCarousel .owl-prev i,
+#newestProductCarousel .owl-prev span,
+#newestProductCarousel .owl-next i,
+#newestProductCarousel .owl-next span {
+  font-size: 15px;
+  color: #384aeb;
+  line-height: 40px;
+}
+#newestProductCarousel .owl-prev:hover,
+#newestProductCarousel .owl-next:hover {
+  background: #384aeb;
+}
+#newestProductCarousel .owl-prev:hover i,
+#newestProductCarousel .owl-prev:hover span,
+#newestProductCarousel .owl-next:hover i,
+#newestProductCarousel .owl-next:hover span {
+  color: #fff;
+}
+#newestProductCarousel .owl-prev {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-30%);
+  left: -20px;
+}
+@media (min-width: 1340px) {
+  #newestProductCarousel .owl-prev {
+    left: -105px;
+  }
+}
+#newestProductCarousel .owl-next {
+  position: absolute;
+  top: 30%;
+  transform: translateY(-30%);
+  right: -20px;
+}
+@media (min-width: 1340px) {
+  #newestProductCarousel .owl-next {
     right: -105px;
   }
 }

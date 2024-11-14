@@ -91,15 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
     <link rel="stylesheet" href="../css/login.css">
-    <style>
-        body {
-            background-image: url(image/login.jpg);
-            background-size: cover;
-        }
-    </style>
+ 
 </head>
 
 <body>
@@ -135,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="email">Email</label>
-                                    <input type="email" class="form-control" name="email" placeholder="Email" >
+                                    <input type="email"  class="form-control" name="email" placeholder="Email" >
                                     <?php if ($errors['email']): ?>
                                         <small class="text-danger"><?php echo $errors['email']; ?></small>
                                     <?php endif; ?>
@@ -143,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="form-group mb-3">
                                     <label class="label" for="phone">Phone</label>
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone" >
+                                    <input type="tel" inputmode="numeric" pattern="\d*" class="form-control" id="phone" name="phone" placeholder="Phone" >
                                     <?php if ($errors['phone']): ?>
                                         <small class="text-danger"><?php echo $errors['phone']; ?></small>
                                     <?php endif; ?>
@@ -191,6 +185,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/main.js"></script>
 
+    <script>
+        document.getElementById("phone").addEventListener("input", function (event) {
+    this.value = this.value.replace(/\D/g, ''); // Loại bỏ các ký tự không phải số
+});
+
+    </script>
 </body>
 
 </html>
