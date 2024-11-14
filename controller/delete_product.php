@@ -21,7 +21,7 @@ if (isset($_GET['product_id'])) {
     $product_db = new Product_db();
 
     if (!$product_db->checkProductExists($product_id)) {
-        header("Location: ../admin/quanlysanpham.php?error=product_not_found");
+        header("Location: ../admin/404.php");
         exit();
     }
 
@@ -34,7 +34,12 @@ if (isset($_GET['product_id'])) {
     header("Location: ../admin/quanlysanpham.php?success=product_deleted");
     exit();
 } else {
+<<<<<<< HEAD
     header("Location: ../admin/quanlysanpham.php?error=missing_product_id");
+=======
+    // Nếu không có product_id, có thể redirect hoặc hiển thị thông báo lỗi
+    header("Location: ../admin/404.php");
+>>>>>>> main
     exit();
 }
 ?>

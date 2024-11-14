@@ -33,9 +33,13 @@ include 'header.php';
                     <span class="menu-title">Quản lý banner</span>
                 </a>
             </li>
-            
         </ul>
-
+        <li class="nav-item">
+                <a class="nav-link" href="quanlyuser.php">
+                    <i class="fas fa-user menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <span class="menu-title">Quản lý user</span>
+                </a>
+            </li>
       </nav>
       <!-- partial -->
       <div class="main-panel">

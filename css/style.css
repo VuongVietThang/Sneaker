@@ -14,6 +14,7 @@
    width: 100%; /* Đảm bảo hình ảnh vừa khít với slide */
    height: 100%; /* Chiều cao bằng với chiều cao của slide */
    object-fit: cover; /* Cắt và giữ tỷ lệ hình ảnh */
+   
 }
 
 
@@ -791,6 +792,8 @@ a {
 }
 .card-product__img {
   position: relative;
+  width: 255px;
+    height: 327px;
 }
 .card-product__imgOverlay {
   background: rgba(255, 255, 255, 0.5);
