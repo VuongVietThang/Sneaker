@@ -33,8 +33,14 @@ $secret_salt = "my_secret_salt";
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="quanlybanner.php">
-                    <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <i class="fas fa-image menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
                     <span class="menu-title">Quản lý banner</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="quanlyuser.php">
+                    <i class="fas fa-user menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <span class="menu-title">Quản lý user</span>
                 </a>
             </li>
         </ul>
@@ -43,7 +49,7 @@ $secret_salt = "my_secret_salt";
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="container">
-                <h2 class="text-center mb-4">Quản lý sản phẩm</h2>
+               
                 <a href="../controller/add_banner.php" class="btn btn-success mb-3">
                     <i class="fas fa-plus"></i> ADD BANNER
                 </a>
@@ -82,7 +88,7 @@ $secret_salt = "my_secret_salt";
                                         <a href="../controller/edit_banner.php?banner_id=<?php echo urlencode($encoded_banner); ?>" title="Chỉnh sửa sản phẩm">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="../controller/delete_banner.php?banner_id=<?php echo urlencode($encoded_banner); ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');" title="Xóa sản phẩm">
+                                        <a href="../controller/delete_banner.php?banner_id=<?php echo urlencode($encoded_banner); ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa banner này không?');" title="Xóa sản phẩm">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </td>
