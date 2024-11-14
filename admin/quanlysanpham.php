@@ -235,12 +235,7 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
             </a>
 
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="quanlybanner.php">
-              <i class="fas fa-shopping-cart menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
-              <span class="menu-title">Quản lý banner</span>
-            </a>
-          </li>
+          
 
           </li>  
            <li class="nav-item">
