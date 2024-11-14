@@ -38,10 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Xử lý tải lên hình ảnh chính
     if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] == 0) {
         // Di chuyển hình ảnh chính
-        $main_image_url = '../admin/uploads/' . basename($_FILES['main_image']['name']);
+        $main_image_name = basename($_FILES['main_image']['name']);
+        $main_image_url = '../images/product/' . $main_image_name;  // Lưu đường dẫn tương đối
         if (move_uploaded_file($_FILES['main_image']['tmp_name'], $main_image_url)) {
-            // Thêm hình ảnh chính vào cơ sở dữ liệu
-            $product_db->addProductImage($product_id, $main_image_url, 1); // 1 là is_main
+            // Thêm hình ảnh chính vào cơ sở dữ liệu (chỉ lưu tên ảnh và đường dẫn tương đối)
+            $product_db->addProductImage($product_id, $main_image_name, 1); // 1 là is_main
         } else {
             echo "Có lỗi xảy ra khi tải lên hình chính.";
         }
@@ -53,16 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         foreach ($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
             if ($_FILES['additional_images']['error'][$key] == 0) {
-                // Giới hạn tối đa 3 hình phụ
+                // Giới hạn tối đa 8 hình phụ
                 if ($uploaded_count >= 3) {
                     echo "Đã vượt quá số lượng hình phụ cho phép.";
                     break;
                 }
 
-                $additional_image_url = '../admin/uploads/' . basename($_FILES['additional_images']['name'][$key]);
+                $additional_image_name = basename($_FILES['additional_images']['name'][$key]);
+                $additional_image_url = '../images/product/' . $additional_image_name;  // Lưu đường dẫn tương đối
                 if (move_uploaded_file($tmp_name, $additional_image_url)) {
-                    // Thêm hình ảnh phụ vào cơ sở dữ liệu
-                    $product_db->addProductImage($product_id, $additional_image_url, 0); // 0 là is_main
+                    // Thêm hình ảnh phụ vào cơ sở dữ liệu (chỉ lưu tên ảnh và đường dẫn tương đối)
+                    $product_db->addProductImage($product_id, $additional_image_name, 0); // 0 là is_main
                     $uploaded_count++;
                 } else {
                     echo "Có lỗi xảy ra khi tải lên hình phụ: " . $_FILES['additional_images']['name'][$key];
@@ -77,8 +79,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #6c757d;
         }
 
-        .custom-file-input:lang(en) ~ .custom-file-label::after {
+        .custom-file-input:lang(en)~.custom-file-label::after {
             content: "Browse";
         }
 
@@ -184,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Thêm Sản Phẩm</h2>
-        <form action="" method="POST" enctype="multipart/form-data">          
+        <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Tên Sản Phẩm</label>
                 <input type="text" id="name" name="name" class="form-control" required>
@@ -202,14 +206,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="type" name="type" class="form-control" required>
             </div>
             <div class="form-group">
-    <label for="brand_id">Hãng</label>
-    <select id="brand_id" name="brand_id" class="form-control" required>
-        <option value="">Vui lòng chọn hãng</option>
-        <?php foreach ($brands as $brand): ?>
-            <option value="<?php echo $brand['brand_id']; ?>"><?php echo $brand['name']; ?></option>
-        <?php endforeach; ?>
-    </select>
-</div>
+                <label for="brand_id">Hãng</label>
+                <select id="brand_id" name="brand_id" class="form-control" required>
+                    <option value="">Vui lòng chọn hãng</option>
+                    <?php foreach ($brands as $brand): ?>
+                        <option value="<?php echo $brand['brand_id']; ?>"><?php echo $brand['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for="color_ids">Màu Sắc</label>
@@ -251,4 +255,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-
