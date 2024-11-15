@@ -70,7 +70,12 @@ $getProductPopular = $productModel->getProductPopular();
                     </div>
                     <div class="card-body">
                         <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
-                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                        <h4 class="card-product__title">
+    <a href="product_details.php?product_id=<?= urlencode($product['product_id'] ?? ''); ?>">
+        <?php echo htmlspecialchars($product['name'] ?? ''); ?>
+    </a>
+</h4>
+
                         <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
                     </div>
                 </div>
