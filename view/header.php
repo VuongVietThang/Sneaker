@@ -112,10 +112,21 @@ $secret_salt = "my_secret_salt";
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
-                    <a class="dropdown-item info" href="profile.php">Profile</a>
-                    <a class="dropdown-item info" href="logout.php">Logout</a>
+                  <div class="logout">
+                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                      <?php
+                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
+                        echo '<a class="dropdown-item info" href="../admin/index.php">Admin</a>';
+                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
+                      } else {
+                        if (isset($_SESSION['user']))
+                          echo '<a class="dropdown-item info" href="profile.php">Profile</a>';
+                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
+                      }
+
+                      ?>
+
+                    </div>
                   </div>
                 </li>
               <?php else: ?>
