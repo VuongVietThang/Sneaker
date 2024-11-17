@@ -129,6 +129,7 @@ $secret_salt = "my_secret_salt";
                       ?>
 
                     </div>
+                  </div>
                 </li>
               <?php else: ?>
                 <li class="nav-item"><a class="button button-header" href="login.php">LOGIN</a></li>
