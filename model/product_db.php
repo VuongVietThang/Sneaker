@@ -457,6 +457,41 @@
             $sql->close();
             return $result->num_rows > 0;
         }
+        public function getRelatedProducts($product_id, $limit = 5)
+        {
+            // Lấy brand_id của sản phẩm hiện tại
+            $sql = self::$connection->prepare("SELECT brand_id FROM product WHERE product_id = ?");
+            $sql->bind_param("i", $product_id);
+            $sql->execute();
+            $result = $sql->get_result();
+            $brand = $result->fetch_assoc();
+            $sql->close();
+
+            if (!$brand) {
+                return []; // Trả về mảng rỗng nếu không tìm thấy sản phẩm
+            }
+
+            $brand_id = $brand['brand_id'];
+
+            // Lấy danh sách sản phẩm liên quan cùng brand_id nhưng không bao gồm sản phẩm hiện tại
+            $sql = self::$connection->prepare("
+        SELECT p.*, 
+               b.name AS brand_name, 
+               GROUP_CONCAT(DISTINCT pi.image_url) AS image_urls
+        FROM product p
+        LEFT JOIN brand b ON p.brand_id = b.brand_id
+        LEFT JOIN product_image pi ON p.product_id = pi.product_id
+        WHERE p.brand_id = ? AND p.product_id != ?
+        GROUP BY p.product_id
+        LIMIT ?
+    ");
+            $sql->bind_param("iii", $brand_id, $product_id, $limit);
+            $sql->execute();
+            $related_products = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+            $sql->close();
+
+            return $related_products;
+        }
     }
 
     $banhang = new Product_db();
