@@ -1,7 +1,6 @@
 <?php
 include 'header.php';
 require_once '../model/encryption_helpers.php';
-
 $productModel = new Product();
 $getProductPopular = $productModel->getProductPopular();
 
@@ -11,83 +10,80 @@ $getProductPopular = $productModel->getProductPopular();
 <main class="site-main">
 
   <!--================ Hero banner start =================-->
+  <?php  if (!empty($banners)): ?>
   <section class="hero-banner">
+    
 
-
-
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <?php
-        if (!empty($banners)):
+   
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <?php
+          
           foreach ($banners as $banner): ?>
-            <div class="swiper-slide"><img src="../images/banner/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>"></div>
-        <?php endforeach;
-        endif; ?>
-
+          <div class="swiper-slide"><img src="../images/banner/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
+          <?php endforeach;  ?>
+          
+        </div>
+       
+        <!-- Điểm đánh dấu -->
+        <div class="swiper-pagination"></div>
       </div>
-
-      <!-- Điểm đánh dấu -->
-      <div class="swiper-pagination"></div>
-    </div>
-
+  
 
     <!-- Dấu chấm điều hướng -->
 
   </section>
+  <?php endif; ?>
   <!--================ Hero banner start =================-->
 
   <!--================ Hero Carousel start =================-->
+  <?php if (!empty($newestProducts)): ?>
   <section class="section-margin calc-60px">
     <div class="container">
-      <div class="section-intro pb-60px">
-        <h2>New <span class="section-intro__style">Product</span></h2>
-      </div>
-      <div class="owl-carousel owl-theme" id="newestProductCarousel">
-        <?php if (!empty($newestProducts)):
-          foreach ($newestProducts as $product):
-            $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
-            $encoded_type = base64_encode($product['type'] . $secret_salt);
-        ?>
-            <div class="card text-center card-product">
-              <div class="card-product__img">
-                <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
-                <ul class="card-product__imgOverlay">
-                  <li>
-                    <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
-                      <i class="ti-search"></i>
-                    </button>
-                  </li>
-                  <li>
-                    <form action="../controller/addToCartController.php" method="post">
-                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                      <button><i class="ti-shopping-cart"></i></button>
-                    </form>
-                  </li>
-                  <li>
-                    <form action="../controller/addToFavorite.php" method="post">
-                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                      <button><i class="ti-heart"></i>1</button>
-                    </form>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
-                <h4 class="card-product__title">
-                <a href="product_details.php?product_id=<?= urlencode(encryptProductId($product['product_id'] ?? '')); ?>">
+        <div class="section-intro pb-60px">
+            <h2>New <span class="section-intro__style">Product</span></h2>
+        </div>
+        <div class="owl-carousel owl-theme" id="newestProductCarousel">
+            <?php 
+                foreach ($newestProducts as $product):
+                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
+                    $encoded_type = base64_encode($product['type'] . $secret_salt);
+            ?>
+                <div class="card text-center card-product">
+                    <div class="card-product__img">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
+                        <ul class="card-product__imgOverlay">
+                            
+                            <li>
+                              <form action="../controller/addToCartController.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                    <button><i class="ti-shopping-cart"></i></button>
+                              </form>
+                            </li>
+                            <li>
+                            <form action="../controller/addToFavorite.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                    <button><i class="ti-heart"></i></button>
+                              </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
+                        <h4 class="card-product__title">
+                        <a href="product_details.php?product_id=<?= urlencode(encryptProductId($product['product_id'] ?? '')); ?>">
     <?= htmlspecialchars($product['name'] ?? ''); ?>
 </a>
+</h4>
 
-                </h4>
-
-                <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
-              </div>
-            </div>
-        <?php endforeach;
-        endif; ?>
-      </div>
+                        <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
-  </section>
+</section>
+<?php endif; ?>
 
 
 
@@ -95,42 +91,42 @@ $getProductPopular = $productModel->getProductPopular();
 
   <!-- ================ trending product section start ================= -->
   <section class="section-margin calc-60px">
-    <div class="container">
-      <div class="section-intro pb-60px">
+  <div class="container">
+    <div class="section-intro pb-60px">
         <p>Popular Item in the market</p>
         <h2>Trending <span class="section-intro__style">Product</span></h2>
-      </div>
-      <?php if (!empty($getProductPopular)): ?>
-        <div class="row">
-          <?php foreach ($getProductPopular as $product): ?>
-            <div class="col-md-6 col-lg-4 col-xl-3">
-              <div class="card text-center card-product">
-                <div class="card-product__img">
-                  <img class="card-img" src="../images/product/<?php echo $product['image_url'] ?>" alt="">
-                  <ul class="card-product__imgOverlay">
-                    <li><button><i class="ti-search"></i></button></li>
-                    <li>
-                      <form action="../controller/addToCartController.php" method="post">
-                        <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" id="">
-                        <button type="submit"><i class="ti-shopping-cart"></i></button>
-                      </form>
-                    </li>
-                    <li><button><i class="ti-heart"></i></button></li>
-                  </ul>
-                </div>
-                <div class="card-body">
-                  <p>Accessories</p>
-                  <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name']); ?></a></h4>
-                  <p class="card-product__price"><?php echo number_format($product['price'], 3); ?>VND</p>
-                </div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div> <!-- Close the row here -->
-      <?php else: ?>
-        <p>No popular products found.</p>
-      <?php endif; ?>
     </div>
+    <?php if(!empty($getProductPopular)): ?>
+        <div class="row">
+            <?php foreach($getProductPopular as $product): ?>
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card text-center card-product">
+                        <div class="card-product__img">
+                            <img class="card-img" src="../images/product/<?php echo $product['image_url'] ?>" alt="">
+                            <ul class="card-product__imgOverlay">
+                                
+                                <li>
+                                    <form action="../controller/addToCartController.php" method="post">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" id="">
+                                        <button type="submit"><i class="ti-shopping-cart"></i></button>
+                                    </form>
+                                </li>
+                                <li><button><i class="ti-heart"></i></button></li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <p>Accessories</p>
+                            <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name']); ?></a></h4>
+                            <p class="card-product__price"><?php echo number_format($product['price'], 3); ?>VND</p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div> <!-- Close the row here -->
+    <?php else: ?>
+        <p>No popular products found.</p>
+    <?php endif; ?>
+</div>
   </section>
   <!-- ================ trending product section end ================= -->
 
@@ -153,50 +149,47 @@ $getProductPopular = $productModel->getProductPopular();
   <!-- ================ offer section end ================= -->
 
   <!-- ================ Best Selling item  carousel ================= -->
+   <?php if (!empty($sellProducts)): ?>
   <section class="section-margin calc-60px">
     <div class="container">
-      <div class="section-intro pb-60px">
-        <h2>Best <span class="section-intro__style">Sellers</span></h2>
-      </div>
-      <div class="owl-carousel owl-theme" id="bestSellerCarousel">
-        <?php if (!empty($sellProducts)):
-          foreach ($sellProducts as $product):
-            $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
-
-        ?>
-            <div class="card text-center card-product">
-              <div class="card-product__img">
-                <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
-                <ul class="card-product__imgOverlay">
-                  <li>
-                    <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>'">
-                      <i class="ti-search"></i>
-                    </button>
-                  </li>
-                  <li>
-                    <form action="../controller/addToCartController.php" method="post">
-                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                      <button><i class="ti-shopping-cart"></i></button>
-                    </form>
-                  </li>
-                  <li><button><i class="ti-heart"></i></button></li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
-                <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
-                <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
-              </div>
-            </div>
-        <?php endforeach;
-        endif; ?>
-      </div>
+        <div class="section-intro pb-60px">
+            <h2>Best <span class="section-intro__style">Sellers</span></h2>
+        </div>
+        <div class="owl-carousel owl-theme" id="bestSellerCarousel">
+            <?php 
+                foreach ($sellProducts as $product):
+                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
+                  
+            ?>
+                <div class="card text-center card-product">
+                    <div class="card-product__img">
+                        <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
+                        <ul class="card-product__imgOverlay">
+                           
+                            <li>
+                              <form action="../controller/addToCartController.php" method="post">
+                                      <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                      <button><i class="ti-shopping-cart"></i></button>
+                              </form>
+                            </li>
+                            <li><button><i class="ti-heart"></i></button></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
+                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                        <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
-  </section>
+</section>
+<?php endif; ?>
   <!-- ================ Best Selling item  carousel end ================= -->
 
   <!-- ================ Blog section start ================= -->
-  <section class="blog">
+  <section class="blog section-margin">
     <div class="container">
       <div class="section-intro pb-60px">
         <p>Popular Item in the market</p>
