@@ -1,13 +1,4 @@
-<?php 
-include 'header.php'; 
-
-?>
-
-
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
@@ -45,37 +36,11 @@ include 'header.php';
                     <span class="menu-title">Quản lý brand</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="quanlyFAQ.php">
+                <i class="fas fa-question-circle menu-icon"></i>
+                    <span class="menu-title">Quản lý FAQ</span>
+                </a>
+            </li>
         </ul>
-        
-      </nav>
-      <!-- partial -->
-      <div class="main-panel">
-
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Doanh thu</h4>
-                  <canvas id="revenueChart"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Người dùng mới</h4>
-                  <canvas id="newUsersChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <!-- plugins:js -->
-
-  <?php include 'footer.php'; ?>
-  <script src="../js/chart_admin.js"></script>
+</nav>
