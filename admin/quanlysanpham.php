@@ -249,7 +249,13 @@ $products = $product_db->getAllProductWithDetails($page, $items_per_page);
                     <i class="fas fa-user menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
                     <span class="menu-title">Quản lý user</span>
                 </a>
-            </li>      
+            </li>   
+            <li class="nav-item">
+                <a class="nav-link" href="quanlybrand.php">
+                    <i class="fas fa-list menu-icon"></i> <!-- Biểu tượng giỏ hàng cho đơn hàng -->
+                    <span class="menu-title">Quản lý brand</span>
+                </a>
+            </li>   
         </ul>
       </nav>
       <!-- partial -->

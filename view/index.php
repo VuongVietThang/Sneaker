@@ -9,6 +9,7 @@ $getProductPopular = $productModel->getProductPopular();
 <main class="site-main">
 
   <!--================ Hero banner start =================-->
+  <?php  if (!empty($banners)): ?>
   <section class="hero-banner">
     
 
@@ -16,10 +17,10 @@ $getProductPopular = $productModel->getProductPopular();
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <?php
-          if (!empty($banners)):
+          
           foreach ($banners as $banner): ?>
           <div class="swiper-slide"><img src="../images/banner/<?php echo htmlspecialchars($banner['image_url'] ?? ''); ?>" ></div>
-          <?php endforeach; endif; ?>
+          <?php endforeach;  ?>
           
         </div>
        
@@ -31,16 +32,18 @@ $getProductPopular = $productModel->getProductPopular();
     <!-- Dấu chấm điều hướng -->
 
   </section>
+  <?php endif; ?>
   <!--================ Hero banner start =================-->
 
   <!--================ Hero Carousel start =================-->
+  <?php if (!empty($newestProducts)): ?>
   <section class="section-margin calc-60px">
     <div class="container">
         <div class="section-intro pb-60px">
             <h2>New <span class="section-intro__style">Product</span></h2>
         </div>
         <div class="owl-carousel owl-theme" id="newestProductCarousel">
-            <?php if (!empty($newestProducts)):
+            <?php 
                 foreach ($newestProducts as $product):
                   $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
                     $encoded_type = base64_encode($product['type'] . $secret_salt);
@@ -49,11 +52,7 @@ $getProductPopular = $productModel->getProductPopular();
                     <div class="card-product__img">
                         <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
-                            <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
-                                    <i class="ti-search"></i>
-                                </button>
-                            </li>
+                            
                             <li>
                               <form action="../controller/addToCartController.php" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
@@ -63,21 +62,27 @@ $getProductPopular = $productModel->getProductPopular();
                             <li>
                             <form action="../controller/addToFavorite.php" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                                    <button><i class="ti-heart"></i>1</button>
+                                    <button><i class="ti-heart"></i></button>
                               </form>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
-                        <h4 class="card-product__title"><a href="single-product.html"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                        <h4 class="card-product__title">
+    <a href="product_details.php?product_id=<?= urlencode($product['product_id'] ?? ''); ?>">
+        <?php echo htmlspecialchars($product['name'] ?? ''); ?>
+    </a>
+</h4>
+
                         <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
                     </div>
                 </div>
-            <?php endforeach; endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 
 
@@ -98,7 +103,7 @@ $getProductPopular = $productModel->getProductPopular();
                         <div class="card-product__img">
                             <img class="card-img" src="../images/product/<?php echo $product['image_url'] ?>" alt="">
                             <ul class="card-product__imgOverlay">
-                                <li><button><i class="ti-search"></i></button></li>
+                                
                                 <li>
                                     <form action="../controller/addToCartController.php" method="post">
                                         <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" id="">
@@ -143,13 +148,14 @@ $getProductPopular = $productModel->getProductPopular();
   <!-- ================ offer section end ================= -->
 
   <!-- ================ Best Selling item  carousel ================= -->
+   <?php if (!empty($sellProducts)): ?>
   <section class="section-margin calc-60px">
     <div class="container">
         <div class="section-intro pb-60px">
             <h2>Best <span class="section-intro__style">Sellers</span></h2>
         </div>
         <div class="owl-carousel owl-theme" id="bestSellerCarousel">
-            <?php if (!empty($sellProducts)):
+            <?php 
                 foreach ($sellProducts as $product):
                   $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
                   
@@ -158,11 +164,7 @@ $getProductPopular = $productModel->getProductPopular();
                     <div class="card-product__img">
                         <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
-                            <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>'">
-                                    <i class="ti-search"></i>
-                                </button>
-                            </li>
+                           
                             <li>
                               <form action="../controller/addToCartController.php" method="post">
                                       <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
@@ -178,14 +180,15 @@ $getProductPopular = $productModel->getProductPopular();
                         <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>
                     </div>
                 </div>
-            <?php endforeach; endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
   <!-- ================ Best Selling item  carousel end ================= -->
 
   <!-- ================ Blog section start ================= -->
-  <section class="blog">
+  <section class="blog section-margin">
     <div class="container">
       <div class="section-intro pb-60px">
         <p>Popular Item in the market</p>
