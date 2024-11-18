@@ -109,10 +109,10 @@
             $sql->execute();
             $result = $sql->get_result();
 
-            // Xóa từng hình ảnh khỏi thư mục uploads
+            // Xóa từng hình ảnh khỏi thư mục ../images/product/
             while ($row = $result->fetch_assoc()) {
                 $image_url = $row['image_url'];
-                $file_path = 'uploads/' . basename($image_url); // Đường dẫn đến tệp tin
+                $file_path = '../images/product/' . basename($image_url); // Đường dẫn đến tệp tin
 
                 // Kiểm tra xem tệp có tồn tại không
                 if (file_exists($file_path)) {
@@ -193,7 +193,7 @@
                 // Xóa ảnh chính cũ
                 $old_main_image = $this->getMainImage($product_id);
                 if ($old_main_image) {
-                    $file_path = 'uploads/' . basename($old_main_image['image_url']);
+                    $file_path = '../images/product/' . basename($old_main_image['image_url']);
                     if (file_exists($file_path)) {
                         unlink($file_path);
                     }
@@ -227,7 +227,7 @@
                 // Xóa tất cả các ảnh phụ cũ trước khi thêm ảnh mới (nếu không giữ nguyên ảnh cũ)
                 $old_additional_images = $this->getAdditionalImages($product_id);
                 foreach ($old_additional_images as $old_image) {
-                    $file_path = 'uploads/' . basename($old_image);
+                    $file_path = '../images/product/' . basename($old_image);
                     if (file_exists($file_path)) {
                         unlink($file_path);  // Xóa file cũ
                     }
@@ -249,7 +249,7 @@
         public function deleteProductImageById($product_id, $image_url)
         {
             // Xóa ảnh khỏi thư mục
-            $file_path = 'uploads/' . basename($image_url);
+            $file_path = '../images/product/' . basename($image_url);
             if (file_exists($file_path)) {
                 unlink($file_path); // Xóa ảnh khỏi thư mục
             }
@@ -272,7 +272,7 @@
 
             // Xóa các hình ảnh từ thư mục
             while ($row = $result->fetch_assoc()) {
-                $file_path = 'uploads/' . basename($row['image_url']);
+                $file_path = '../images/product/' . basename($row['image_url']);
                 if (file_exists($file_path)) {
                     unlink($file_path); // Xóa ảnh khỏi thư mục
                 }

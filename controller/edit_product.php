@@ -1,11 +1,20 @@
 <?php
 include_once('../model/product_db.php');
+// hàm giải mã Hex product_id
+function decryptProductId($encrypted_product_id) {
+    $key = 'secret_key';
+    $iv = '1234567890123456';
+    $encrypted_data = hex2bin($encrypted_product_id); // Chuyển từ hex về dạng nhị phân
+    return openssl_decrypt($encrypted_data, 'aes-128-cbc', $key, 0, $iv);
+}
 
+// Giải mã product_id từ GET request
 if (isset($_GET['product_id'])) {
-    $thongtinsanpham = $banhang->timSanPham($_GET['product_id']);
-    $selected_colors = $banhang->getSelectedColors($_GET['product_id']); // Lấy màu đã chọn
-    $selected_sizes = $banhang->getSelectedSizes($_GET['product_id']);   // Lấy kích thước đã chọn
-    $selected_brand = $banhang->getSelectedBrand($_GET['product_id']);   // Lấy thương hiệu đã chọn
+    $decoded_product_id = decryptProductId($_GET['product_id']); // Giải mã
+    $thongtinsanpham = $banhang->timSanPham($decoded_product_id); // Lấy thông tin sản phẩm
+    $selected_colors = $banhang->getSelectedColors($decoded_product_id); // Lấy màu đã chọn
+    $selected_sizes = $banhang->getSelectedSizes($decoded_product_id);   // Lấy kích thước đã chọn
+    $selected_brand = $banhang->getSelectedBrand($decoded_product_id);   // Lấy thương hiệu đã chọn
     $colors = $banhang->getAllColors(); // Lấy tất cả màu
     $sizes = $banhang->getAllSizes();   // Lấy tất cả kích thước
     $brands = $banhang->getAllBrands(); // Lấy tất cả thương hiệu
@@ -13,7 +22,7 @@ if (isset($_GET['product_id'])) {
 
 // Cập nhật sản phẩm
 if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type'], $_POST['color_ids'], $_POST['size_ids'], $_POST['brand_id'])) {
-    $product_id = $_GET['product_id']; // Lấy product_id từ GET request
+    $product_id = $decoded_product_id; // Sử dụng decoded product_id
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
@@ -29,7 +38,7 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
         // Lấy ảnh chính cũ và xóa nếu có
         $old_main_image = $banhang->getMainImage($product_id);
         if ($old_main_image) {
-            $file_path = '../admin/uploads/' . basename($old_main_image['image_url']);
+            $file_path = '../images/product/' . basename($old_main_image['image_url']);
             if (file_exists($file_path)) {
                 unlink($file_path); // Xóa ảnh cũ
             }
@@ -38,9 +47,10 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
         }
 
         // Xử lý thêm ảnh chính mới
-        $main_image = '../admin/uploads/' . basename($_FILES['main_image']['name']);
-        move_uploaded_file($_FILES['main_image']['tmp_name'], $main_image);
-        $banhang->addProductImage($product_id, $main_image, 1); // is_main = 1 là ảnh chính
+        $main_image_name = basename($_FILES['main_image']['name']);
+        $main_image_path = '../images/product/' . $main_image_name;
+        move_uploaded_file($_FILES['main_image']['tmp_name'], $main_image_path);
+        $banhang->addProductImage($product_id, $main_image_name, 1); // is_main = 1 là ảnh chính
     }
 
     // Xử lý ảnh phụ
@@ -53,35 +63,28 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
             // Kiểm tra nếu ảnh này là ảnh chính, bỏ qua không xóa
             $is_main_image = $banhang->isMainImage($product_id, $image_to_remove);
             if (!$is_main_image) {
-                // Nếu không phải ảnh chính, xóa ảnh khỏi thư mục
-                $file_path = '../admin/uploads/' . basename($image_to_remove);
+                $file_path = '../images/product/' . basename($image_to_remove);
                 if (file_exists($file_path)) {
                     unlink($file_path); // Xóa ảnh khỏi thư mục
                 }
-                // Xóa ảnh khỏi cơ sở dữ liệu
-                $banhang->deleteProductImageById($product_id, $image_to_remove); // Xóa ảnh khỏi CSDL
+                $banhang->deleteProductImageById($product_id, basename($image_to_remove)); // Xóa ảnh khỏi CSDL
             }
         }
 
         // Thêm ảnh phụ mới vào thư mục và CSDL, nhưng tránh thêm ảnh chính làm ảnh phụ
         foreach ($_FILES['additional_images']['name'] as $key => $filename) {
             if ($filename != '') {
-                $new_image = '../admin/uploads/' . basename($filename);
+                $additional_image_name = basename($filename);
+                $additional_image_path = '../images/product/' . $additional_image_name;
 
                 // Kiểm tra nếu ảnh này trùng với ảnh chính, thì bỏ qua việc thêm ảnh phụ
-                $main_image_path = '../admin/uploads/' . basename($main_image); // Đường dẫn ảnh chính
-                if ($new_image !== $main_image_path) {
-                    move_uploaded_file($_FILES['additional_images']['tmp_name'][$key], $new_image);
-                    // Thêm ảnh phụ vào CSDL
-                    $banhang->addProductImage($product_id, $new_image, 0); // is_main = 0 là ảnh phụ
+                if ($additional_image_name !== $main_image_name) {
+                    move_uploaded_file($_FILES['additional_images']['tmp_name'][$key], $additional_image_path);
+                    $banhang->addProductImage($product_id, $additional_image_name, 0); // is_main = 0 là ảnh phụ
                 }
             }
         }
     }
-
-
-
-
 
     // Cập nhật thông tin sản phẩm
     $banhang->editSanPham($product_id, $brand_id, $name, $description, $price, $type);
@@ -104,6 +107,7 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -111,7 +115,7 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Sản Phẩm</title>
-    <link rel="shortcut icon" href="images/favicon.png" />
+    <link rel="shortcut icon" href="../images/favicon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -340,9 +344,12 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
                     <div class="current-images">
                         <p>Hình Ảnh Chính Hiện Tại:</p>
                         <?php
+                        // Lấy hình ảnh chính từ cơ sở dữ liệu
                         $main_image = $banhang->getMainImage($value['product_id']);
-                        if ($main_image): ?>
-                            <img src="<?php echo $main_image['image_url']; ?>" alt="Main Image">
+                        if ($main_image):
+                            $image_url = '../images/product/' . htmlspecialchars($main_image['image_url']);  // Đường dẫn đến ảnh chính
+                        ?>
+                            <img src="<?php echo $image_url; ?>" alt="Main Image" style="max-width: 100px;">
                         <?php else: ?>
                             <p>Không có hình ảnh chính.</p>
                         <?php endif; ?>
@@ -355,16 +362,18 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
                     <div class="current-images">
                         <p>Hình Ảnh Phụ Hiện Tại:</p>
                         <?php
+                        // Lấy danh sách hình ảnh phụ từ cơ sở dữ liệu
                         $additional_images = $banhang->getAdditionalImages($value['product_id']);
-                        foreach ($additional_images as $image): ?>
+                        foreach ($additional_images as $image):
+                            $image_url = '../images/product/' . htmlspecialchars($image);  // Đường dẫn ảnh phụ
+                        ?>
                             <div class="image-container">
-                                <img src="<?php echo $image; ?>" alt="Additional Image">
+                                <img src="<?php echo $image_url; ?>" alt="Additional Image" style="max-width: 100px;">
                                 <button type="button" class="remove-image" data-image="<?php echo $image; ?>">X</button>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
-
 
                 <input type="submit" value="Cập Nhật">
                 <div class="note">*Lưu ý: Nếu không muốn thay đổi hình ảnh, hãy để trống.</div>
@@ -374,15 +383,14 @@ if (isset($_POST['name'], $_POST['price'], $_POST['description'], $_POST['type']
     <script>
         document.querySelectorAll('.remove-image').forEach(button => {
             button.addEventListener('click', function() {
-                const imagePath = this.getAttribute('data-image'); // Lấy đường dẫn ảnh từ thuộc tính data-image
-                // Ẩn ảnh sau khi nhấn nút 'X'
+                const imagePath = this.getAttribute('data-image'); // Lấy tên ảnh từ thuộc tính data-image
                 this.parentElement.style.display = 'none';
 
                 // Lưu thông tin ảnh bị xóa (nếu cần gửi lên server)
                 const hiddenInput = document.createElement('input');
                 hiddenInput.type = 'hidden';
-                hiddenInput.name = 'remove_images[]'; // Tên tham số khi gửi lên server
-                hiddenInput.value = imagePath; // Đường dẫn ảnh bị xóa
+                hiddenInput.name = 'remove_images[]';
+                hiddenInput.value = imagePath; // Chỉ lưu tên ảnh bị xóa
                 document.querySelector('form').appendChild(hiddenInput);
             });
         });

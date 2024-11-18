@@ -1,111 +1,22 @@
 <?php
 include_once __DIR__ . '../db.php';
-class Cart extends Db 
+class Cart extends Db
 {
-    public function clearMyCart($userId) {
-        // Step 1: Find the cart ID for the user
-        $sql = "SELECT cart_id FROM cart WHERE user_id = ?";
-        $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        if ($result->num_rows === 0) {
-            // No cart found for this user
-            return false; // or handle as needed
-        }
-    
-        $row = $result->fetch_assoc();
-        $cartId = $row['cart_id'];
-    
-        // Step 2: Check if there are any items in the cart
-        $sql = "SELECT COUNT(*) as item_count FROM cart_item WHERE cart_id = ?";
-        $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $cartId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-    
-        if ($row['item_count'] === 0) {
-            // No items in cart to clear
-            return false;
-        }
-    
-        // Step 3: Clear all items from the cart
-        $sql = "DELETE FROM cart_item WHERE cart_id = ?";
-        $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $cartId);
-        $stmt->execute();
-    
-        return true; // Successfully cleared the cart
-    }
-    // xóa sản phẩm trong giỏ hàng(kiểm tra phải là user đó và sản phẩm phải tồn tại trong db nếu >2 thì -1)
-    public function removeProductInCart($userId, $productId, $sizeId=1, $colorId=1) {
-        // Step 1: Find the cart ID for the user
-        $sql = "SELECT cart_id FROM cart WHERE user_id = ?";
-        $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        if ($result->num_rows == 0) {
-            // No cart found for this user
-            var_dump("No cart found for this user");
-            die();
-            return false; // or handle as needed
-        }
-    
-        $row = $result->fetch_assoc();
-        $cartId = $row['cart_id'];
-    
-        // Step 2: Check if the product is in the cart
-        $sql = "SELECT quantity FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
-        $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        if ($result->num_rows == 0) {
-            // Product not found in cart
-            var_dump("Product not found in cart");
-            die();
-            return false; // or handle as needed
-        }
-    
-        $row = $result->fetch_assoc();
-        $currentQuantity = $row['quantity'];
-    
-        // Step 3: Determine action based on current quantity
-        if ($currentQuantity > 1) {
-            // Decrease quantity by 1
-            $sql = "UPDATE cart_item SET quantity = quantity - 1 WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
-            $stmt = self::$connection->prepare($sql);
-            $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
-            $stmt->execute();
-        } else {
-            // Remove item from cart
-            $sql = "DELETE FROM cart_item WHERE cart_id = ? AND product_id = ? AND size_id = ? AND color_id = ?";
-            $stmt = self::$connection->prepare($sql);
-            $stmt->bind_param("iiii", $cartId, $productId, $sizeId, $colorId);
-            $stmt->execute();
-        }
-    
-        return true; // Successfully removed or updated
-    }
     // Thêm sản phẩm vào giỏ hàng
-    public function addToCart($userId, $productId, $sizeId, $colorId, $quantity=1) {
+    public function addToCart($userId, $productId, $sizeId, $colorId, $quantity = 1)
+    {
         $sql = "SELECT cart_id FROM cart WHERE user_id = ?";
         $stmt = self::$connection->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows == 0) {
             $sql = "INSERT INTO cart (user_id) VALUES (?)";
             $stmt = self::$connection->prepare($sql);
             $stmt->bind_param("i", $userId);
             $stmt->execute();
-            $cartId = self::$connection->insert_id; 
+            $cartId = self::$connection->insert_id;
         } else {
             $row = $result->fetch_assoc();
             $cartId = $row['cart_id'];
@@ -132,10 +43,11 @@ class Cart extends Db
             $stmt->execute();
         }
 
-        return true; 
+        return true;
     }
 
-    public function getAllProductsInCart($user_id) {
+    public function getAllProductsInCart($user_id)
+    {
         $sql = "SELECT ci.cart_item_id, ci.cart_id, ci.product_id, ci.size_id, ci.color_id, ci.quantity, 
                        p.name AS product_name, p.price, pi.image_url
                 FROM cart_item ci
@@ -143,11 +55,12 @@ class Cart extends Db
                 LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
                 WHERE ci.cart_id IN (SELECT cart_id FROM cart WHERE user_id = ?)";
         $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $user_id); 
+        $stmt->bind_param("i", $user_id);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
-    public function createOrder($userId, $shippingAddress) {
+    public function createOrder($userId, $shippingAddress)
+    {
         $date = new DateTime();
         $now = $date->format('Y-m-d H:i:s');
         // Bắt đầu transaction để đảm bảo tính toàn vẹn của dữ liệu
@@ -162,24 +75,24 @@ class Cart extends Db
                 throw new Exception("Không thể chuẩn bị câu lệnh SQL: " . self::$connection->error);
             }
             $stmt->bind_param("iss", $userId, $now, $shippingAddress);
-            
+
             if (!$stmt->execute()) {
                 throw new Exception("Không thể tạo đơn hàng.");
             }
-            
+
             $orderId = self::$connection->insert_id;
-    
+
             // 2. Lấy tất cả sản phẩm trong giỏ hàng của người dùng
             $cart = new Cart();
             $cartItems = $cart->getAllProductsInCart($userId);
-    
+
             // Kiểm tra nếu giỏ hàng trống
             if (empty($cartItems)) {
                 throw new Exception("Giỏ hàng không có sản phẩm.");
             }
-    
+
             $totalAmount = 0;
-    
+
             // 3. Thêm sản phẩm vào đơn hàng và tính tổng số tiền
             foreach ($cartItems as $item) {
                 $productId = $item['product_id'];
@@ -187,21 +100,21 @@ class Cart extends Db
                 $colorId = $item['color_id'];
                 $quantity = $item['quantity'];
                 $price = $item['price'];
-    
+
                 // Thêm sản phẩm vào bảng order_item
                 $sql = "INSERT INTO order_item (order_id, product_id, size_id, color_id, quantity, price)
                         VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = self::$connection->prepare($sql);
                 $stmt->bind_param("iiiiid", $orderId, $productId, $sizeId, $colorId, $quantity, $price);
-    
+
                 if (!$stmt->execute()) {
                     throw new Exception("Không thể thêm sản phẩm vào đơn hàng.");
                 }
-    
+
                 // Cập nhật tổng số tiền của đơn hàng
                 $totalAmount += $price * $quantity;
             }
-    
+
             // 4. Cập nhật lại tổng số tiền cho đơn hàng
             $sql = "UPDATE `orders` SET total_amount = ? WHERE order_id = ?";
             $stmt = self::$connection->prepare($sql);
@@ -209,7 +122,7 @@ class Cart extends Db
             if (!$stmt->execute()) {
                 throw new Exception("Không thể cập nhật tổng số tiền cho đơn hàng.");
             }
-    
+
             // 5. Xóa giỏ hàng của người dùng sau khi tạo đơn hàng
             $sql = "DELETE FROM cart_item WHERE cart_id = (SELECT cart_id FROM cart WHERE user_id = ?)";
             $stmt = self::$connection->prepare($sql);
@@ -217,10 +130,10 @@ class Cart extends Db
             if (!$stmt->execute()) {
                 throw new Exception("Không thể xóa giỏ hàng của người dùng.");
             }
-    
+
             // Cam kết transaction nếu mọi thứ thành công
             self::$connection->commit();
-    
+
             return $orderId;
         } catch (Exception $e) {
             // Nếu có lỗi xảy ra, rollback lại transaction
@@ -230,29 +143,30 @@ class Cart extends Db
         }
     }
 
-    public function getOrdersByUserId($userId) {
+    public function getOrdersByUserId($userId)
+    {
         // SQL query để lấy tất cả đơn hàng của người dùng
         $sql = "SELECT order_id, order_date, total_amount, status, shipping_address
                 FROM `orders`
                 WHERE user_id = ?";
-    
+
         // Chuẩn bị câu truy vấn
         $stmt = self::$connection->prepare($sql);
-        
+
         // Kiểm tra nếu câu lệnh chuẩn bị bị lỗi
         if ($stmt === false) {
             die('Error preparing query: ' . self::$connection->error);
         }
-    
+
         // Ràng buộc tham số vào câu truy vấn
         $stmt->bind_param("i", $userId);
-    
+
         // Thực thi câu truy vấn
         $stmt->execute();
-    
+
         // Lấy kết quả
         $result = $stmt->get_result();
-    
+
         // Nếu có kết quả, trả về mảng chứa các đơn hàng
         if ($result->num_rows > 0) {
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -260,7 +174,8 @@ class Cart extends Db
             return [];  // Trả về mảng rỗng nếu không có đơn hàng
         }
     }
-    public function getOrderDetails($orderId) {
+    public function getOrderDetails($orderId)
+    {
         // Truy vấn các sản phẩm trong đơn hàng
         $sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.size_id, oi.color_id, oi.quantity, oi.price,
                        p.name AS product_name, p.price AS product_price, 
@@ -269,16 +184,17 @@ class Cart extends Db
                 JOIN product p ON oi.product_id = p.product_id
                 LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
                 WHERE oi.order_id = ?";
-        
+
         $stmt = self::$connection->prepare($sql);
         $stmt->bind_param("i", $orderId); // Liên kết tham số $orderId vào câu lệnh SQL
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         // Trả về tất cả các sản phẩm trong đơn hàng dưới dạng mảng
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    public function getDetailOrder($orderId) {
+    public function getDetailOrder($orderId)
+    {
         // Truy vấn các sản phẩm trong đơn hàng với order_id
         $sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.size_id, oi.color_id, oi.quantity, oi.price,
                        p.name AS product_name, p.price AS product_price, 
@@ -287,19 +203,19 @@ class Cart extends Db
                 JOIN product p ON oi.product_id = p.product_id
                 LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
                 WHERE oi.order_id = ?";
-        
+
         // Chuẩn bị câu lệnh SQL
         $stmt = self::$connection->prepare($sql);
-        
+
         // Liên kết tham số $orderId vào câu lệnh SQL
         $stmt->bind_param("i", $orderId);
-        
+
         // Thực thi câu lệnh
         $stmt->execute();
-        
+
         // Lấy kết quả trả về
         $result = $stmt->get_result();
-        
+
         // Kiểm tra nếu có dữ liệu và trả về dưới dạng mảng
         if ($result->num_rows > 0) {
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -307,19 +223,53 @@ class Cart extends Db
             return [];  // Trả về mảng rỗng nếu không có sản phẩm nào
         }
     }
-    public function countItemsInCart($userId) {
+    public function countItemsInCart($userId)
+    {
         $sql = "SELECT SUM(ci.quantity) AS total_items
                 FROM cart_item ci
                 JOIN cart c ON ci.cart_id = c.cart_id
                 WHERE c.user_id = ?";
-                
+
         $stmt = self::$connection->prepare($sql);
-        $stmt->bind_param("i", $userId); 
+        $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         // Lấy tổng số lượng sản phẩm trong giỏ hàng
         $row = $result->fetch_assoc();
-        return $row['total_items'] ? $row['total_items'] : 0; 
+        return $row['total_items'] ? $row['total_items'] : 0;
+    }
+
+    // Hàm xóa sản phẩm khỏi giỏ hàng theo `cart_item_id`
+    public function removeProductFromCart($cartItemId)
+    {
+        // Sử dụng kết nối từ lớp Db đã có
+        $conn = self::$connection; // Lấy kết nối từ lớp Db
+
+        // Xóa sản phẩm khỏi giỏ hàng
+        $query = "DELETE FROM cart_item WHERE cart_item_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $cartItemId);
+
+        // Thực thi và kiểm tra kết quả
+        return $stmt->execute();
+    }
+
+
+
+    public function getAllOrders()
+    {
+        $sql = "SELECT o.order_id, o.order_date, o.status, o.shipping_address, 
+                       SUM(oi.quantity * oi.price) AS total_amount
+                FROM orders o
+                JOIN order_item oi ON o.order_id = oi.order_id
+                GROUP BY o.order_id
+                ORDER BY o.order_date DESC";
+
+        $stmt = self::$connection->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 }
