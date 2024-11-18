@@ -1,0 +1,2 @@
+# Ignore file cấu hình database
+config/database.php
