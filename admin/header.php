@@ -4,7 +4,7 @@ require '../model/db.php';
 require '../model/banner.php';
 require '../model/user.php';
 require '../model/brand.php';
-
+require '../model/faq.php';
 session_start();
 if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {
   header("Location: ../admin/404.php");
