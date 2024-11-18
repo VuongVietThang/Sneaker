@@ -36,7 +36,4 @@ function sendMail($address, $subject, $message){
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
-
-// Ví dụ gọi hàm sendMail
-sendMail('hope211203@gmail.com', 'Register successfully!', 'This is the HTML message body <b>in bold!</b>');
 ?>
