@@ -3,6 +3,7 @@ include '../config/database.php';
 require '../model/db.php';
 require '../model/banner.php';
 require '../model/user.php';
+require '../model/brand.php';
 
 session_start();
 if (!isset($_SESSION['user']) || !$_SESSION['user']['admin_id']) {

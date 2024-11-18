@@ -52,11 +52,7 @@ $getProductPopular = $productModel->getProductPopular();
                     <div class="card-product__img">
                         <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
-                            <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>&type=<?php echo urlencode($encoded_type); ?>'">
-                                    <i class="ti-search"></i>
-                                </button>
-                            </li>
+                            
                             <li>
                               <form action="../controller/addToCartController.php" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
@@ -107,7 +103,7 @@ $getProductPopular = $productModel->getProductPopular();
                         <div class="card-product__img">
                             <img class="card-img" src="../images/product/<?php echo $product['image_url'] ?>" alt="">
                             <ul class="card-product__imgOverlay">
-                                <li><button><i class="ti-search"></i></button></li>
+                                
                                 <li>
                                     <form action="../controller/addToCartController.php" method="post">
                                         <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" id="">
@@ -168,11 +164,7 @@ $getProductPopular = $productModel->getProductPopular();
                     <div class="card-product__img">
                         <img class="img-fluid" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? 'default.jpg'); ?>" alt="">
                         <ul class="card-product__imgOverlay">
-                            <li>
-                                <button onclick="window.location.href='brand.php?brand_id=<?php echo urlencode($encoded_brand_id); ?>'">
-                                    <i class="ti-search"></i>
-                                </button>
-                            </li>
+                           
                             <li>
                               <form action="../controller/addToCartController.php" method="post">
                                       <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
