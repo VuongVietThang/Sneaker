@@ -7,7 +7,6 @@ require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
 require '../model/user.php';
-require '../model/faq.php';
 session_start();
 $brandModel = new Brand();
 $userModel = new User();
@@ -91,13 +90,6 @@ $secret_salt = "my_secret_salt";
                   </li>
               <?php endforeach;
               endif; ?>
-            <!-- Thêm mục FAQ -->
-            <li class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'faq.php' ? 'active' : ''); ?>">
-              <i class="fa fa-question-circle"></i>
-                <a class="nav-link" href="faq.php">
-                <strong>FAQ</strong>
-                </a>
-            </li>
             </ul>
             <ul class="nav-shop">
               <li class="nav-item">
