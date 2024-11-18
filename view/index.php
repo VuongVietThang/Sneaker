@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+require_once '../model/encryption_helpers.php';
 $productModel = new Product();
 $getProductPopular = $productModel->getProductPopular();
 
@@ -70,9 +71,9 @@ $getProductPopular = $productModel->getProductPopular();
                     <div class="card-body">
                         <p> <?php echo htmlspecialchars($product['brand_name'] ?? ''); ?></p>
                         <h4 class="card-product__title">
-    <a href="product_details.php?product_id=<?= urlencode($product['product_id'] ?? ''); ?>">
-        <?php echo htmlspecialchars($product['name'] ?? ''); ?>
-    </a>
+                        <a href="product_details.php?product_id=<?= urlencode(encryptProductId($product['product_id'] ?? '')); ?>">
+    <?= htmlspecialchars($product['name'] ?? ''); ?>
+</a>
 </h4>
 
                         <p class="card-product__price"><?php echo number_format($product['price'], 0, ',', '.' ?? ''); ?> VND</p>

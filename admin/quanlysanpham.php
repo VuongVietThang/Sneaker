@@ -1,14 +1,6 @@
 <?php
 require_once '../model/product_db.php';
-
-// hàm mã hóa Hex product_id
-function encryptProductId($product_id) {
-  $key = 'secret_key'; 
-  $iv = '1234567890123456'; // Đảm bảo sử dụng IV ngẫu nhiên trong môi trường thực tế
-  $encrypted = openssl_encrypt($product_id, 'aes-128-cbc', $key, 0, $iv);
-  return bin2hex($encrypted); // Mã hóa thành chuỗi hex
-}
-
+require_once '../model/encryption_helpers.php';
 
 $product_db = new Product_db();
 
