@@ -43,12 +43,18 @@ if ($brand_id !== null) {
     $products = [];
 }
 if (isset($_GET['brand_id']) && isset($_GET['color_name'])) { 
-    $brand_id = $_GET['brand_id']; $color_name = $_GET['color_name']; 
+    $brand_id = $_GET['brand_id']; 
+    $color_name = $_GET['color_name']; 
     $product = new Product(); 
     $filteredProducts = $product->fillterProduct($brand_id, $color_name); 
     $products = $filteredProducts;
 }
 // Hiển thị sản phẩm ở đây, ví dụ:
+$searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '!';
+$result_search = $productModel->searchProducts($searchTerm);
+if($result_search){
+    $products = $result_search;
+}
 ?>
 
 <!-- ================ start banner area ================= -->
@@ -180,12 +186,12 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                     </div>
                     <div>
                         <form action="search_result.php" method="get">
-                            <div class="input-group filter-bar-search">
-                                <input type="text" name="searchTerm" placeholder="Search">
-                                <div class="input-group-append">
-                                    <button type="button"><i class="ti-search"></i></button>
+                                <div class="input-group filter-bar-search">
+                                    <input type="text" name="searchTerm" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button type="button"><i class="ti-search"></i></button>
+                                    </div>
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -195,25 +201,23 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                     <div class="row" id="productList">
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
-                                <a href="#">
-                                    <div class="col-md-6 col-lg-4">
-                                        <div class="card text-center card-product">
-                                            <div class="card-product__img">
-                                                <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
-                                                <ul class="card-product__imgOverlay">
-                                                   
-                                                    <li><button><i class="ti-shopping-cart"></i></button></li>
-                                                    <li><button><i class="ti-heart"></i></button></li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-body">
-    
-                                                <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
-                                                <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
-                                            </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card text-center card-product">
+                                        <div class="card-product__img">
+                                            <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                                            <ul class="card-product__imgOverlay">
+                                               
+                                                <li><button><i class="ti-shopping-cart"></i></button></li>
+                                                <li><button><i class="ti-heart"></i></button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                                            <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                         <?php endforeach;
                         endif; ?>
 
