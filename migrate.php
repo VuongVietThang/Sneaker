@@ -51,6 +51,7 @@ require_once 'migrations/create_review_table.php';
 require_once 'migrations/create_size_table.php';
 require_once 'migrations/create_user_table.php';
 require_once 'migrations/create_faq_table.php';
+require_once 'migrations/create_contact_table.php';
 CreateUserTable::up();
 CreateAdminTable::up();
 CreateBannerTable::up();
@@ -70,4 +71,4 @@ CreateProductColorTable::up();
 CreateProductImageTable::up();
 CreateProductSizeTable::up();
 createFAQTable::up();
-
+CreateContactTable::up();
