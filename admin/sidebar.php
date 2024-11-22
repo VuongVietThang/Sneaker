@@ -49,10 +49,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="quanlysize.php">
-                    <i class="fas fa-envelope menu-icon"></i>
-                    <span class="menu-title">Quản lý SIZE</span>
-                </a>
-            </li>
+    <a class="nav-link" href="quanlysize.php">
+        <i class="fas fa-ruler menu-icon"></i>
+        <span class="menu-title">Quản lý SIZE</span>
+    </a>
+</li>
+
         </ul>
 </nav>
