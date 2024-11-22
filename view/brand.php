@@ -182,6 +182,25 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                     <div class="row" id="productList">
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card text-center card-product">
+                                        <div class="card-product__img">
+                                            <img style="width: 255px; height: 325px;" class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                                            <ul class="card-product__imgOverlay">
+                                               
+                                                <li><button><i class="ti-shopping-cart"></i></button></li>
+                                                <li><button><i class="ti-heart"></i></button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                                            <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
+=======
+>>>>>>> a9b2f78 (Merge branch 'main' into chart)
                                 <a href="#">
                                     <div class="col-md-6 col-lg-4">
                                         <div class="card text-center card-product">
@@ -203,6 +222,10 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                                                 <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
                                                 <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
                                             </div>
+<<<<<<< HEAD
+=======
+>>>>>>> main
+>>>>>>> a9b2f78 (Merge branch 'main' into chart)
                                         </div>
                                     </div>
                                 </a>
