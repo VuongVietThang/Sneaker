@@ -42,5 +42,11 @@
                     <span class="menu-title">Quản lý FAQ</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="quanlylienhe.php">
+                    <i class="fas fa-envelope menu-icon"></i>
+                    <span class="menu-title">Quản lý liên hệ</span>
+                </a>
+            </li>
         </ul>
 </nav>

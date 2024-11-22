@@ -124,34 +124,24 @@
           </div>
         </div>
         <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
-          <div class="single-footer-widget tp_widgets">
-            <h4 class="footer_title">Contact Us</h4>
-            <div class="ml-40">
-              <p class="sm-head">
-                <span class="fa fa-location-arrow"></span>
-                Head Office
-              </p>
-              <p>123, Main Street, Your City</p>
-
-              <p class="sm-head">
-                <span class="fa fa-phone"></span>
-                Phone Number
-              </p>
-              <p>
-                +123 456 7890 <br>
-                +123 456 7890
-              </p>
-
-              <p class="sm-head">
-                <span class="fa fa-envelope"></span>
-                Email
-              </p>
-              <p>
-                free@infoexample.com <br>
-                www.infoexample.com
-              </p>
+            <div class="single-footer-widget tp_widgets">
+              <h4 class="footer_title">Contact Us</h4>
+              <form action="../controller/create_contact.php" method="POST">
+                <div class="form-group">
+                  <label for="contactEmail">Email</label>
+                  <input type="email" class="form-control" id="contactEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactPhone">Phone</label>
+                  <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactMessage">Message</label>
+                  <textarea class="form-control" id="contactMessage" name="message" rows="3" placeholder="Enter your message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
             </div>
-          </div>
         </div>
       </div>
     </div>
