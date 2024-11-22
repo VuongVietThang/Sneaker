@@ -1,14 +1,10 @@
 <?php
 require_once '../model/banner.php';
-$secret_salt = "my_secret_salt";
+require '../model/encryption_helpers.php';
 
-function decryptBrandId($decryptedId, $secret_salt) {
-    $decoded = base64_decode($decryptedId);
-    return str_replace($secret_salt, '', $decoded);
-}
 
 if (isset($_GET['banner_id'])) {
-    $bannerIdDecrypted = decryptBrandId($_GET['banner_id'], $secret_salt);
+    $bannerIdDecrypted = decryptProductId($_GET['banner_id']);
 
     if (is_numeric($bannerIdDecrypted)) {
         $bannerModel = new Banner();

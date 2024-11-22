@@ -1,9 +1,22 @@
 <?php include 'header.php';
+$secret_salt = "my_secret_salt";
+function decryptBrandId($encryptedId, $secret_salt)
+{
+    $decoded = base64_decode($encryptedId);
+    // Loại bỏ chuỗi salt để lấy lại brand_id
+    return str_replace($secret_salt, '', $decoded);
+}
+
+function encryptBrandId($brand_id, $secret_salt)
+{
+    // Thêm chuỗi salt để tăng độ bảo mật
+    return base64_encode($brand_id . $secret_salt);
+}
 
 $brandModel = new Brand();
 $brandsWithCount = $brandModel->getAllBrandsWithCount();
 $productModel = new Product();
-// Lấy brand_id và type từ URL nếu có 
+// Lấy brand_id và type từ URL nếu có
 $encryptedBrandId = isset($_GET['brand_id']) ? $_GET['brand_id'] : null;
 //get color
 $allColors = $productModel->getAllColors();
@@ -12,7 +25,7 @@ $allBrands = $productModel->getAllBrands();
 // Kiểm tra nếu có dữ liệu hợp lệ và giải mã
 if ($encryptedBrandId !== null) {
     // Giải mã dữ liệu từ URL
-    $brand_id = decryptProductId($encryptedBrandId); // Giải mã brand_id
+    $brand_id = decryptBrandId($encryptedBrandId, $secret_salt); // Giải mã brand_id
    
 } else {
     // Nếu không có dữ liệu hợp lệ, gán giá trị mặc định
@@ -30,12 +43,18 @@ if ($brand_id !== null) {
     $products = [];
 }
 if (isset($_GET['brand_id']) && isset($_GET['color_name'])) { 
-    $brand_id = $_GET['brand_id']; $color_name = $_GET['color_name']; 
+    $brand_id = $_GET['brand_id']; 
+    $color_name = $_GET['color_name']; 
     $product = new Product(); 
     $filteredProducts = $product->fillterProduct($brand_id, $color_name); 
     $products = $filteredProducts;
 }
 // Hiển thị sản phẩm ở đây, ví dụ:
+$searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '!';
+$result_search = $productModel->searchProducts($searchTerm);
+if($result_search){
+    $products = $result_search;
+}
 ?>
 
 <!-- ================ start banner area ================= -->
@@ -54,7 +73,7 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                             <form action="#" id="filterForm">
                                 <ul class="filter-list">
                                     <?php foreach ($brandsWithCount as $brand): 
-                                        $encryptedBrandId = encryptProductId($brand['brand_id'] ?? '');
+                                        $encryptedBrandId = encryptBrandId($brand['brand_id'], $secret_salt);
                                         ?>
                                         
                                         <li>
@@ -167,12 +186,12 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                     </div>
                     <div>
                         <form action="search_result.php" method="get">
-                            <div class="input-group filter-bar-search">
-                                <input type="text" name="searchTerm" placeholder="Search">
-                                <div class="input-group-append">
-                                    <button type="button"><i class="ti-search"></i></button>
+                                <div class="input-group filter-bar-search">
+                                    <input type="text" name="searchTerm" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button type="button"><i class="ti-search"></i></button>
+                                    </div>
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -182,30 +201,23 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                     <div class="row" id="productList">
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
-                                <a href="#">
-                                    <div class="col-md-6 col-lg-4">
-                                        <div class="card text-center card-product">
-                                            <div class="card-product__img">
-                                                <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
-                                                <ul class="card-product__imgOverlay">
-                                                
-                                                <li>
-                                                    <form action="../controller/addToCartController.php" method="post">
-                                                            <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
-                                                            <button><i class="ti-shopping-cart"></i></button>
-                                                    </form>
-                                                </li>
-                                                    <li><button><i class="ti-heart"></i></button></li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-body">
-    
-                                                <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
-                                                <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
-                                            </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card text-center card-product">
+                                        <div class="card-product__img">
+                                            <img class="card-img" src="../images/product/<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>" alt="">
+                                            <ul class="card-product__imgOverlay">
+                                               
+                                                <li><button><i class="ti-shopping-cart"></i></button></li>
+                                                <li><button><i class="ti-heart"></i></button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <h4 class="card-product__title"><a href="#"><?php echo htmlspecialchars($product['name'] ?? ''); ?></a></h4>
+                                            <p class="card-product__price"><?php echo htmlspecialchars(number_format($product['price'] ?? 0)); ?> VND</p>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                         <?php endforeach;
                         endif; ?>
 
@@ -219,7 +231,119 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
 <!-- ================ category section end ================= -->
 
 <!-- ================ top product area start ================= -->
+<section class="related-product-area">
+    <div class="container">
+        <div class="section-intro pb-60px">
+            <p>Popular Item in the market</p>
+            <h2>Top <span class="section-intro__style">Product</span></h2>
+        </div>
+        <div class="row mt-30">
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-4.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-5.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-6.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-7.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-8.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-9.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                    <div class="single-search-product d-flex">
+                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
+                        <div class="desc">
+                            <a href="#" class="title">Gray Coffee Cup</a>
+                            <div class="price">$170.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- ================ top product area end ================= -->
 
 <!-- ================ Subscribe section start ================= -->
