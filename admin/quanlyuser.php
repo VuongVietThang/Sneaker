@@ -3,15 +3,14 @@ include 'header.php';
 $userModel = new User();
 $users = $userModel->getAllUser();
 
-$secret_salt = "my_secret_salt";
-
-
 ?>
 
 
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
+
 <?php include 'sidebar.php' ?>
+
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -46,7 +45,7 @@ $secret_salt = "my_secret_salt";
                             </tr>
                         <?php else : ?>
                             <?php foreach ($users as $user) : ?>
-                                <?php $encoded_banner = base64_encode($user['user_id'] . $secret_salt) ?>
+                                <?php $encoded_banner = encryptProductId($user['user_id']) ?>
                                 <tr class="text-center">
                                     <td><?php echo htmlspecialchars($user['user_id']); ?></td>
                                     <td><?php echo htmlspecialchars($user['name']); ?></td>

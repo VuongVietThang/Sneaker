@@ -2,15 +2,11 @@
 include '../config/database.php';
 require '../model/db.php';
 require '../model/brand.php';
-function decryptBrandId($decryptedId, $secret_salt)
-{
-    $decoded = base64_decode($decryptedId);
-    return str_replace($secret_salt, '', $decoded);
-}
-$secret_salt = "my_secret_salt";
+require '../model/encryption_helpers.php';
+
 
 if (isset($_GET['brand_id'])) {
-    $brand_id = decryptBrandId($_GET['brand_id'],$secret_salt);
+    $brand_id = decryptProductId($_GET['brand_id']);
 
     // Kiểm tra banner_id là số hợp lệ
     if (!is_numeric($brand_id)) {

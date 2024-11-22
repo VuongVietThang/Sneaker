@@ -3,15 +3,15 @@ include 'header.php';
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 
-$secret_salt = "my_secret_salt";
-
-
 ?>
 
 
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
+
 <?php include 'sidebar.php' ?>
+
+  
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -41,7 +41,7 @@ $secret_salt = "my_secret_salt";
                             </tr>
                         <?php else : ?>
                             <?php foreach ($brands as $brand) : ?>
-                                <?php $encoded_banner = base64_encode($brand['brand_id'] . $secret_salt) ?>
+                                <?php $encoded_banner = encryptProductId($brand['brand_id']) ?>
                                 <tr class="text-center">
                                     <td><?php echo htmlspecialchars($brand['brand_id']); ?></td>
                                     <td><?php echo htmlspecialchars($brand['name']); ?></td>

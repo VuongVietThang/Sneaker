@@ -1,22 +1,9 @@
 <?php include 'header.php';
-$secret_salt = "my_secret_salt";
-function decryptBrandId($encryptedId, $secret_salt)
-{
-    $decoded = base64_decode($encryptedId);
-    // Loại bỏ chuỗi salt để lấy lại brand_id
-    return str_replace($secret_salt, '', $decoded);
-}
-
-function encryptBrandId($brand_id, $secret_salt)
-{
-    // Thêm chuỗi salt để tăng độ bảo mật
-    return base64_encode($brand_id . $secret_salt);
-}
 
 $brandModel = new Brand();
 $brandsWithCount = $brandModel->getAllBrandsWithCount();
 $productModel = new Product();
-// Lấy brand_id và type từ URL nếu có
+// Lấy brand_id và type từ URL nếu có 
 $encryptedBrandId = isset($_GET['brand_id']) ? $_GET['brand_id'] : null;
 //get color
 $allColors = $productModel->getAllColors();
@@ -25,7 +12,7 @@ $allBrands = $productModel->getAllBrands();
 // Kiểm tra nếu có dữ liệu hợp lệ và giải mã
 if ($encryptedBrandId !== null) {
     // Giải mã dữ liệu từ URL
-    $brand_id = decryptBrandId($encryptedBrandId, $secret_salt); // Giải mã brand_id
+    $brand_id = decryptProductId($encryptedBrandId); // Giải mã brand_id
    
 } else {
     // Nếu không có dữ liệu hợp lệ, gán giá trị mặc định
@@ -67,7 +54,7 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                             <form action="#" id="filterForm">
                                 <ul class="filter-list">
                                     <?php foreach ($brandsWithCount as $brand): 
-                                        $encryptedBrandId = encryptBrandId($brand['brand_id'], $secret_salt);
+                                        $encryptedBrandId = encryptProductId($brand['brand_id'] ?? '');
                                         ?>
                                         
                                         <li>
@@ -232,119 +219,7 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
 <!-- ================ category section end ================= -->
 
 <!-- ================ top product area start ================= -->
-<section class="related-product-area">
-    <div class="container">
-        <div class="section-intro pb-60px">
-            <p>Popular Item in the market</p>
-            <h2>Top <span class="section-intro__style">Product</span></h2>
-        </div>
-        <div class="row mt-30">
-            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-                <div class="single-search-product-wrapper">
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-                <div class="single-search-product-wrapper">
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-4.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-5.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-6.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-                <div class="single-search-product-wrapper">
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-7.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-8.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-9.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-                <div class="single-search-product-wrapper">
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-1.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-2.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                    <div class="single-search-product d-flex">
-                        <a href="#"><img src="../images/product/product-sm-3.png" alt=""></a>
-                        <div class="desc">
-                            <a href="#" class="title">Gray Coffee Cup</a>
-                            <div class="price">$170.00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <!-- ================ top product area end ================= -->
 
 <!-- ================ Subscribe section start ================= -->

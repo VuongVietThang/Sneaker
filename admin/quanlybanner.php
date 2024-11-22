@@ -3,15 +3,16 @@ include 'header.php';
 $bannerModel = new Banner();
 $banners = $bannerModel->getAllBanner();
 
-$secret_salt = "my_secret_salt";
-
 
 ?>
 
 
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
+
 <?php include 'sidebar.php' ?>
+
+
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -43,7 +44,7 @@ $secret_salt = "my_secret_salt";
                         </tr>
                         <?php else : ?>
                         <?php foreach ($banners as $banner) : ?>
-                        <?php $encoded_banner = base64_encode($banner['banner_id'] . $secret_salt) ?>
+                        <?php $encoded_banner = encryptProductId($banner['banner_id']) ?>
                         <tr class="text-center">
                             <td><?php echo htmlspecialchars($banner['banner_id']); ?></td>
                             <td>

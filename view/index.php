@@ -46,8 +46,8 @@ $getProductPopular = $productModel->getProductPopular();
         <div class="owl-carousel owl-theme" id="newestProductCarousel">
             <?php 
                 foreach ($newestProducts as $product):
-                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
-                    $encoded_type = base64_encode($product['type'] . $secret_salt);
+                  
+                   
             ?>
                 <div class="card text-center card-product">
                     <div class="card-product__img">
@@ -158,7 +158,7 @@ $getProductPopular = $productModel->getProductPopular();
         <div class="owl-carousel owl-theme" id="bestSellerCarousel">
             <?php 
                 foreach ($sellProducts as $product):
-                  $encoded_brand_id = base64_encode($product['brand_id'] . $secret_salt);
+                  
                   
             ?>
                 <div class="card text-center card-product">

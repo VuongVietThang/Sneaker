@@ -2,7 +2,7 @@
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
-              <i class="fas fa-th-large menu-icon"></i> <!-- Biểu tượng Dashboard -->
+            <i class="fas fa-th-large menu-icon"></i> <!-- Biểu tượng Dashboard -->
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
