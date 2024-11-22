@@ -5,16 +5,19 @@ if (!isset($_SESSION['user'])) {
     header("Location: ../view/login.php");
     exit();
 }
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-	$cart_item_id = isset($_GET['cart_item_id']) ? $_GET['cart_item_id'] : 0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$product_id = isset($_POST['product_id']) ? $_POST['product_id'] : 0;
+    $user_id = $_SESSION['user']['user_id'];
+    $sizeId = 1;
+    $colorId = 1;
+    // add
     $CartModel = new Cart();
-    $isDeleted = $CartModel->removeProductFromCart($cart_item_id);
+    $isDeleted = $CartModel->removeProductInCart($user_id,$product_id,$sizeId,$colorId);
     if($isDeleted){
         header("Location: ../view/cart.php");
         exit();
     }else{
-        header("Location: ../view/cart.php");
-        exit();
+        echo "Không thể xóa";
     }
 }
 
