@@ -3,14 +3,8 @@
 include '../config/database.php';
 require '../model/db.php';
 require '../model/brand.php';
+require '../model/encryption_helpers.php';
 
-$secret_salt = "my_secret_salt";
-
-function decryptBrandId($decryptedId, $secret_salt)
-{
-    $decoded = base64_decode($decryptedId);
-    return str_replace($secret_salt, '', $decoded);
-}
 
 // Biến lưu lỗi cho từng trường
 $errors = [
@@ -19,7 +13,7 @@ $errors = [
 ];
 if (isset($_GET['brand_id'])) {
 
-    $brandID = decryptBrandId($_GET['brand_id'], $secret_salt);
+    $brandID = decryptProductId($_GET['brand_id']);
 
     $brandModel = new Brand();
     if (!$brandModel->brandExists($brandID)) {

@@ -1,14 +1,10 @@
 <?php 
 require '../model/user.php';
-function decryptBrandId($decryptedId, $secret_salt)
-{
-    $decoded = base64_decode($decryptedId);
-    return str_replace($secret_salt, '', $decoded);
-}
-$secret_salt = "my_secret_salt";
+require '../model/encryption_helpers.php';
+
 
 if (isset($_GET['user_id'])) {
-    $user_id = decryptBrandId($_GET['user_id'],$secret_salt);
+    $user_id = decryptProductId($_GET['user_id']);
 
     // Kiểm tra banner_id là số hợp lệ
     if (!is_numeric($user_id)) {

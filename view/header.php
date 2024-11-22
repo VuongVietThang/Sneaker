@@ -8,6 +8,8 @@ require '../model/banner.php';
 require '../model/cart.php';
 require '../model/user.php';
 require '../model/faq.php';
+require '../model/encryption_helpers.php';
+
 session_start();
 $brandModel = new Brand();
 $userModel = new User();
@@ -79,7 +81,7 @@ $secret_salt = "my_secret_salt";
               if (isset($brands)):
                 foreach ($brands as $item):
                   // Mã hóa brand_id với secret_salt
-                  $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
+                  $encoded_brand_id = encryptProductId($item['brand_id'] ?? '');
 
                   // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
                   $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';

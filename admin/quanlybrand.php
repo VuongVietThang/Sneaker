@@ -3,9 +3,6 @@ include 'header.php';
 $brandModel = new Brand();
 $brands = $brandModel->getAllBrand();
 
-$secret_salt = "my_secret_salt";
-
-
 ?>
 
 
@@ -15,7 +12,7 @@ $secret_salt = "my_secret_salt";
         <ul class="nav">
             <li class="nav-item">
                 <a class="nav-link" href="index.php">
-                    <i class="fas fa-th-large menu-icon"></i> <!-- Biểu tượng Dashboard -->
+                <i class="fas fa-th-large menu-icon"></i> <!-- Biểu tượng Dashboard -->
                     <span class="menu-title">Dashboard</span>
                 </a>
             </li>
@@ -80,7 +77,7 @@ $secret_salt = "my_secret_salt";
                             </tr>
                         <?php else : ?>
                             <?php foreach ($brands as $brand) : ?>
-                                <?php $encoded_banner = base64_encode($brand['brand_id'] . $secret_salt) ?>
+                                <?php $encoded_banner = encryptProductId($brand['brand_id']) ?>
                                 <tr class="text-center">
                                     <td><?php echo htmlspecialchars($brand['brand_id']); ?></td>
                                     <td><?php echo htmlspecialchars($brand['name']); ?></td>
