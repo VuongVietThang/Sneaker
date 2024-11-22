@@ -19,9 +19,8 @@ $favorites = $userModel->getMyFavorites($user_id);
 									<h4>John Doe</h4>
 									<p class="text-secondary mb-1">Cusstomer</p>
 									<p class="text-muted font-size-sm"><?php echo $profile['address'] ?></p>
-									<a href="change_password.php">
-										<button class="btn btn-outline-primary" id="toggleChangePass">Change Pass</button>
-									</a>
+									<button class="btn btn-primary">Follow</button>
+									<button class="btn btn-outline-primary">Message</button>
 								</div>
 							</div>
 							<hr class="my-4">
@@ -88,7 +87,7 @@ $favorites = $userModel->getMyFavorites($user_id);
 							</div>
 						</div>
 					</div>
-					<div class="row mt-2">
+					<div class="row">
 						<div class="col-sm-12">
 							<div class="card">
 								<div class="card-body">
@@ -123,7 +122,6 @@ $favorites = $userModel->getMyFavorites($user_id);
 			</div>
 		</div>
 	</div>
-
 <?php
 include 'footer.php';
 ?>
