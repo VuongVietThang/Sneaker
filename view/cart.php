@@ -55,7 +55,7 @@ $totalItems = count($productsInCart);
                           </div>
                           <div class="ms-3">
                             <h5><?php echo $product['product_name']; ?></h5>
-                            <p class="small mb-0">Size: <?php echo $product['size_id']; ?>, Color: <?php echo $product['color_id']; ?></p>
+                            <p class="small mb-0">Size: <?php echo $product['size_value']; ?>, Color: <?php echo $product['color_name']; ?></p>
                           </div>
                         </div>
                         <div class="d-flex flex-row align-items-center">
