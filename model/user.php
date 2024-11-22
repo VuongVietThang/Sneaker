@@ -280,5 +280,26 @@ class User extends Db
             return false;
         }
     }
+    public function change_password($user_id, $current_pass, $new_pass) 
+    {
+        $sql = self::$connection->prepare("SELECT password FROM user WHERE user_id = ?");
+        $sql->bind_param("i", $user_id);
+        $sql->execute();
+        $result = $sql->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $hashed_password = $row['password'];
+            if (password_verify($current_pass, $hashed_password)) {
+                $new_hashed_password = password_hash($new_pass, PASSWORD_DEFAULT);
+                $update_sql = self::$connection->prepare("UPDATE user SET password = ? WHERE user_id = ?");
+                $update_sql->bind_param("si", $new_hashed_password, $user_id);
+                return $update_sql->execute();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
 }
