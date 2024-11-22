@@ -1,3 +1,86 @@
+<div class="floating-button" id="floatingButton">
+  <span>+</span>
+  <button class="close-button" id="closeButton">&minus;</button>
+  <iframe
+    width="350"
+    height="430"
+    allow="microphone;"
+    src="https://console.dialogflow.com/api-client/demo/embedded/af6b9540-cf89-4a74-8356-048c3b7afc85">
+  </iframe>
+</div>
+
+<style>
+  .floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: width 0.3s, height 0.3s;
+    z-index: 9999; 
+  }
+  .floating-button.open {
+    width: 350px;
+    height: 430px;
+    border-radius: 8px;
+  }
+  .floating-button span {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+  }
+  .floating-button.open .close-button {
+    display: block;
+  }
+  .floating-button iframe {
+    display: none;
+    border: none;
+  }
+  .floating-button.open iframe {
+    display: block;
+  }
+</style>
+
+<script>
+  const floatingButton = document.getElementById('floatingButton');
+  const closeButton = document.getElementById('closeButton');
+
+  if (floatingButton && closeButton) {
+    floatingButton.addEventListener('click', function () {
+      this.classList.toggle('open');
+      const span = this.querySelector('span');
+      span.style.display = this.classList.contains('open') ? 'none' : 'block';
+    });
+
+    closeButton.addEventListener('click', function (event) {
+      event.stopPropagation();
+      floatingButton.classList.remove('open');
+      floatingButton.querySelector('span').style.display = 'block';
+    });
+  }
+</script>
+
+
+
 <footer class="footer">
   <div class="footer-area">
     <div class="container">
@@ -41,34 +124,24 @@
           </div>
         </div>
         <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
-          <div class="single-footer-widget tp_widgets">
-            <h4 class="footer_title">Contact Us</h4>
-            <div class="ml-40">
-              <p class="sm-head">
-                <span class="fa fa-location-arrow"></span>
-                Head Office
-              </p>
-              <p>123, Main Street, Your City</p>
-
-              <p class="sm-head">
-                <span class="fa fa-phone"></span>
-                Phone Number
-              </p>
-              <p>
-                +123 456 7890 <br>
-                +123 456 7890
-              </p>
-
-              <p class="sm-head">
-                <span class="fa fa-envelope"></span>
-                Email
-              </p>
-              <p>
-                free@infoexample.com <br>
-                www.infoexample.com
-              </p>
+            <div class="single-footer-widget tp_widgets">
+              <h4 class="footer_title">Contact Us</h4>
+              <form action="../controller/create_contact.php" method="POST">
+                <div class="form-group">
+                  <label for="contactEmail">Email</label>
+                  <input type="email" class="form-control" id="contactEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactPhone">Phone</label>
+                  <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactMessage">Message</label>
+                  <textarea class="form-control" id="contactMessage" name="message" rows="3" placeholder="Enter your message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
             </div>
-          </div>
         </div>
       </div>
     </div>

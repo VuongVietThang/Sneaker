@@ -8,6 +8,7 @@ include 'statistical_chart.php';
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
 
+<<<<<<< HEAD
   <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item">
@@ -47,6 +48,11 @@ include 'statistical_chart.php';
         </a>
       </li>
     </ul>
+=======
+    <?php include 'sidebar.php' ?>
+      <!-- partial -->
+      <div class="main-panel">
+>>>>>>> main
 
   </nav>
 

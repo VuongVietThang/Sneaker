@@ -9,6 +9,7 @@ $banners = $bannerModel->getAllBanner();
 
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
+<<<<<<< HEAD
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
             <li class="nav-item">
@@ -49,6 +50,9 @@ $banners = $bannerModel->getAllBanner();
             </li>
         </ul>
     </nav>
+=======
+<?php include 'sidebar.php' ?>
+>>>>>>> main
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
