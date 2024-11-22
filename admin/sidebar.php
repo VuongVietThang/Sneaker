@@ -48,5 +48,12 @@
                     <span class="menu-title">Quản lý liên hệ</span>
                 </a>
             </li>
+            <li class="nav-item">
+    <a class="nav-link" href="quanlycolor.php">
+        <i class="fas fa-palette menu-icon"></i> 
+        <span class="menu-title">Quản lý Color</span>
+    </a>
+</li>
+
         </ul>
 </nav>
