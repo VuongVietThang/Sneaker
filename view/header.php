@@ -7,6 +7,9 @@ require '../model/product.php';
 require '../model/banner.php';
 require '../model/cart.php';
 require '../model/user.php';
+require '../model/faq.php';
+require '../model/encryption_helpers.php';
+
 session_start();
 $brandModel = new Brand();
 $userModel = new User();
@@ -23,7 +26,7 @@ if (isset($_SESSION['user']['user_id'])) {
   $totalCart = $cartModel->countItemsInCart($user_id);
 } else {
   // Gán giá trị mặc định nếu người dùng chưa đăng nhập
-  $totalCart = 1;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
+  $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
 
 
@@ -78,7 +81,7 @@ $secret_salt = "my_secret_salt";
               if (isset($brands)):
                 foreach ($brands as $item):
                   // Mã hóa brand_id với secret_salt
-                  $encoded_brand_id = base64_encode($item['brand_id'] . $secret_salt);
+                  $encoded_brand_id = encryptProductId($item['brand_id'] ?? '');
 
                   // Kiểm tra xem brand_id trong URL hiện tại có trùng với brand_id của item này không
                   $isActive = (isset($_GET['brand_id']) && $_GET['brand_id'] === urlencode($encoded_brand_id)) ? 'active' : '';
@@ -90,6 +93,13 @@ $secret_salt = "my_secret_salt";
                   </li>
               <?php endforeach;
               endif; ?>
+            <!-- Thêm mục FAQ -->
+            <li class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'faq.php' ? 'active' : ''); ?>">
+              <i class="fa fa-question-circle"></i>
+                <a class="nav-link" href="faq.php">
+                <strong>FAQ</strong>
+                </a>
+            </li>
             </ul>
             <ul class="nav-shop">
               <li class="nav-item">
@@ -101,15 +111,32 @@ $secret_salt = "my_secret_salt";
                 </div>
               </li>
               <?php if (isset($_SESSION['user'])): ?>
-                <li class="nav-item"><a href="./cart.php"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button> </a></li>
+                <?php if (!isset($_SESSION['user']['admin_id'])): ?>
+                  <li class="nav-item">
+                    <a href="./cart.php">
+                      <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle"><?php echo $totalCart ?></span></button>
+                    </a>
+                  </li>
+                <?php endif; ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ti-user"></i> <?php echo $_SESSION['user']['name']; ?>
                   </a>
-                  <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item info" href="../admin/index.php">ADMIN</a>
-                    <a class="dropdown-item info" href="profile.php">Profile</a>
-                    <a class="dropdown-item info" href="logout.php">Logout</a>
+                  <div class="logout">
+                    <div class="dropdown-menu dropdowns" aria-labelledby="navbarDropdown">
+                      <?php
+                      if (isset($_SESSION['user']) && isset($_SESSION['user']['admin_id'])) {
+                        echo '<a class="dropdown-item info" href="../admin/index.php">Admin</a>';
+                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
+                      } else {
+                        if (isset($_SESSION['user']))
+                          echo '<a class="dropdown-item info" href="profile.php">Profile</a>';
+                        echo '<a class="dropdown-item info" href="logout.php">Logout</a>';
+                      }
+
+                      ?>
+
+                    </div>
                   </div>
                 </li>
               <?php else: ?>
@@ -121,7 +148,7 @@ $secret_salt = "my_secret_salt";
       </nav>
     </div>
   </header>
-  <script src="../js/header.js"></script>
+
 </body>
 
 </html>
