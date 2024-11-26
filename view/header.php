@@ -29,7 +29,8 @@ if (isset($_SESSION['user']['user_id'])) {
   $totalCart = 0;  // Hoặc hiển thị thông báo lỗi, tùy vào yêu cầu của bạn
 }
 
-
+error_reporting(0);  
+ini_set('display_errors', '0');
 // Chuỗi bảo mật cho việc mã hóa
 $secret_salt = "my_secret_salt";
 ?>

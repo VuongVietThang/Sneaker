@@ -36,6 +36,7 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
     $products = $filteredProducts;
 }
 // Hiển thị sản phẩm ở đây, ví dụ:
+ 
 ?>
 
 <!-- ================ start banner area ================= -->
@@ -195,7 +196,12 @@ if (isset($_GET['brand_id']) && isset($_GET['color_name'])) {
                                                             <button><i class="ti-shopping-cart"></i></button>
                                                     </form>
                                                 </li>
-                                                    <li><button><i class="ti-heart"></i></button></li>
+                                                    <li>
+                                                        <form action="../controller/addToFavorite.php" method="post">
+                                                                <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                                                <button><i class="ti-heart"></i></button>
+                                                        </form>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div class="card-body">
