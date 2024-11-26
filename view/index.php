@@ -46,7 +46,6 @@ $getProductPopular = $productModel->getProductPopular();
         <div class="owl-carousel owl-theme" id="newestProductCarousel">
             <?php 
                 foreach ($newestProducts as $product):
-                  
                    
             ?>
                 <div class="card text-center card-product">
@@ -57,6 +56,8 @@ $getProductPopular = $productModel->getProductPopular();
                             <li>
                               <form action="../controller/addToCartController.php" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" id="">
+                                    <input type="hidden" name="size_id" value="<?php echo $product['size_id'] ?>" id="">
+                                    <input type="hidden" name="color_id" value="<?php echo $product['color_id'] ?>" id="">
                                     <button><i class="ti-shopping-cart"></i></button>
                               </form>
                             </li>

@@ -256,21 +256,13 @@ CREATE TABLE IF NOT EXISTS `product` (
   KEY `brand_id` (`brand_id`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Đang đổ dữ liệu cho bảng `product`
---
-
-INSERT INTO `product` (`product_id`, `name`, `brand_id`, `description`, `price`, `type`, `created_at`, `updated_at`) VALUES
-(2, 'giày adidas', 1, 'abc', 123000000, 'Ultraboost', '2024-10-21 10:08:26', '2024-11-06 20:16:30'),
-(1, 'giày nike', 2, 'abc', 345000000, 'Air Force 1', '2024-10-21 10:07:12', '2024-11-06 20:17:22'),
-(3, 'giày vans', 3, 'abc', 567000000, 'Old Skool', '2024-10-21 10:09:06', '2024-11-06 20:17:56'),
-(4, 'giày FILA', 4, 'abc', 789000000, 'abc', '2024-11-06 23:14:49', '2024-11-06 23:14:49');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `product_color`
---
+CREATE TABLE IF NOT EXISTS `color` (
+  `color_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`color_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `product_color`;
 CREATE TABLE IF NOT EXISTS `product_color` (

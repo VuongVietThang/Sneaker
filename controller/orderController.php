@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         sendMail($user_email, 'Đơn hàng đã đặt thành công', 'Chúc mừng bạn! Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ sớm xử lý và giao hàng cho bạn.');
         header("Location: ../view/cart.php");
         exit();
+    }else{
+        echo 'Không thể đc';
     }
 }
 
