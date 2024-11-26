@@ -2,63 +2,6 @@
 include_once __DIR__ . '../db.php';
 class Cart extends Db
 {
-    public function getColor($name) {
-        // Câu truy vấn SQL
-        $sql = "SELECT color_id FROM color WHERE name = ?";
-        
-        // Chuẩn bị câu lệnh SQL
-        $stmt = self::$connection->prepare($sql);
-        if ($stmt === false) {
-            // Nếu chuẩn bị không thành công, trả về null hoặc thông báo lỗi
-            return null;
-        }
-        
-        // Liên kết tham số và thực thi câu lệnh
-        $stmt->bind_param("s", $name);
-        $stmt->execute();
-        
-        // Lấy kết quả truy vấn
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            // Trả về mảng kết quả
-            $data = $result->fetch_assoc();
-            $stmt->close();
-            return $data['color_id'];  // Trả về color_id
-        } else {
-            $stmt->close();
-            return null;  // Nếu không có kết quả
-        }
-    }
-    
-    public function getSize($value) {
-        // Câu truy vấn SQL
-        $sql = "SELECT size_id FROM size WHERE value = ?";
-        
-        // Chuẩn bị câu lệnh SQL
-        $stmt = self::$connection->prepare($sql);
-        if ($stmt === false) {
-            // Nếu chuẩn bị không thành công, trả về null hoặc thông báo lỗi
-            return null;
-        }
-        
-        // Liên kết tham số và thực thi câu lệnh
-        $stmt->bind_param("s", $value);
-        $stmt->execute();
-        
-        // Lấy kết quả truy vấn
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            // Trả về mảng kết quả
-            $data = $result->fetch_assoc();
-            $stmt->close();
-            return $data['size_id'];  // Trả về size_id
-        } else {
-            $stmt->close();
-            return null;  // Nếu không có kết quả
-        }
-    }
-     
-
     // Thêm sản phẩm vào giỏ hàng
     public function addToCart($userId, $productId, $sizeId, $colorId, $quantity = 1)
     {
@@ -105,42 +48,17 @@ class Cart extends Db
 
     public function getAllProductsInCart($user_id)
     {
-        $sql = "SELECT ci.cart_item_id, ci.cart_id, ci.product_id, s.value AS size_value, c.name AS color_name, 
-                       ci.quantity, p.name AS product_name, p.price, pi.image_url
+        $sql = "SELECT ci.cart_item_id, ci.cart_id, ci.product_id, ci.size_id, ci.color_id, ci.quantity, 
+                       p.name AS product_name, p.price, pi.image_url
                 FROM cart_item ci
                 JOIN product p ON ci.product_id = p.product_id
                 LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
-                LEFT JOIN color c ON c.color_id = ci.color_id
-                LEFT JOIN size s ON s.size_id = ci.size_id
                 WHERE ci.cart_id IN (SELECT cart_id FROM cart WHERE user_id = ?)";
-        
-        // Chuẩn bị câu lệnh SQL
         $stmt = self::$connection->prepare($sql);
-    
-        // Kiểm tra lỗi chuẩn bị câu lệnh
-        if ($stmt === false) {
-            // Lấy thông báo lỗi từ MySQL
-            die('MySQL Error: ' . self::$connection->error);
-        }
-        
-        // Liên kết tham số và thực thi câu lệnh
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        
-        // Lấy kết quả truy vấn
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            // Trả về mảng kết quả
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            $stmt->close();
-            return $data;
-        } else {
-            // Nếu không có sản phẩm nào trong giỏ hàng
-            $stmt->close();
-            return null;
-        }
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
-    
     public function createOrder($userId, $shippingAddress)
     {
         $date = new DateTime();
