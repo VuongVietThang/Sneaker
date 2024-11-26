@@ -5,7 +5,7 @@ require '../model/banner.php';
 require '../model/user.php';
 require '../model/brand.php';
 require '../model/faq.php';
-
+require '../model/size.php';
 require '../model/order.php';
 require '../model/contact.php';
 require '../model/statistical.php';

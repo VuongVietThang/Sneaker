@@ -85,7 +85,6 @@ class Cart extends Db
             // 2. Lấy tất cả sản phẩm trong giỏ hàng của người dùng
             $cart = new Cart();
             $cartItems = $cart->getAllProductsInCart($userId);
-
             // Kiểm tra nếu giỏ hàng trống
             if (empty($cartItems)) {
                 throw new Exception("Giỏ hàng không có sản phẩm.");
@@ -96,10 +95,12 @@ class Cart extends Db
             // 3. Thêm sản phẩm vào đơn hàng và tính tổng số tiền
             foreach ($cartItems as $item) {
                 $productId = $item['product_id'];
-                $sizeId = $item['size_id'];
-                $colorId = $item['color_id'];
+                $size_value = $item['size_value'];
+                $color_name = $item['color_name'];
                 $quantity = $item['quantity'];
                 $price = $item['price'];
+                $colorId = self::getColor($color_name);
+                $sizeId = self::getSize($size_value);
 
                 // Thêm sản phẩm vào bảng order_item
                 $sql = "INSERT INTO order_item (order_id, product_id, size_id, color_id, quantity, price)

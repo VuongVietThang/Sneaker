@@ -76,12 +76,21 @@ class Product extends Db
 
     public static function getNewProducts($limit)
     {
-        $sql = self::$connection->prepare("SELECT p.product_id, p.name, p.type, p.price, pi.image_url, b.brand_id, b.name AS brand_name
-            FROM product p
-            LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
-            LEFT JOIN brand b ON p.brand_id = b.brand_id
-            ORDER BY p.created_at DESC
-            LIMIT ?");
+        $sql = self::$connection->prepare("SELECT p.product_id, p.name, p.type, p.price, pi.image_url, b.brand_id, b.name AS brand_name, c.color_id, c.name AS color_name, s.size_id, s.value AS size
+        FROM product p
+        LEFT JOIN product_image pi ON p.product_id = pi.product_id AND pi.is_main = 1
+        LEFT JOIN brand b ON p.brand_id = b.brand_id
+        LEFT JOIN product_color pc ON p.product_id = pc.product_id
+        LEFT JOIN color c ON pc.color_id = c.color_id
+        LEFT JOIN product_size ps ON p.product_id = ps.product_id
+        LEFT JOIN size s ON ps.size_id = s.size_id
+        ORDER BY p.created_at DESC
+        LIMIT ?");
+
+
+
+
+
 
         // Liên kết biến limit vào câu truy vấn
         $sql->bind_param("i", $limit); // "i" là kiểu dữ liệu Integer
