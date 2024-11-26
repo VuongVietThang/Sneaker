@@ -6,11 +6,6 @@ $cartModel = new Cart();
 $productsInCart = $cartModel->getAllProductsInCart($user_id);
 $myOrder = $cartModel->getOrdersByUserId($user_id);
 
-// Kiểm tra giá trị trả về, nếu không phải mảng thì gán giá trị mặc định
-if (!is_array($productsInCart)) {
-    $productsInCart = [];
-}
-
 // Lấy tổng số lượng sản phẩm trong giỏ
 $totalItems = count($productsInCart);
 
@@ -41,13 +36,14 @@ $totalItems = count($productsInCart);
                   </div>
                 </div>
 
+
                 <?php
                 $totalPrice = 0; // Khởi tạo biến tổng giá
 
-                // Kiểm tra và lặp qua sản phẩm trong giỏ
-                if (!empty($productsInCart)) {
-                    foreach ($productsInCart as $product) {
-                        $totalPrice += $product['price'] * $product['quantity'];
+                // Bắt đầu vòng lặp
+                foreach ($productsInCart as $product):
+                  // Cộng dồn giá tiền của từng sản phẩm vào tổng
+                  $totalPrice += $product['price'] * $product['quantity'];
                 ?>
                   <div class="card mb-3">
                     <div class="card-body">
@@ -59,7 +55,7 @@ $totalItems = count($productsInCart);
                           </div>
                           <div class="ms-3">
                             <h5><?php echo $product['product_name']; ?></h5>
-                            <p class="small mb-0">Size: <?php echo $product['size_value']; ?>, Color: <?php echo $product['color_name']; ?></p>
+                            <p class="small mb-0">Size: <?php echo $product['size_id']; ?>, Color: <?php echo $product['color_id']; ?></p>
                           </div>
                         </div>
                         <div class="d-flex flex-row align-items-center">
@@ -76,12 +72,7 @@ $totalItems = count($productsInCart);
                       </div>
                     </div>
                   </div>
-                <?php
-                    }
-                } else {
-                    echo "<p>Your cart is empty.</p>";
-                }
-                ?>
+                <?php endforeach; ?>
 
               </div>
 
@@ -103,14 +94,14 @@ $totalItems = count($productsInCart);
 
                     <form method="POST" action="../controller/orderController.php" class="mt-4">
                       <div data-mdb-input-init class="form-outline form-white mb-4">
-                        <input type="text" id="typeName" class="form-control form-control-lg" size="17"
+                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
                           placeholder="Enter your name" />
                         <label class="form-label" for="typeName">Name</label>
                       </div>
 
                       <div data-mdb-input-init class="form-outline form-white mb-4">
-                        <input type="text" id="typeText" class="form-control form-control-lg" size="17"
-                          placeholder="Enter your address" name="shippingAddress" minlength="10" maxlength="100" />
+                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                          placeholder="enter your address" name="shippingAddress" minlength="10" maxlength="100" />
                         <label class="form-label" for="typeText">Address</label>
                       </div>
 
@@ -158,7 +149,7 @@ $totalItems = count($productsInCart);
                         <td><?php echo $order['status']; ?></td>
                         <td><?php echo $order['shipping_address']; ?></td>
                         <td>
-                          <a href="detailOrder.php?order_id=<?php echo $order['order_id']; ?>">
+                          <a href="detailOrder.php?order_id=<?php echo $order['order_id'] ?>">
                             <i class="fa-regular fa-eye"></i>
                           </a>
                         </td>
@@ -175,6 +166,10 @@ $totalItems = count($productsInCart);
     </div>
   </div>
 </section>
+
+
+
+
 
 <?php
 include 'footer.php';
